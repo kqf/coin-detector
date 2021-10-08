@@ -2,7 +2,10 @@ pytest
 pytest-cov
 flake8
 numpy
+<<<<<<< HEAD
 pandas
 opencv-python
 torch
 matplotlib
+=======
+>>>>>>> Add the dependency
