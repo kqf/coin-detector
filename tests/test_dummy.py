@@ -1,4 +1,4 @@
 
 
-def test_dummy():
+def test_dummy(fake_dataset):
     pass
