@@ -26,7 +26,7 @@ def size():
 
 
 @pytest.fixture
-def annotations(n_samples, fixed_seed, width=2000, num_classes=3):
+def annotations(fixed_seed, width=2000, num_classes=3, n_samples=8):
     """
                                image_id          class_name  class_id rad_id   x_min   y_min   x_max   y_max
     0  50a418190bc3fb1ef1633bf9678929b3          No finding        14    R11     NaN     NaN     NaN     NaN
