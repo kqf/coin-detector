@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import torch
 
+
 def read_image(file):
     bitmap = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
     image = np.stack([bitmap, bitmap, bitmap]).astype('float32')
