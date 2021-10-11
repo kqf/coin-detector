@@ -1,6 +1,7 @@
 pytest
 pytest-cov
 flake8
+numpy
 pandas
 opencv-python
 torch
