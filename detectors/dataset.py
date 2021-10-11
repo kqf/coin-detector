@@ -9,7 +9,7 @@ def read_image(file):
     return image.transpose(1, 2, 0)
 
 
-class DetectionDataset(torch.datasets.Dataset):
+class DetectionDataset(torch.utils.data.Dataset):
 
     def __init__(self, df, transforms=None):
         super().__init__()
