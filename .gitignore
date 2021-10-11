@@ -2,4 +2,8 @@
 *.so
 *.txt
 *.csv
+
+# Tools
 .python-version
+.vscode
+*-workspace*
