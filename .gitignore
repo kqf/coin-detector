@@ -1,5 +1,15 @@
+# Binaries
 *.pyc
 *.so
 *.txt
-*.csv
+
+# Tools
 .python-version
+.vscode
+*-workspace*
+
+# Data
+*.csv
+*.json
+*.jpg
+*.png
