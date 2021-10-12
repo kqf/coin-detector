@@ -2,11 +2,8 @@ import torch
 import random
 
 import pytest
-import tempfile
 import numpy as np
 import pandas as pd
-
-from pathlib import Path
 
 from detectors.mc import generate_to_directory
 
