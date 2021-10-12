@@ -25,9 +25,6 @@ class DetectionDataset(torch.utils.data.Dataset):
         file = records.loc[0, "image"]
         image = read_image(file)
 
-        if records.loc[0, "class_id"] == 0:
-            records = records.loc[[0], :]
-
         boxes = records[['x_center', 'y_center', 'width', 'height']].values
 
         labels = torch.tensor(
