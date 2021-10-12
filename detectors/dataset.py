@@ -11,17 +11,18 @@ def read_image(file):
 
 class DetectionDataset(torch.utils.data.Dataset):
 
-    def __init__(self, df, transforms=None):
+    def __init__(self, df, image_col="image_id", transforms=None):
         super().__init__()
+        self.examples = df[image_col].unique()
         self.transforms = transforms
         self.df = df
 
     def __getitem__(self, index):
-        image_id = self.image_ids[index]
+        image_id = self.examples[index]
         records = self.df[(self.df['image_id'] == image_id)]
         records = records.reset_index(drop=True)
 
-        file = f"{self.image_dir}/{image_id}.png"
+        file = records.loc[0, "image"]
         image = read_image(file)
 
         if records.loc[0, "class_id"] == 0:
