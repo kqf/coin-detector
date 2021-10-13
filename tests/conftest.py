@@ -1,13 +1,17 @@
 import random
 from pathlib import Path
 
-import cv2
 import numpy as np
 import pandas as pd
 import pytest
-import torch
 from detectors.mc import blob2image
 from detectors.mc import make_blob
+
+try:
+    import cv2
+    import torch
+except ImportError:
+    pass
 
 
 @pytest.fixture
