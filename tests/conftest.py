@@ -85,3 +85,4 @@ def fake_dataset(tmp_path, annotations, size=256):
         ifile = f"{image_id}.png"
         cv2.imwrite(str(tmp_path / ifile), img)
     annotations.to_csv(tmp_path / "train.csv", index=False)
+    yield tmp_path
