@@ -1,11 +1,17 @@
-import torch
 import random
+from pathlib import Path
 
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
+from detectors.mc import blob2image
+from detectors.mc import make_blob
 
-from detectors.mc import generate_to_directory
+try:
+    import cv2
+    import torch
+except ImportError:
+    pass
 
 
 @pytest.fixture
@@ -68,6 +74,21 @@ def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
     df['width'] = (x2 - x1) / df["w"]
     df['height'] = (y2 - y1) / df["h"]
     return df
+
+
+def generate_to_directory(annotations, dirname, image_col="image_id"):
+    path = Path(dirname)
+    for image_id, blobs in annotations.groupby(image_col):
+
+        blobs = []
+        for row in annotations.to_dict(orient="records"):
+            blobs.append(make_blob(**row))
+        blob = np.stack(blobs, axis=-1).any(-1)
+
+        img = blob2image(blob)
+        ifile = f"{image_id}.png"
+        cv2.imwrite(str(path / ifile), img)
+    annotations.to_csv(path / "train.csv", index=False)
 
 
 @pytest.fixture
