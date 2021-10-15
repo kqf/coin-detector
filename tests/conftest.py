@@ -1,17 +1,13 @@
 import random
 from pathlib import Path
 
+import cv2
 import numpy as np
 import pandas as pd
 import pytest
+import torch
 from detectors.mc import blob2image
 from detectors.mc import make_blob
-
-try:
-    import cv2
-    import torch
-except ImportError:
-    pass
 
 
 @pytest.fixture
@@ -76,8 +72,8 @@ def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
     return df
 
 
-def generate_to_directory(annotations, dirname, image_col="image_id"):
-    path = Path(dirname)
+@pytest.fixture
+def fake_dataset(tmp_path, annotations, size=256):
     for image_id, blobs in annotations.groupby(image_col):
 
         blobs = []
@@ -87,11 +83,6 @@ def generate_to_directory(annotations, dirname, image_col="image_id"):
 
         img = blob2image(blob)
         ifile = f"{image_id}.png"
-        cv2.imwrite(str(path / ifile), img)
-    annotations.to_csv(path / "train.csv", index=False)
-
-
-@pytest.fixture
-def fake_dataset(tmp_path, annotations, size=256):
-    generate_to_directory(annotations, tmp_path)
+        cv2.imwrite(str(tmp_path / ifile), img)
+    annotations.to_csv(tmp_path / "train.csv", index=False)
     yield tmp_path
