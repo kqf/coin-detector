@@ -1,5 +1,4 @@
 import random
-from pathlib import Path
 
 import cv2
 import numpy as np
@@ -73,7 +72,7 @@ def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
 
 
 @pytest.fixture
-def fake_dataset(tmp_path, annotations, size=256):
+def fake_dataset(tmp_path, annotations, size=256, image_col="image_id"):
     for image_id, blobs in annotations.groupby(image_col):
 
         blobs = []
