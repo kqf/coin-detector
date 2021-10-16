@@ -3,8 +3,8 @@ import torch
 
 def default_heads(n_classes, kernel_size=6):
     return torch.nn.ModuleDict({
-        "boxes": torch.nn.Conv2d(100, 4, kernel_size),
-        "classes": torch.nn.Conv2d(100, n_classes, kernel_size)
+        "boxes": torch.nn.Conv2d(3, 4, kernel_size),
+        "classes": torch.nn.Conv2d(3, n_classes, kernel_size)
     })
 
 
