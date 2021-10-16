@@ -1,8 +1,6 @@
-from functools import partial
-
 import skorch
 import torch
-from detection.inference import infer
+from detectors.model import DummyDetector
 
 
 def init(w):
@@ -48,7 +46,7 @@ def build_model(max_epochs=2, logdir=".tmp/", top_n=None, train_split=None):
     )
 
     model = DetectionNet(
-        YOLO,
+        DummyDetector,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
@@ -59,12 +57,12 @@ def build_model(max_epochs=2, logdir=".tmp/", top_n=None, train_split=None):
         iterator_valid__shuffle=False,
         iterator_valid__num_workers=6,
         train_split=train_split,
-        predict_nonlinearity=partial(
-            infer,
-            top_n=top_n,
-            min_iou=0.5,
-            threshold=0.5,
-        ),
+        # predict_nonlinearity=partial(
+        #     infer,
+        #     top_n=top_n,
+        #     min_iou=0.5,
+        #     threshold=0.5,
+        # ),
         callbacks=[
             scheduler,
             skorch.callbacks.ProgressBar(),
