@@ -12,5 +12,5 @@ def test_dummy(batch):
     model = DummyDetector()
     outputs = model(batch)
 
-    assert outputs["boxes"].shape == (16, 4, 7, 7)
-    assert outputs["classes"].shape == (16, 2, 7, 7)
+    assert outputs["boxes"].shape == (16, 4, 1, 1)
+    assert outputs["classes"].shape == (16, 2, 1, 1)
