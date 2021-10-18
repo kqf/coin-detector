@@ -6,7 +6,7 @@ def test_dataset(fake_dataset):
     df = pd.read_csv(fake_dataset / "train.csv")
     data = DetectionDataset(df)
 
-    for image, boxes, labels in data:
+    for image, labels in data:
         assert len(image.shape) == 3
-        assert len(boxes.shape) == 2
-        assert len(labels.shape) == 1
+        assert len(labels["boxes"].shape) == 2
+        assert len(labels["labels"].shape) == 1
