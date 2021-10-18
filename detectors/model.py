@@ -1,6 +1,6 @@
 import skorch
 import torch
-from detectors.model import DummyDetector
+from detectors.dummy import DummyDetector
 
 
 def init(w):
