@@ -44,7 +44,7 @@ class DetectionDataset(torch.utils.data.Dataset):
             boxes = transformed['bboxes']
             labels = transformed['labels']
 
-        return image, boxes, labels
+        return image, {"boxes": boxes, "labels": labels}
 
     def __len__(self):
-        return self.image_ids.shape[0]
+        return self.examples.shape[0]
