@@ -6,7 +6,7 @@ import torch
 def read_image(file):
     bitmap = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
     image = np.stack([bitmap, bitmap, bitmap]).astype('float32')
-    return image.transpose(1, 2, 0)
+    return image
 
 
 class DetectionDataset(torch.utils.data.Dataset):
