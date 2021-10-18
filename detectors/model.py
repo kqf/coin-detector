@@ -1,6 +1,7 @@
 import skorch
 import torch
 from detectors.dummy import DummyDetector
+from detectors.loss import DetectionLoss
 
 
 def init(w):
@@ -50,6 +51,7 @@ def build_model(max_epochs=2, logdir=".tmp/", top_n=None, train_split=None):
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
+        criterion=DetectionLoss,
         # optimizer=torch.optim.Adam,
         # optimizer__momentum=0.9,
         iterator_train__shuffle=True,
