@@ -3,8 +3,8 @@ import torch
 
 def default_losses():
     losses = {
-        "boxes": torch.nn.MSELoss,
-        "classes": torch.nn.CrossEntropyLoss,
+        "boxes": torch.nn.MSELoss(),
+        "classes": torch.nn.CrossEntropyLoss(),
     }
     return losses
 
@@ -17,6 +17,11 @@ class DetectionLoss(torch.nn.Module):
     def forward(self, y_pred, y):
         losses = []
         for name, subloss in self.sublosses.items():
-            import ipdb; ipdb.set_trace(); import IPython; IPython.embed()  # noqa
-            losses.append(subloss(y_pred[name], y[name]))
-        return torch.cat(losses).sum()
+            # y_pred[batch, n_detections, dim1], y[batch, n_objects, dim2]
+            losses.append(
+                subloss(
+                    y_pred[name][:, :, None],
+                    y[name][:, None]
+                )
+            )
+        return torch.stack(losses).sum()
