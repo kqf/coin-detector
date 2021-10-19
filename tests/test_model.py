@@ -1,3 +1,4 @@
+import pytest
 import pandas as pd
 from detectors.model import build_model
 from detectors.dataset import DetectionDataset
