@@ -9,4 +9,4 @@ def test_dataset(fake_dataset):
     for image, labels in data:
         assert len(image.shape) == 3
         assert len(labels["boxes"].shape) == 2
-        assert len(labels["labels"].shape) == 1
+        assert len(labels["classes"].shape) == 1
