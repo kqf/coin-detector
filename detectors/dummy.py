@@ -1,5 +1,7 @@
 import torch
 
+from detectors.anchors import AnchorBoxes
+
 
 class SqueezeCells(torch.nn.Module):
     def forward(self, x):
@@ -27,7 +29,12 @@ class DummyDetector(torch.nn.Module):
         super().__init__()
         self.backbone = torch.nn.AdaptiveAvgPool2d(kernel_size)
         self.heads = heads or default_heads(n_classes)
+        self.anchors = AnchorBoxes()
 
     def forward(self, x):
         latent = self.backbone(x)
-        return {n: h(latent) for n, h in self.heads.items()}
+        outputs = {n: h(latent) for n, h in self.heads.items()}
+
+        _, _, *image_shape = x.shape
+        outputs["anchors"] = self.anchors(image_shape, [x])
+        return outputs
