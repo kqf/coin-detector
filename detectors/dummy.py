@@ -36,5 +36,5 @@ class DummyDetector(torch.nn.Module):
         outputs = {n: h(latent) for n, h in self.heads.items()}
 
         _, _, *image_shape = x.shape
-        outputs["anchors"] = self.anchors(image_shape, [x])
+        outputs["anchors"] = self.anchors(image_shape, [latent])
         return outputs
