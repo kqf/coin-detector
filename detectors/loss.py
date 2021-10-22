@@ -15,12 +15,13 @@ class DetectionLoss(torch.nn.Module):
         self.sublosses = sublosses or default_losses()
 
     def forward(self, y_pred, y):
+        preds, _ = y_pred
         losses = []
         for name, subloss in self.sublosses.items():
             # y_pred[batch, n_detections, dim1], y[batch, n_objects, dim2]
             losses.append(
                 subloss(
-                    y_pred[name][:, :, None],
+                    preds[name][:, :, None],
                     y[name][:, None]
                 )
             )
