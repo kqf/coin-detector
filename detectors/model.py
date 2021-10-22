@@ -11,7 +11,6 @@ def init(w):
 
 
 class DetectionNet(skorch.NeuralNet):
-
     def predict_proba(self, X):
         nonlin = self._get_predict_nonlinearity()
         y_probas = []
@@ -21,19 +20,9 @@ class DetectionNet(skorch.NeuralNet):
         return y_probas
 
 
-def build_model(max_epochs=2, logdir=".tmp/", top_n=None, train_split=None):
-    # Optimal for box width
-    base_lr = 0.0000001
-
-    # Bad results
-    # base_lr = 0.001
-
+def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
-    # base_lr = 0.0001
-
-    # To noisy
-    # base_lr = 0.000001
-
+    base_lr = 0.0001
     batch_size = 16
 
     scheduler = skorch.callbacks.LRScheduler(
