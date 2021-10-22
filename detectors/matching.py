@@ -19,7 +19,7 @@ def match(
     neg_th=0.1,
     fill_value=-1,
 ):
-    # criterion([batch_size, 1, n_anchors, 4] r [batch_size, n_obj, 1, 4])
+    # criterion([batch_size, 1, n_anchors, 4], [batch_size, n_obj, 1, 4])
     # ~> overlap[batch_size, n_obj, n_anchor]
     overlap = criterion(anchors[:, None], boxes[:, :, None])
 
