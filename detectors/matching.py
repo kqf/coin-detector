@@ -2,35 +2,29 @@ import torch
 from detectors.iou import iou
 
 
-def _padded(values, padding_mask, fill_value=-1):
-    # Set fill_value for padded labes
-    values[padding_mask] = fill_value
-    # Restore the desired dimension order
-    permuted = values.permute(0, 2, 1)
-
-    return permuted
-
-
-def match_positives(score, pos_th, on_image=None):
-    max_overlap = torch.abs(score.max(dim=2, keepdim=True)[0] - score) < 1.0e-6
+def match_positives(score, pos_th):
+    # socre[batch_size, n_obj, n_anchor]
+    max_overlap = torch.abs(score.max(dim=1, keepdim=True)[0] - score) < 1.0e-6
     positive = max_overlap & (score > pos_th)
     return positive
 
 
 def match(
-    boxes,
-    classes,
-    anchors,
-    on_image=None,
+    boxes,  # [batch_size, n_obj, 4]
+    mask,  # [batch_size, n_obj]
+    anchors,  # [batch_size, n_anchors, 4]
+    on_image=None,  # [batch_size, n_anchors]
     criterion=iou,
     pos_th=0.5,
     neg_th=0.1,
+    fill_value=-1,
 ):
-    # [b, n_obj, n_classes] -> b[b, n_obj]
-    padding = torch.isnan(classes).all(-1)
+    # criterion([batch_size, 1, n_anchors, 4], [batch_size, n_obj, 1, 4])
+    # ~> overlap[batch_size, n_obj, n_anchor]
+    overlap = criterion(anchors[:, None], boxes[:, :, None])
 
-    # criterion[b, n_obj, all_anchors] -> _padded[b, all_anchors, n_obj]
-    overlap = _padded(criterion(anchors[:, None], boxes[:, :, None]), padding)
+    # Remove all scores that are masked
+    overlap[mask] = fill_value
 
     positive = match_positives(overlap, pos_th)
 
@@ -38,7 +32,9 @@ def match(
     if on_image is not None:
         positive = positive & on_image[..., None].bool()
 
-    # Define negatives as those with the largest overlap with any gt box
+    # Negatives are the anchors that have quite small
+    # largest overlap with objects
+    # overlap[batch_size, n_obj, n_anchor]
     overlap_, _ = overlap.max(dim=2)
     negative = overlap_ < neg_th
 
