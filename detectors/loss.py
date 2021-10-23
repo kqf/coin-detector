@@ -9,6 +9,27 @@ def default_losses():
     return losses
 
 
+def select(y_pred, y_true, anchor, pos_idx, neg_idx, use_negatives=False):
+    batch_, anchor_, obj_ = torch.where(pos_idx)
+    y_pred_pos = y_pred[batch_, anchor_]
+    y_true_pos = y_true[batch_, obj_]
+    anchor_pos = anchor[batch_, anchor_]
+
+    if not use_negatives:
+        return y_true_pos, y_pred_pos, anchor_pos
+
+    y_pred_neg = y_pred[torch.where(neg_idx)]
+    anchor_neg = anchor[torch.where(neg_idx)]
+
+    # Zero is a background
+    y_true_neg = torch.zeros_like(y_pred_neg.sum(-1))
+
+    y_pred_tot = torch.cat([y_pred_pos, y_pred_neg], dim=0)
+    anchor_tot = torch.cat([anchor_pos, anchor_neg], dim=0)
+    y_true_tot = torch.cat([y_true_pos, y_true_neg], dim=0).long()
+    return y_true_tot, y_pred_tot, anchor_tot
+
+
 class DetectionLoss(torch.nn.Module):
     def __init__(self, sublosses=None):
         super().__init__()
