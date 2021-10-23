@@ -40,6 +40,7 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative):
     y_pred_, y_true_, anchors_ = select(
         y_pred, y_true, anchors, positive, positive
     )
+
     n_samples = torch.where(positive)[0].shape[0]
     assert y_pred_.shape[0] == n_samples
     assert y_true_.shape[0] == n_samples
@@ -49,7 +50,11 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative):
         y_pred, y_true, anchors, positive, negative, use_negatives=True
     )
 
-    # n_samples = torch.where(positive)[0].shape[0] + negative.shape[0]
-    # assert y_pred_.shape[0] == n_samples
-    # assert y_true_.shape[0] == n_samples
-    # assert anchors_.shape[0] == n_samples
+    n_samples = (
+        torch.where(positive)[0].shape[0] +
+        torch.where(negative).shape[0]
+    )
+
+    assert y_pred_.shape[0] == n_samples
+    assert y_true_.shape[0] == n_samples
+    assert anchors_.shape[0] == n_samples
