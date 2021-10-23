@@ -31,25 +31,29 @@ def negative(batch_size, n_anchors):
     return matched > 0.5
 
 
-# @pytest.mark.skip()
 @pytest.mark.parametrize("batch_size", [16])
-@pytest.mark.parametrize("n_anchors", [144])
-@pytest.mark.parametrize("n_outputs", [4])
+@pytest.mark.parametrize("n_outputs", [2])
 @pytest.mark.parametrize("n_targets", [10])
+@pytest.mark.parametrize("n_anchors", [144])
 def test_selects_samples(y_pred, y_true, anchors, positive, negative):
     y_pred_, y_true_, anchors_ = select(
         y_pred, y_true, anchors, positive, positive
     )
+
     n_samples = torch.where(positive)[0].shape[0]
     assert y_pred_.shape[0] == n_samples
     assert y_true_.shape[0] == n_samples
     assert anchors_.shape[0] == n_samples
 
-    # y_pred_, y_true_, anchors_ = select(
-    #     y_pred, y_true, anchors, positive, negative, use_negatives=True
-    # )
+    y_pred_, y_true_, anchors_ = select(
+        y_pred, y_true, anchors, positive, negative, use_negatives=True
+    )
 
-    # n_samples = torch.where(positive)[0].shape[0] + negative.shape[0]
-    # assert y_pred_.shape[0] == n_samples
-    # assert y_true_.shape[0] == n_samples
-    # assert anchors_.shape[0] == n_samples
+    n_samples = (
+        torch.where(positive)[0].shape[0] +
+        torch.where(negative)[0].shape[0]
+    )
+
+    assert y_pred_.shape[0] == n_samples
+    assert y_true_.shape[0] == n_samples
+    assert anchors_.shape[0] == n_samples

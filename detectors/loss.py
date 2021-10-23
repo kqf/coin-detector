@@ -22,8 +22,8 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=False):
     anchor_neg = anchor[torch.where(negatives)]
 
     # Zero is a background
-    y_true_neg = torch.zeros_like(y_pred_neg.sum(-1))
-
+    y_true_neg = torch.zeros_like(y_pred_neg)
+  
     y_pred_tot = torch.cat([y_pred_pos, y_pred_neg], dim=0)
     anchor_tot = torch.cat([anchor_pos, anchor_neg], dim=0)
     y_true_tot = torch.cat([y_true_pos, y_true_neg], dim=0).long()
