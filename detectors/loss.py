@@ -9,8 +9,8 @@ def default_losses():
     return losses
 
 
-def select(y_pred, y_true, anchor, pos_idx, neg_idx, use_negatives=False):
-    batch_, anchor_, obj_ = torch.where(pos_idx)
+def select(y_pred, y_true, anchor, positives, negatives, use_negatives=False):
+    batch_, anchor_, obj_ = torch.where(positives)
     y_pred_pos = y_pred[batch_, anchor_]
     y_true_pos = y_true[batch_, obj_]
     anchor_pos = anchor[batch_, anchor_]
@@ -18,8 +18,8 @@ def select(y_pred, y_true, anchor, pos_idx, neg_idx, use_negatives=False):
     if not use_negatives:
         return y_true_pos, y_pred_pos, anchor_pos
 
-    y_pred_neg = y_pred[torch.where(neg_idx)]
-    anchor_neg = anchor[torch.where(neg_idx)]
+    y_pred_neg = y_pred[torch.where(negatives)]
+    anchor_neg = anchor[torch.where(negatives)]
 
     # Zero is a background
     y_true_neg = torch.zeros_like(y_pred_neg.sum(-1))
