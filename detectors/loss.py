@@ -59,7 +59,8 @@ class DetectionLoss(torch.nn.Module):
             losses.append(
                 subloss(
                     preds[name][:, :, None],
-                    y[name][:, None]
+                    y[name][:, None],
+                    anchors,
                 )
             )
         return torch.stack(losses).sum()
