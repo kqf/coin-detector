@@ -2,6 +2,9 @@ import torch
 
 from typing import Callable
 from dataclasses import dataclass
+from functools import partial
+
+from detectors.matching import match
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=False):
@@ -52,15 +55,24 @@ class DetectionLoss(torch.nn.Module):
         self.sublosses = sublosses or default_losses()
 
     def forward(self, y_pred, y):
-        preds, _ = y_pred
+        preds, anchors = y_pred
+        # Bind targets with anchors
+        positives, negatives = match(y["boxes"], y["classes"] > -1, anchors)
+
+        # fselect -- selects only matched positives / negatives
+        fselect = partial(select, positives=positives, negatives=negatives)
         losses = []
         for name, subloss in self.sublosses.items():
-            # y_pred[batch, n_detections, dim1], y[batch, n_objects, dim2]
-            losses.append(
-                subloss(
-                    preds[name][:, :, None],
-                    y[name][:, None],
-                    None,
-                )
-            )
+            # fselect(
+            #   y_pred[batch, n_detections, dim1],
+            #   y_true[batch, n_objects, dim2],
+            #   anchor[batch, n_detections, 4],
+            # )
+            # ~> y_pred_[n_samples, dim1]
+            # ~> y_true_[n_samples, dim2]
+            # ~> anchor_[n_samples, dim2]
+
+            y_pred_, y_true_, anchor_ = fselect(preds[name], y[name], anchors)
+
+            losses.append(subloss(y_pred_, y_true_, anchor_))
         return torch.stack(losses).sum()
