@@ -37,3 +37,7 @@ class DummyDetector(torch.nn.Module):
 
         _, _, *image_shape = x.shape
         return outputs, self.anchors(image_shape, [latent])
+
+    def to(self, device):
+        self.anchors.to(device)
+        return super().to(device)
