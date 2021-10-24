@@ -4,14 +4,6 @@ from typing import Callable
 from dataclasses import dataclass
 
 
-def default_losses():
-    losses = {
-        "boxes": torch.nn.MSELoss(),
-        "classes": torch.nn.CrossEntropyLoss(),
-    }
-    return losses
-
-
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=False):
     batch_, anchor_, obj_ = torch.where(positives)
     y_pred_pos = y_pred[batch_, anchor_]
@@ -44,6 +36,14 @@ class WeightedLoss:
         y_pred_encoded = self.enc_pred(y_pred, anchors)
         y_true_encoded = self.enc_true(y_true, anchors)
         return self.weight * self.loss(y_pred_encoded, y_true_encoded)
+
+
+def default_losses():
+    losses = {
+        "boxes": WeightedLoss(torch.nn.MSELoss()),
+        "classes": WeightedLoss(torch.nn.CrossEntropyLoss()),
+    }
+    return losses
 
 
 class DetectionLoss(torch.nn.Module):
