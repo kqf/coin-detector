@@ -37,6 +37,7 @@ class WeightedLoss:
     weight: float = 1.
     enc_pred: Callable = lambda x, _: x
     enc_true: Callable = lambda x, _: x
+    needs_negatives: bool = True
 
     def __call__(self, y_pred, y_true, anchors):
         y_pred_encoded = self.enc_pred(y_pred, anchors)
@@ -78,7 +79,10 @@ class DetectionLoss(torch.nn.Module):
             # ~> y_true_[n_samples, dim2]
             # ~> anchor_[n_samples, 4]
 
-            y_pred_, y_true_, anchor_ = fselect(preds[name], y[name], anchors)
+            y_pred_, y_true_, anchor_ = fselect(
+                preds[name], y[name], anchors,
+                use_negatives=subloss.needs_negatives
+            )
 
             losses.append(subloss(y_pred_, y_true_, anchor_))
 
