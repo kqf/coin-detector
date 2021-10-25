@@ -31,6 +31,15 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     return y_pred_tot, y_true_tot, anchor_tot
 
 
+def to_cchw(x):
+    cchw = torch.tensor(x.detach())
+    cchw[..., 0] = x[..., 0] - x[..., 2] / 2
+    cchw[..., 1] = x[..., 1] - x[..., 3] / 2
+    cchw[..., 2] = x[..., 0] + x[..., 2] / 2
+    cchw[..., 3] = x[..., 1] + x[..., 3] / 2
+    return cchw
+
+
 @dataclass
 class WeightedLoss:
     loss: torch.nn.Module
@@ -62,8 +71,10 @@ class DetectionLoss(torch.nn.Module):
         self.sublosses = sublosses or default_losses()
 
     def forward(self, y_pred, y):
-        preds, anchors = y_pred
+        preds, anchors_raw = y_pred
         # Bind targets with anchors
+
+        anchors = to_cchw(anchors_raw[..., 2:])
         positives, negatives = match(y["boxes"], y["classes"] > -1, anchors)
 
         # fselect -- selects only matched positives / negatives
