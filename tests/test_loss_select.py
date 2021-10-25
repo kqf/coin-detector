@@ -37,7 +37,7 @@ def negative(batch_size, n_anchors):
 @pytest.mark.parametrize("n_anchors", [144])
 def test_selects_samples(y_pred, y_true, anchors, positive, negative):
     y_pred_, y_true_, anchors_ = select(
-        y_pred, y_true, anchors, positive, positive
+        y_pred, y_true, anchors, positive, negative, use_negatives=False
     )
 
     n_samples = torch.where(positive)[0].shape[0]
