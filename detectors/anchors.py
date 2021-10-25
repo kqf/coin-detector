@@ -55,7 +55,7 @@ class AnchorBoxes(torch.nn.Module):
                 )
 
                 # create a lookup for which anchor comes from which layer
-                idx_tensor = torch.ones(layer_shape) * idx
+                idx_tensor = torch.ones(layer_shape, device=self.device) * idx
 
                 # outs[layer_h, layer_w, 6]
                 outs = torch.stack(
