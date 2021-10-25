@@ -31,6 +31,15 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     return y_pred_tot, y_true_tot, anchor_tot
 
 
+def to_cchw(x):
+    cchw = torch.tensor(x.detach())
+    cchw[..., 0] = x[..., 0] - x[..., 2] / 2
+    cchw[..., 1] = x[..., 1] - x[..., 3] / 2
+    cchw[..., 2] = x[..., 0] + x[..., 2] / 2
+    cchw[..., 3] = x[..., 1] + x[..., 3] / 2
+    return cchw
+
+
 @dataclass
 class WeightedLoss:
     loss: torch.nn.Module
