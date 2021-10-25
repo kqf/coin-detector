@@ -41,7 +41,6 @@ class WeightedLoss:
     def __call__(self, y_pred, y_true, anchors):
         y_pred_encoded = self.enc_pred(y_pred, anchors)
         y_true_encoded = self.enc_true(y_true, anchors)
-        import ipdb; ipdb.set_trace(); import IPython; IPython.embed()  # noqa
         return self.weight * self.loss(y_pred_encoded, y_true_encoded)
 
 
@@ -50,7 +49,7 @@ def default_losses():
         "boxes": WeightedLoss(torch.nn.MSELoss()),
         "classes": WeightedLoss(
             torch.nn.CrossEntropyLoss(),
-            enc_true=lambda y, _: y.reshape(-1)
+            enc_true=lambda y, _: y.reshape(-1).long()
         ),
     }
     return losses
@@ -81,6 +80,6 @@ class DetectionLoss(torch.nn.Module):
 
             y_pred_, y_true_, anchor_ = fselect(preds[name], y[name], anchors)
 
-            losses.append(subloss(y_pred_, y_true_.long(), anchor_))
+            losses.append(subloss(y_pred_, y_true_, anchor_))
 
         return torch.stack(losses).sum()
