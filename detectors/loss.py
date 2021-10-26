@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from functools import partial
 
 from detectors.matching import match
+from detectors.encode import to_cchw
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -29,15 +30,6 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     anchor_tot = torch.cat([anchor_pos, anchor_neg], dim=0)
     y_true_tot = torch.squeeze(torch.cat([y_true_pos, y_true_neg], dim=0))
     return y_pred_tot, y_true_tot, anchor_tot
-
-
-def to_cchw(x):
-    cchw = x.clone().detach()
-    cchw[..., 0] = x[..., 0] - x[..., 2] / 2
-    cchw[..., 1] = x[..., 1] - x[..., 3] / 2
-    cchw[..., 2] = x[..., 0] + x[..., 2] / 2
-    cchw[..., 3] = x[..., 1] + x[..., 3] / 2
-    return cchw
 
 
 @dataclass
