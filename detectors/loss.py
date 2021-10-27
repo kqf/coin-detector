@@ -71,7 +71,6 @@ class DetectionLoss(torch.nn.Module):
 
         anchors = to_cchw(anchors_raw[..., 2:])
         positives, negatives = match(y["boxes"], y["classes"] < 0, anchors)
-        import ipdb; ipdb.set_trace(); import IPython; IPython.embed()  # noqa
         print(torch.where(positives))
 
         # fselect -- selects only matched positives / negatives
