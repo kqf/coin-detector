@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from functools import partial
 
 from detectors.matching import match
-from detectors.encode import to_cchw
+from detectors.encode import to_cchw, encode
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -48,7 +48,10 @@ class WeightedLoss:
 
 def default_losses():
     losses = {
-        "boxes": WeightedLoss(torch.nn.MSELoss()),
+        "boxes": WeightedLoss(
+            torch.nn.MSELoss(),
+            enc_true=encode,
+        ),
         "classes": WeightedLoss(
             torch.nn.CrossEntropyLoss(),
             enc_true=lambda y, _: y.reshape(-1).long()
