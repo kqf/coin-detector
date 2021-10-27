@@ -64,10 +64,10 @@ def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
     df["w"] = width
 
     x1, y1, x2, y2 = df[['x_min', 'y_min', 'x_max', 'y_max']].values.T
-    df['x_center'] = (x1 + x2) / 2 / df["w"]
-    df['y_center'] = (y1 + y2) / 2 / df["h"]
-    df['width'] = (x2 - x1) / df["w"]
-    df['height'] = (y2 - y1) / df["h"]
+    df['x_center'] = (x1 + x2) / 2
+    df['y_center'] = (y1 + y2) / 2
+    df['width'] = (x2 - x1)
+    df['height'] = (y2 - y1)
     return df
 
 
