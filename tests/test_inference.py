@@ -83,11 +83,3 @@ def test_inferences(expected, batch, bsize):
         # Check if nms works
     for sample in predictions:
         nms(sample)
-
-
-@pytest.mark.parametrize("bsize", [4])
-def test_merged_scales(expected_batch, bsize=10):
-    merged = merge_scales([x.permute(0, 2, 3, 4, 1)
-                           for x in expected_batch])
-    img = torch.ones(3, 460, 460)
-    plot((img, [x[1:6] for x in merged[0]], []), convert_bbox=True)
