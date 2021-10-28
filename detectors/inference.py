@@ -82,22 +82,3 @@ def nms(bboxes, threshold=0.5, min_iou=0.5, top_n=None):
     noise = same_object * not_maximum * (ious > min_iou).squeeze(-1)
     suppressed = (~noise).all(0)
     return x[suppressed, 1:]
-
-
-def no_nms(bboxes, threshold=0.5, min_iou=0.5, top_n=None):
-
-    # plt.hist(bboxes[:, 0])
-    # plt.xlabel("objectness")
-    # plt.show()
-    # plt.savefig("last-objectness.png")
-
-    print(bboxes[:, 0].max())
-
-    # Filter the noisy outputs
-    bboxes = bboxes[bboxes[:, 0] > threshold]
-
-    if top_n is not None:
-        positive = (-bboxes[:, 0]).argsort()[:top_n]
-
-    # print("The top thresholds are:", bboxes[positive, 0])
-    return bboxes[positive, 1:]
