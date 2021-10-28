@@ -2,7 +2,7 @@ import torch
 import pytest
 
 from detectors.inference import infer, nms, merge_scales
-from detectors.dataset import DEFAULT_ANCHORS
+from detectors.anchors import DEFAULT_ANCHORS
 
 
 @pytest.fixture
