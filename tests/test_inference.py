@@ -4,6 +4,11 @@ from detectors.inference import infer, nms
 from detectors.anchors import DEFAULT_ANCHORS
 
 
+@pytest.fixture
+def batch():
+    pass
+
+
 @pytest.mark.skip
 @pytest.mark.parametrize("bsize", [16])
 def test_inferences(expected, batch, bsize):
