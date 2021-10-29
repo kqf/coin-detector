@@ -1,4 +1,3 @@
-import torch
 import pytest
 
 from detectors.inference import infer, nms
