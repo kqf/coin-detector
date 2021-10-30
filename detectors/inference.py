@@ -19,7 +19,7 @@ def to_global(x):
 def nonlin(batch, anchor_boxes):
     predictions = []
 
-    for i, (pred, anchors) in enumerate(zip(batch, anchor_boxes)):
+    for _, (pred, anchors) in enumerate(zip(batch, anchor_boxes)):
         # [batch, scale, x, y, labels] -> [batch, x, y, scale, labels]
 
         # Copy don't mutate the original batch
