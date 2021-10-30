@@ -1,3 +1,4 @@
+import torch
 import pytest
 
 from detectors.inference import infer, nms
@@ -6,7 +7,13 @@ from detectors.anchors import DEFAULT_ANCHORS
 
 @pytest.fixture
 def batch():
-    pass
+    anchors = torch.ones(8, 144, 6)
+    x = {
+        "boxes": torch.ones(8, 144, 4),
+        "classes": torch.ones(8, 144, 2),
+    }
+    return x, anchors
+
 
 
 @pytest.mark.skip
