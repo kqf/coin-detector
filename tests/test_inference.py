@@ -15,7 +15,6 @@ def batch():
     return x, anchors
 
 
-
 @pytest.mark.skip
 @pytest.mark.parametrize("bsize", [16])
 def test_inferences(expected, batch, bsize):
