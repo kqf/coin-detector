@@ -1,7 +1,7 @@
 import torch
 
 
-def to_cchw(cchw):
+def to_coords(cchw):
     x = cchw.clone().detach()
     # center - width / 2 = x0
     x[..., 0] = x[..., 0] - x[..., 2] / 2.
