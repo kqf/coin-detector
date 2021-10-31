@@ -9,7 +9,7 @@ from detectors.encode import to_coords, encode
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
-    batch_, anchor_, obj_ = torch.where(positives)
+    batch_, obj_, anchor_ = torch.where(positives)
     y_pred_pos = y_pred[batch_, anchor_]
     y_true_pos = y_true[batch_, obj_]
     anchor_pos = anchor[batch_, anchor_]
@@ -72,7 +72,6 @@ class DetectionLoss(torch.nn.Module):
         anchors = to_coords(anchors_raw[..., 2:])
         boxes = to_coords(y["boxes"])
         positives, negatives = match(boxes, y["classes"] < 0, anchors)
-        print(torch.where(positives))
 
         # fselect -- selects only matched positives / negatives
         fselect = partial(select, positives=positives, negatives=negatives)
