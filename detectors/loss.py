@@ -20,6 +20,7 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     y_pred_neg = y_pred[torch.where(negatives)]
     anchor_neg = anchor[torch.where(negatives)]
 
+
     # Zero is a background
     y_true_neg_shape = [y_pred_neg.shape[0]]
     if len(y_true_pos.shape) > 1:
@@ -92,6 +93,6 @@ class DetectionLoss(torch.nn.Module):
             )
 
             losses.append(subloss(y_pred_, y_true_, anchor_))
-            print(losses[-1])
+            # print(name, y_pred_, y_true_, losses[-1])
 
         return torch.stack(losses).sum()
