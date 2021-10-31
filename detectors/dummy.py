@@ -25,7 +25,7 @@ def default_heads(n_classes, kernel_size=1):
 
 
 class DummyDetector(torch.nn.Module):
-    def __init__(self, heads=None, n_classes=2, kernel_size=6):
+    def __init__(self, heads=None, n_classes=2, kernel_size=5):
         super().__init__()
         self.backbone = torch.nn.AdaptiveAvgPool2d(kernel_size)
         self.heads = heads or default_heads(n_classes)
