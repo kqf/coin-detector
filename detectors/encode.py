@@ -1,13 +1,16 @@
 import torch
 
 
-def to_cchw(x):
-    cchw = x.clone().detach()
-    # cchw[..., 0] = x[..., 0] - x[..., 2] / 2.
-    # cchw[..., 1] = x[..., 1] - x[..., 3] / 2.
-    # cchw[..., 2] = x[..., 0] + x[..., 2] / 2.
-    # cchw[..., 3] = x[..., 1] + x[..., 3] / 2.
-    return cchw
+def to_cchw(cchw):
+    x = cchw.clone().detach()
+    # center - width / 2 = x0
+    x[..., 0] = x[..., 0] - x[..., 2] / 2.
+    x[..., 1] = x[..., 1] - x[..., 3] / 2.
+
+    # center + width / 2 = x1
+    x[..., 2] = x[..., 0] + x[..., 2] / 2.
+    x[..., 3] = x[..., 1] + x[..., 3] / 2.
+    return x
 
 
 def encode(boxes, anchors):
