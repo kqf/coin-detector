@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from functools import partial
 
 from detectors.matching import match
-from detectors.encode import to_cchw, encode
+from detectors.encode import to_coords, encode
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -69,8 +69,9 @@ class DetectionLoss(torch.nn.Module):
         preds, anchors_raw = y_pred
         # Bind targets with anchors
 
-        anchors = to_cchw(anchors_raw[..., 2:])
-        positives, negatives = match(y["boxes"], y["classes"] < 0, anchors)
+        anchors = to_coords(anchors_raw[..., 2:])
+        boxes = to_coords(y["boxes"])
+        positives, negatives = match(boxes, y["classes"] < 0, anchors)
         print(torch.where(positives))
 
         # fselect -- selects only matched positives / negatives
