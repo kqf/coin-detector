@@ -18,7 +18,8 @@ def default_heads(n_classes, kernel_size=1):
             ),
         "classes":
             torch.nn.Sequential(
-                torch.nn.Conv2d(3, n_classes, kernel_size),
+                # Always +1 class, for background
+                torch.nn.Conv2d(3, n_classes + 1, kernel_size),
                 SqueezeCells(),
             ),
     })
