@@ -14,12 +14,9 @@ def to_coords(cchw):
 
 
 def encode(boxes, anchors):
-    x0y0 = boxes[..., :2]
-    x1y1 = boxes[..., 2:]
-
     # Convert to cchw
-    wh = x1y1 - x0y0
-    cc = x0y0 + wh / 2.
+    wh = boxes[..., 2:]
+    cc = boxes[..., :2]
 
     # Apply nonlinearity
     encoded_cc = (cc - anchors[:, 0:2]) / anchors[:, 2:4]

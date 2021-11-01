@@ -20,7 +20,6 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     y_pred_neg = y_pred[torch.where(negatives)]
     anchor_neg = anchor[torch.where(negatives)]
 
-
     # Zero is a background
     y_true_neg_shape = [y_pred_neg.shape[0]]
     if len(y_true_pos.shape) > 1:
