@@ -87,7 +87,7 @@ class DetectionLoss(torch.nn.Module):
             # ~> anchor_[n_samples, 4]
 
             y_pred_, y_true_, anchor_ = fselect(
-                preds[name], y[name], anchors,
+                preds[name], y[name], anchors_raw[..., 2:],
                 use_negatives=subloss.needs_negatives
             )
 
