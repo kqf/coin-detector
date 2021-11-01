@@ -66,12 +66,14 @@ class DetectionLoss(torch.nn.Module):
         self.sublosses = sublosses or default_losses()
 
     def forward(self, y_pred, y):
-        preds, anchors_raw = y_pred
+        preds, anchors = y_pred
         # Bind targets with anchors
 
-        anchors = to_coords(anchors_raw[..., 2:])
-        boxes = to_coords(y["boxes"])
-        positives, negatives = match(boxes, y["classes"] < 0, anchors)
+        positives, negatives = match(
+            to_coords(y["boxes"]),
+            y["classes"] < 0,
+            to_coords(anchors)
+        )
 
         # fselect -- selects only matched positives / negatives
         fselect = partial(select, positives=positives, negatives=negatives)
@@ -87,7 +89,7 @@ class DetectionLoss(torch.nn.Module):
             # ~> anchor_[n_samples, 4]
 
             y_pred_, y_true_, anchor_ = fselect(
-                preds[name], y[name], anchors_raw[..., 2:],
+                preds[name], y[name], anchors[..., 2:],
                 use_negatives=subloss.needs_negatives
             )
 
