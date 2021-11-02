@@ -15,6 +15,9 @@ def to_coords(cchw):
 
 def encode(boxes, anchors):
     # Convert to cchw
+    # wh = x1y1 - x0y0
+    # cc = x0y0 + wh / 2.
+
     wh = boxes[..., 2:]
     cc = boxes[..., :2]
 
@@ -35,8 +38,9 @@ def decode(boxes, anchors):
     wh = torch.exp(encoded_wh) * anchors[..., 2:]
 
     # Convert to 0011
-    x0y0 = cc - wh / 2.
-    x1y1 = x0y0 + wh
+    # x0y0 = cc - wh / 2.
+    # x1y1 = x0y0 + wh
+    # decoded = torch.cat([x0y0, x1y1], dim=-1)
 
-    decoded = torch.cat([x0y0, x1y1], dim=-1)
+    decoded = torch.cat([cc, wh], dim=-1)
     return decoded
