@@ -15,6 +15,9 @@ def to_coords(cchw):
 
 def encode(boxes, anchors):
     # Convert to cchw
+    # wh = x1y1 - x0y0
+    # cc = x0y0 + wh / 2.
+
     wh = boxes[..., 2:]
     cc = boxes[..., :2]
 
