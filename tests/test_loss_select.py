@@ -21,7 +21,7 @@ def anchors(batch_size, n_anchors):
 
 @pytest.fixture
 def positive(batch_size, n_anchors, n_targets):
-    matched = torch.empty(batch_size, n_anchors, n_targets).uniform_(0, 1)
+    matched = torch.empty(batch_size, n_targets, n_anchors).uniform_(0, 1)
     return matched > 0.5
 
 
