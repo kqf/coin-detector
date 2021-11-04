@@ -2,20 +2,6 @@ import torch
 from detectors.iou import iou
 
 
-def to_global(x):
-    # x[batch, scale, x_cells, y_cells, 6]
-    n_cells = x.shape[2]
-
-    cells = torch.arange(n_cells).to(x.device)
-
-    x_cells = cells.reshape(1, 1, n_cells, 1, 1)
-    y_cells = cells.reshape(1, 1, 1, n_cells, 1)
-
-    x[..., 1:2] = (x[..., 1:2] + x_cells) / n_cells
-    x[..., 2:3] = (x[..., 2:3] + y_cells) / n_cells
-    return x
-
-
 def nonlin(batch, anchor_boxes):
     predictions = []
 
@@ -33,31 +19,18 @@ def nonlin(batch, anchor_boxes):
         prediction[..., 3:5] = torch.exp(pred[..., 3:5]) * aa
 
         prediction[..., 5] = torch.argmax(pred[..., 5:], dim=-1)
-
-        final = to_global(prediction)
-        predictions.append(final)
+        predictions.append(prediction)
 
     return predictions
 
 
-def merge_scales(predictions):
-    # Flatten along the batch dimension
-    flat = []
-    for scale in predictions:
-        flat.append([x.reshape(-1, x.shape[-1]) for x in scale])
-
-    # The results along the batch dimension
-    return [torch.cat(x) for x in zip(*flat)]
-
-
 def infer(batch, anchor_boxes, top_n, min_iou, threshold):
     predictions = nonlin(batch, anchor_boxes)
-    merged = merge_scales(predictions)
 
     # Run over all samples in the dataset
     supressed = [
         nms(sample, top_n=top_n, min_iou=min_iou, threshold=threshold)
-        for sample in merged
+        for sample in predictions
     ]
 
     return supressed
