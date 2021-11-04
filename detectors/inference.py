@@ -24,24 +24,13 @@ def nonlin(batch, anchor_boxes):
     return predictions
 
 
-def merge_scales(predictions):
-    # Flatten along the batch dimension
-    flat = []
-    for scale in predictions:
-        flat.append([x.reshape(-1, x.shape[-1]) for x in scale])
-
-    # The results along the batch dimension
-    return [torch.cat(x) for x in zip(*flat)]
-
-
 def infer(batch, anchor_boxes, top_n, min_iou, threshold):
     predictions = nonlin(batch, anchor_boxes)
-    merged = merge_scales(predictions)
 
     # Run over all samples in the dataset
     supressed = [
         nms(sample, top_n=top_n, min_iou=min_iou, threshold=threshold)
-        for sample in merged
+        for sample in predictions
     ]
 
     return supressed
