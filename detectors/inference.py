@@ -2,20 +2,6 @@ import torch
 from detectors.iou import iou
 
 
-def to_global(x):
-    # x[batch, scale, x_cells, y_cells, 6]
-    n_cells = x.shape[2]
-
-    cells = torch.arange(n_cells).to(x.device)
-
-    x_cells = cells.reshape(1, 1, n_cells, 1, 1)
-    y_cells = cells.reshape(1, 1, 1, n_cells, 1)
-
-    x[..., 1:2] = (x[..., 1:2] + x_cells) / n_cells
-    x[..., 2:3] = (x[..., 2:3] + y_cells) / n_cells
-    return x
-
-
 def nonlin(batch, anchor_boxes):
     predictions = []
 
@@ -33,9 +19,7 @@ def nonlin(batch, anchor_boxes):
         prediction[..., 3:5] = torch.exp(pred[..., 3:5]) * aa
 
         prediction[..., 5] = torch.argmax(pred[..., 5:], dim=-1)
-
-        final = to_global(prediction)
-        predictions.append(final)
+        predictions.append(prediction)
 
     return predictions
 
