@@ -51,6 +51,7 @@ def default_losses():
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
             enc_true=encode,
+            weight=0,
         ),
         "classes": WeightedLoss(
             torch.nn.CrossEntropyLoss(),
@@ -94,6 +95,6 @@ class DetectionLoss(torch.nn.Module):
             )
 
             losses.append(subloss(y_pred_, y_true_, anchor_))
-            # print(name, y_pred_, y_true_, losses[-1])
+            # print(name, torch.softmax(y_pred_, dim=-1), y_true_, losses[-1])
 
         return torch.stack(losses).sum()
