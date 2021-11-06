@@ -1,4 +1,5 @@
 import torch
+from torchvision import models
 
 from detectors.anchors import AnchorBoxes
 
@@ -9,17 +10,17 @@ class SqueezeCells(torch.nn.Module):
         return x.view(batch, -1, channel)
 
 
-def default_heads(n_classes, kernel_size=1):
+def default_heads(n_classes, channels, kernel_size=1):
     return torch.nn.ModuleDict({
         "boxes":
             torch.nn.Sequential(
-                torch.nn.Conv2d(3, 4, kernel_size),
+                torch.nn.Conv2d(channels, 4, kernel_size),
                 SqueezeCells(),
             ),
         "classes":
             torch.nn.Sequential(
                 # Always +1 class, for background
-                torch.nn.Conv2d(3, n_classes + 1, kernel_size),
+                torch.nn.Conv2d(channels, n_classes + 1, kernel_size),
                 SqueezeCells(),
             ),
     })
@@ -28,8 +29,12 @@ def default_heads(n_classes, kernel_size=1):
 class DummyDetector(torch.nn.Module):
     def __init__(self, heads=None, n_classes=2, kernel_size=5):
         super().__init__()
-        self.backbone = torch.nn.AdaptiveAvgPool2d(kernel_size)
-        self.heads = heads or default_heads(n_classes)
+        self.backbone = torch.nn.Sequential(
+            models.vgg11_bn().features,
+            torch.nn.AdaptiveAvgPool2d(kernel_size),
+        )
+
+        self.heads = heads or default_heads(n_classes, channels=512)
         self.anchors = AnchorBoxes()
 
     def forward(self, x):
