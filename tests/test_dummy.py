@@ -6,7 +6,7 @@ from detectors.anchors import DEFAULT_ANCHORS
 
 @pytest.fixture
 def batch(batch_size=16):
-    return torch.zeros(batch_size, 3, 28, 28)
+    return torch.zeros(batch_size, 3, 32, 32)
 
 
 def test_dummy(batch, kernel_size=6):
