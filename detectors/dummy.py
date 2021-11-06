@@ -30,6 +30,7 @@ class DummyDetector(torch.nn.Module):
     def __init__(self, heads=None, n_classes=2, kernel_size=5):
         super().__init__()
         self.backbone = models.resnet18()
+        self.backbone.fc = torch.nn.Identity()
         self.heads = heads or default_heads(n_classes)
         self.anchors = AnchorBoxes()
 
