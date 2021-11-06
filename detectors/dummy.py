@@ -31,7 +31,6 @@ class DummyDetector(torch.nn.Module):
         self.backbone = torch.nn.AdaptiveAvgPool2d(kernel_size)
         self.hidden = torch.nn.Sequential(
             torch.nn.Linear(kernel_size, 100),
-            torch.nn.Linear(100, kernel_size),
         )
         self.heads = heads or default_heads(n_classes)
         self.anchors = AnchorBoxes()
