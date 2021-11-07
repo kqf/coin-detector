@@ -5,6 +5,7 @@ numpy
 pandas
 opencv-python
 torch
+torchvision
 skorch
 matplotlib
 albumentations

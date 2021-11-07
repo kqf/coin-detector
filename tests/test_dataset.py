@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from detectors.dataset import DetectionDataset
 
 
@@ -10,3 +11,7 @@ def test_dataset(fake_dataset):
         assert len(image.shape) == 3
         assert len(labels["boxes"].shape) == 2
         assert len(labels["classes"].shape) == 1
+
+    for image, labels in data:
+        plt.imshow(image.transpose(1, 2, 0))
+        plt.show()

@@ -8,3 +8,4 @@ def test_generates():
 
     img = blob2image(blob)
     plt.imshow(img)
+    plt.show()
