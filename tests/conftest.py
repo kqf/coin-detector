@@ -38,7 +38,7 @@ def to_image_path(path, x, extension=".png"):
 
 
 @pytest.fixture
-def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
+def annotations(fixed_seed, tmp_path, width=400, num_classes=3, n_samples=8):
     """
                                image_id          class_name  class_id rad_id   x_min   y_min   x_max   y_max
     0  50a418190bc3fb1ef1633bf9678929b3          No finding        14    R11     NaN     NaN     NaN     NaN
@@ -60,15 +60,15 @@ def annotations(fixed_seed, tmp_path, width=2000, num_classes=3, n_samples=8):
         lambda x: to_image_path(tmp_path, str(x))
     )
 
-    df.loc[:n_images // 2 - 1, 'x_min'] = 400.0 * shift
-    df.loc[:n_images // 2 - 1, 'x_max'] = 400.0 * shift + width / 5.
-    df.loc[:n_images // 2 - 1, 'y_min'] = 800.0 * shift
-    df.loc[:n_images // 2 - 1, 'y_max'] = 800.0 * shift + width / 5.
+    df.loc[:n_images // 2 - 1, 'x_min'] = 80.0 * shift
+    df.loc[:n_images // 2 - 1, 'x_max'] = 80.0 * shift + width / 5.
+    df.loc[:n_images // 2 - 1, 'y_min'] = 160.0 * shift
+    df.loc[:n_images // 2 - 1, 'y_max'] = 160.0 * shift + width / 5.
 
-    df.loc[n_images // 2:, 'x_min'] = 800.0 * shift
-    df.loc[n_images // 2:, 'x_max'] = 800.0 * shift + width / 5.
-    df.loc[n_images // 2:, 'y_min'] = 400.0 * shift
-    df.loc[n_images // 2:, 'y_max'] = 400.0 * shift + width / 5.
+    df.loc[n_images // 2:, 'x_min'] = 160.0 * shift
+    df.loc[n_images // 2:, 'x_max'] = 160.0 * shift + width / 5.
+    df.loc[n_images // 2:, 'y_min'] = 80.0 * shift
+    df.loc[n_images // 2:, 'y_max'] = 80.0 * shift + width / 5.
 
     df["h"] = width
     df["w"] = width
