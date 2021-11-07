@@ -4,6 +4,7 @@
 *.txt
 
 # Tools
+.DS_Store
 .python-version
 .vscode
 *-workspace*
