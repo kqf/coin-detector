@@ -30,7 +30,7 @@ class DummyDetector(torch.nn.Module):
     def __init__(self, heads=None, n_classes=2, kernel_size=5):
         super().__init__()
         self.backbone = torch.nn.Sequential(
-            models.vgg11_bn().features,
+            models.vgg11_bn(pretrained=True).features,
             torch.nn.AdaptiveAvgPool2d(kernel_size),
         )
 
