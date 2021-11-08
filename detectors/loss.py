@@ -38,7 +38,7 @@ class WeightedLoss:
     weight: float = 1.
     enc_pred: Callable = lambda x, _: x
     enc_true: Callable = lambda x, _: x
-    needs_negatives: bool = True
+    needs_negatives: bool = False
 
     def __call__(self, y_pred, y_true, anchors):
         y_pred_encoded = self.enc_pred(y_pred, anchors)
@@ -52,11 +52,12 @@ def default_losses():
             torch.nn.MSELoss(),
             enc_true=encode,
         ),
-        "classes": WeightedLoss(
-            torch.nn.CrossEntropyLoss(),
-            enc_true=lambda y, _: y.reshape(-1).long(),
-            weight=0,
-        ),
+        # "classes": WeightedLoss(
+        #     torch.nn.CrossEntropyLoss(),
+        #     enc_true=lambda y, _: y.reshape(-1).long(),
+        #     weight=0,
+        #     needs_negatives=True,
+        # ),
     }
     return losses
 
