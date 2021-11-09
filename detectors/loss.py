@@ -15,7 +15,7 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     anchor_pos = anchor[batch_, anchor_]
 
     if not use_negatives:
-        return y_true_pos, y_pred_pos, anchor_pos
+        return y_pred_pos, y_true_pos, anchor_pos
 
     y_pred_neg = y_pred[torch.where(negatives)]
     anchor_neg = anchor[torch.where(negatives)]
