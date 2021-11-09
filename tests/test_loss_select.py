@@ -6,17 +6,17 @@ from detectors.loss import select
 
 @pytest.fixture
 def y_pred(batch_size, n_anchors, n_outputs):
-    return torch.ones((batch_size, n_anchors, n_outputs))
+    return torch.zeros((batch_size, n_anchors, n_outputs)) + 1
 
 
 @pytest.fixture
 def y_true(batch_size, n_targets, n_outputs):
-    return torch.ones((batch_size, n_targets, n_outputs))
+    return torch.zeros((batch_size, n_targets, n_outputs)) + 2
 
 
 @pytest.fixture
 def anchors(batch_size, n_anchors):
-    return torch.ones((batch_size, n_anchors))
+    return torch.zeros((batch_size, n_anchors)) + 3
 
 
 @pytest.fixture
@@ -45,6 +45,10 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative):
     assert y_true_.shape[0] == n_samples
     assert anchors_.shape[0] == n_samples
 
+    assert torch.all(y_pred_ == 1)
+    assert torch.all(y_true_ == 2)
+    assert torch.all(anchors_ == 3)
+
     y_pred_, y_true_, anchors_ = select(
         y_pred, y_true, anchors, positive, negative, use_negatives=True
     )
@@ -57,3 +61,7 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative):
     assert y_pred_.shape[0] == n_samples
     assert y_true_.shape[0] == n_samples
     assert anchors_.shape[0] == n_samples
+
+    assert torch.all(y_pred_ == 1)
+    assert torch.all(y_true_ <= 2)
+    assert torch.all(anchors_ == 3)
