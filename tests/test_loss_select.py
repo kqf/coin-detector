@@ -36,20 +36,20 @@ def negative(batch_size, n_anchors):
 @pytest.mark.parametrize("n_targets", [10])
 @pytest.mark.parametrize("n_anchors", [144])
 def test_selects_samples(y_pred, y_true, anchors, positive, negative):
-    y_pred_, y_true_, anchors_ = select(
+    y_pred_, y_true_, anchor_ = select(
         y_pred, y_true, anchors, positive, negative, use_negatives=False
     )
 
     n_samples = torch.where(positive)[0].shape[0]
     assert y_pred_.shape[0] == n_samples
     assert y_true_.shape[0] == n_samples
-    assert anchors_.shape[0] == n_samples
+    assert anchor_.shape[0] == n_samples
 
     assert torch.all(y_pred_ == 1)
     assert torch.all(y_true_ == 2)
-    assert torch.all(anchors_ == 3)
+    assert torch.all(anchor_ == 3)
 
-    y_pred_, y_true_, anchors_ = select(
+    y_pred_, y_true_, anchor_ = select(
         y_pred, y_true, anchors, positive, negative, use_negatives=True
     )
 
@@ -60,8 +60,8 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative):
 
     assert y_pred_.shape[0] == n_samples
     assert y_true_.shape[0] == n_samples
-    assert anchors_.shape[0] == n_samples
+    assert anchor_.shape[0] == n_samples
 
     assert torch.all(y_pred_ == 1)
     assert torch.all(y_true_ <= 2)
-    assert torch.all(anchors_ == 3)
+    assert torch.all(anchor_ == 3)
