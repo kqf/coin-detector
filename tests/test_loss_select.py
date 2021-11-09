@@ -33,7 +33,7 @@ def negative(batch_size, n_anchors):
 
 def total_len(use_neg, positive, negative):
     n_pos = torch.where(positive)[0].shape[0]
-    if use_neg:
+    if not use_neg:
         return n_pos
     n_neg = torch.where(negative)[0].shape[0]
     return n_pos + n_neg
