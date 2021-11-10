@@ -28,9 +28,9 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     scheduler = skorch.callbacks.LRScheduler(
         policy=torch.optim.lr_scheduler.CyclicLR,
         base_lr=base_lr,
-        max_lr=0.004,
-        step_size_up=batch_size * 10,
-        step_size_down=batch_size * 40,
+        max_lr=0.001,
+        step_size_up=batch_size * 4,
+        step_size_down=batch_size * 5,
         step_every='batch',
         mode="triangular2",
     )
