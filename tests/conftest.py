@@ -38,7 +38,7 @@ def to_image_path(path, x, extension=".png"):
 
 
 @pytest.fixture
-def annotations(fixed_seed, tmp_path, width=400, num_classes=3, n_samples=8):
+def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
     """
                                image_id          class_name  class_id rad_id   x_min   y_min   x_max   y_max
     0  50a418190bc3fb1ef1633bf9678929b3          No finding        14    R11     NaN     NaN     NaN     NaN
@@ -90,7 +90,7 @@ def fake_dataset(tmp_path, annotations, size=256, image_col="image_id"):
             blobs.append(make_blob(**row))
         blob = np.stack(blobs, axis=-1).any(-1)
 
-        img = blob2image(blob)
+        img = blob2image(blob, row["class_id"])
         ifile = f"{image_id}.png"
         cv2.imwrite(str(tmp_path / ifile), img)
     annotations.to_csv(tmp_path / "train.csv", index=False)
