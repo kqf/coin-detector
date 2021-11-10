@@ -24,7 +24,7 @@ def make_blob(
     return mask.sum(axis=-1).astype(np.uint8)
 
 
-def blob2image(blob, channels=3, epsilon=0.1):
+def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
     h, w = blob.shape
 
     extended = blob[..., None]
@@ -34,7 +34,7 @@ def blob2image(blob, channels=3, epsilon=0.1):
     noise = np.random.poisson(extended * epsilon, size=(h, w, channels))
 
     # Convet to image scale
-    return (extended + noise * 255).astype(np.uint8)
+    return (extended + class_id * noise * 255).astype(np.uint8)
 
 
 def annotations(n_points=32, h=2000, w=2000):
