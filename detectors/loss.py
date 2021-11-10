@@ -55,6 +55,7 @@ def default_losses():
         "classes": WeightedLoss(
             torch.nn.CrossEntropyLoss(),
             enc_true=lambda y, _: y.reshape(-1).long(),
+            weight=0.05,
             needs_negatives=True,
         ),
     }
