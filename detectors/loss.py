@@ -52,12 +52,12 @@ def default_losses():
             torch.nn.MSELoss(),
             enc_true=encode,
         ),
-        # "classes": WeightedLoss(
-        #     torch.nn.CrossEntropyLoss(),
-        #     enc_true=lambda y, _: y.reshape(-1).long(),
-        #     weight=0,
-        #     needs_negatives=True,
-        # ),
+        "classes": WeightedLoss(
+            torch.nn.CrossEntropyLoss(),
+            enc_true=lambda y, _: y.reshape(-1).long(),
+            weight=0.05,
+            needs_negatives=True,
+        ),
     }
     return losses
 
