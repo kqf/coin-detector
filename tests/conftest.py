@@ -88,7 +88,7 @@ def fake_dataset(tmp_path, annotations, size=256, image_col="image_id"):
         blobs = []
         for row in annotations.to_dict(orient="records"):
             blobs.append(make_blob(**row))
-        blob = np.stack(blobs, axis=-1).any(-1)
+        blob = np.stack(blobs, axis=0).sum(axis=0)
 
         img = blob2image(blob)
         ifile = f"{image_id}.png"
