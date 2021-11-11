@@ -46,7 +46,7 @@ def make_blob(
     noise = np.random.poisson(extended * epsilon, size=(h, w, channels))
 
     # Convet to image scale
-    return (extended + class_id * noise).astype(np.uint8)
+    return (extended + class_id * noise * 255.).astype(np.uint8)
 
 
 def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
