@@ -2,12 +2,12 @@ import numpy as np
 import pandas as pd
 
 
-def make_blob(
+def make_shape(
     x_min=50, y_min=50,
     x_max=90, y_max=90,
     h=2000, w=2000,
-    **kwargs
 ):
+
     Y, X = np.ogrid[:h, :w]
 
     w = (x_max - x_min)
@@ -24,7 +24,19 @@ def make_blob(
     return mask.sum(axis=-1).astype(np.uint8)
 
 
-def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
+def make_blob(
+    x_min=50,
+    y_min=50,
+    x_max=90,
+    y_max=90,
+    h=2000,
+    w=2000,
+    channels=3,
+    epsilon=0.1,
+    class_id=0,
+    **kwargs
+):
+    blob = make_shape(x_min, y_min, x_max, y_max, h, w)
     h, w = blob.shape
 
     extended = blob[..., None]
@@ -35,6 +47,10 @@ def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
 
     # Convet to image scale
     return (extended + class_id * noise * 255).astype(np.uint8)
+
+
+def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
+    return blob
 
 
 def annotations(n_points=32, h=2000, w=2000):
