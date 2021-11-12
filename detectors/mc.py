@@ -3,18 +3,13 @@ import pandas as pd
 
 
 def make_shape(
-    x_min=50, y_min=50,
-    x_max=90, y_max=90,
-    h=2000, w=2000,
+    cx=50,
+    cy=50,
+    h=90,
+    w=90,
+    shape=(2000, 2000),
 ):
-
-    Y, X = np.ogrid[:h, :w]
-
-    w = (x_max - x_min)
-    h = (y_max - y_min)
-
-    cx = x_min + w / 2.
-    cy = y_min + h / 2.
+    Y, X = np.ogrid[:shape[0], :shape[1]]
 
     xx = (X[..., None] - cx)
     yy = (Y[..., None] - cy)
@@ -25,10 +20,10 @@ def make_shape(
 
 
 def make_blob(
-    x_min=50,
-    y_min=50,
-    x_max=90,
-    y_max=90,
+    x_center=50,
+    y_center=50,
+    width=90,
+    height=90,
     h=2000,
     w=2000,
     channels=3,
@@ -36,7 +31,7 @@ def make_blob(
     class_id=0,
     **kwargs
 ):
-    blob = make_shape(x_min, y_min, x_max, y_max, h, w)
+    blob = make_shape(x_center, y_center, width, height, (h, w))
     h, w = blob.shape
 
     extended = blob[..., None]
