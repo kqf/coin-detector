@@ -41,11 +41,21 @@ def main():
     shape = (400, 400)
     img = np.zeros(shape)
 
-    bbox = [50, 50, 50, 80]
+    bbox = [50, 50, 80, 50]
     img = to_ellipse(img, *bbox)
+    box(*bbox)
 
-    bbox = [250, 250, 50, 80]
+    bbox = [350, 350, 50, 80]
     img = to_recatangle(img, *bbox)
+    box(*bbox)
+
+    bbox = [50, 350, 50, 80]
+    img = to_disc(img, *bbox)
+    box(*bbox)
+
+    bbox = [350, 50, 50, 80]
+    img = to_ellipse(img, *bbox)
+    box(*bbox)
 
     plt.imshow(img)
     box(*bbox)
