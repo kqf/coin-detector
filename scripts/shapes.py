@@ -37,24 +37,13 @@ def to_recatangle(img, cx, cy, w, h):
     return img
 
 
-def to_polygon(img, cx, cy, w, h):
-    # starts = (cy - h // 2, cx - w // 2)
-    # ends = (cy + h // 2, cx + w // 2)
+def to_polygon(img, cx, cy, w, h, n=3, rot=0):
+    i = np.arange(n)
 
-    starts = np.array([
-        cy - h // 2,
-        cy - h // 2,
-        cy + h // 2,
-        cy + h // 2,
-    ])
-    ends = np.array([
-        cx - w // 2,
-        cx + w // 2,
-        cx + w // 2,
-        cx - w // 2,
-    ])
+    rows = cy + h / 2 * np.cos(2 * np.pi * i / n + rot)
+    cols = cx + w / 2 * np.sin(2 * np.pi * i / n + rot)
 
-    rr, cc = polygon(starts, ends)
+    rr, cc = polygon(rows, cols, shape=img.shape)
     img[rr, cc] = 1
     return img
 
@@ -75,7 +64,7 @@ def main():
     img = to_disc(img, *bbox)
     box(*bbox)
 
-    bbox = [350, 50, 50, 80]
+    bbox = [350, 200, 50, 100]
     img = to_polygon(img, *bbox)
     box(*bbox)
 
