@@ -46,14 +46,12 @@ def to_polygon(img, cx, cy, w, h):
         cy - h // 2,
         cy + h // 2,
         cy + h // 2,
-        # cy - h // 2,
     ])
     ends = np.array([
         cx - w // 2,
         cx + w // 2,
         cx + w // 2,
         cx - w // 2,
-        # cx - w // 2,
     ])
 
     rr, cc = polygon(starts, ends)
