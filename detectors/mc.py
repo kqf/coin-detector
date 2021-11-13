@@ -9,7 +9,6 @@ def make_shape(
     w=90,
     shape=(2000, 2000),
 ):
-    print()
     Y, X = np.ogrid[:shape[0], :shape[1]]
 
     xx = (X[..., None] - cx)
@@ -44,16 +43,11 @@ def make_blob(
     return (extended + class_id * noise * 255.).astype(np.uint8)
 
 
-def blob2image(blob, channels=3, epsilon=0.1, class_id=0):
-    return blob
-
-
 def make_image(shapes, image_shape):
     blobs = []
     for row in shapes:
         blobs.append(make_blob(**row, shape=image_shape))
-    blob = np.stack(blobs, axis=0).mean(axis=0)
-    img = blob2image(blob)
+    img = np.stack(blobs, axis=0).mean(axis=0)
     return img
 
 
