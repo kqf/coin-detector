@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import pytest
 import torch
-from detectors.mc import blob2image
 from detectors.mc import make_image
 
 
