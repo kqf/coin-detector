@@ -1,8 +1,22 @@
+import pytest
 import matplotlib.pyplot as plt
-from detectors.mc import make_blob
+from detectors.mc import make_image
 
 
-def test_generates():
-    blob = make_blob(class_id=1, h=400, w=400)
-    plt.imshow(blob)
+@pytest.fixture
+def blobs():
+    blobs = [
+        {
+            "x_center": 50,
+            "y_center": 50,
+            "width": 90,
+            "height": 90,
+        }
+    ]
+    return blobs
+
+
+def test_generates(blobs):
+    image = make_image(shapes=blobs, image_shape=(400, 400))
+    plt.imshow(image)
     plt.show()
