@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 import torch
-from detectors.mc import blob2image
-from detectors.mc import make_blob
+from detectors.mc import make_image
 
 
 def pytest_addoption(parser):
@@ -83,15 +82,12 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
 
 @pytest.fixture
 def fake_dataset(tmp_path, annotations, size=256, image_col="image_id"):
+    object_properties = ["x_center", "y_center", "width", "height", "class_id"]
     for image_id, blobs in annotations.groupby(image_col):
+        image_shape = (blobs["w"].values[0], blobs["h"].values[0])
+        shapes = blobs[object_properties].to_dict(orient="records")
+        img = make_image(shapes, image_shape)
 
-        blobs = []
-        for row in annotations.to_dict(orient="records"):
-            print(row["class_id"])
-            blobs.append(make_blob(**row))
-        blob = np.stack(blobs, axis=0).mean(axis=0)
-
-        img = blob2image(blob)
         ifile = f"{image_id}.png"
         cv2.imwrite(str(tmp_path / ifile), img)
     annotations.to_csv(tmp_path / "train.csv", index=False)
