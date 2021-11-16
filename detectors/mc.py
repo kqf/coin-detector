@@ -16,7 +16,7 @@ def make_shape(
     dists = np.sqrt((xx / w) ** 2 + (yy / h) ** 2)
 
     mask = dists <= 1. / 2.
-    return np.where(mask.sum(axis=-1) > 0)
+    return mask.sum(axis=-1).astype(np.bool8)
 
 
 def _make_colors(num_colors, channels=3, intensity_range=(0, 255)):
@@ -50,9 +50,10 @@ def make_blob(
     return (extended + class_id * noise * 255.).astype(np.uint8)
 
 
-def make_image(shapes, image_shape):
-    image = np.full(image_shape, 255, dtype=np.uint8)
-    colors = _make_colors(num_colors=len(shapes))
+def make_image(shapes, image_shape, channels=3):
+    canvas_shape = (image_shape[0], image_shape[1], channels)
+    image = np.full(canvas_shape, 255, dtype=np.uint8)
+    colors = _make_colors(num_colors=len(shapes), channels=channels)
     for color, row in zip(colors, shapes):
         idx = make_shape(
             cx=row["x_center"],
