@@ -2,6 +2,7 @@
 *.pyc
 *.so
 *.txt
+*.egg*
 
 # Tools
 .DS_Store
@@ -10,6 +11,7 @@
 *-workspace*
 .mypy_cache
 .coverage
+playground/*
 
 # Data
 *.csv
