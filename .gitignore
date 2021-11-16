@@ -2,6 +2,7 @@
 *.pyc
 *.so
 *.txt
+*.egg*
 
 # Tools
 .DS_Store
