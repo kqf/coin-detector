@@ -16,7 +16,7 @@ def make_shape(
     dists = np.sqrt((xx / w) ** 2 + (yy / h) ** 2)
 
     mask = dists <= 1. / 2.
-    return mask.sum(axis=-1).astype(np.uint8)
+    return mask.sum(axis=-1).astype(np.bool8)
 
 
 def make_blob(
@@ -44,11 +44,17 @@ def make_blob(
 
 
 def make_image(shapes, image_shape):
-    blobs = []
+    image = np.full(image_shape, 255, dtype=np.uint8)
     for row in shapes:
-        blobs.append(make_blob(**row, shape=image_shape))
-    img = np.stack(blobs, axis=0).mean(axis=0)
-    return img
+        idx = make_shape(
+            cx=row["x_center"],
+            cy=row["y_center"],
+            h=row["height"],
+            w=row["width"],
+            shape=image_shape,
+        )
+        image[idx] = 1.
+    return image
 
 
 def annotations(n_points=32, h=2000, w=2000):
