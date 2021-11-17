@@ -19,7 +19,7 @@ def make_shape(
     return mask.sum(axis=-1).astype(np.bool8)
 
 
-def _make_colors(num_colors, channels=3, intensity_range=(0, 255)):
+def make_colors(num_colors, channels=3, intensity_range=(0, 255)):
     intensity_range = (intensity_range, ) * channels
     colors = [np.random.randint(_min, _max, size=num_colors)
               for _min, _max in intensity_range]
