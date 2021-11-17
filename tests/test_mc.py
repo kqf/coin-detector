@@ -12,6 +12,7 @@ def blobs():
             "width": 90,
             "height": 90,
             "class_id": 0,
+            "colors": [13, 46, 96],
         },
         {
             "x_center": 150,
@@ -19,6 +20,7 @@ def blobs():
             "width": 90,
             "height": 90,
             "class_id": 1,
+            "colors": [94, 103, 36],
         },
     ]
     return blobs
