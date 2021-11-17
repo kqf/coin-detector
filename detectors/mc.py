@@ -19,6 +19,13 @@ def make_shape(
     return mask.sum(axis=-1).astype(np.bool8)
 
 
+def _make_colors(num_colors, channels=3, intensity_range=(0, 255)):
+    intensity_range = (intensity_range, ) * channels
+    colors = [np.random.randint(_min, _max, size=num_colors)
+              for _min, _max in intensity_range]
+    return np.transpose(colors)
+
+
 def make_blob(
     x_center=50,
     y_center=50,
@@ -43,9 +50,11 @@ def make_blob(
     return (extended + class_id * noise * 255.).astype(np.uint8)
 
 
-def make_image(shapes, image_shape):
-    image = np.full(image_shape, 255, dtype=np.uint8)
-    for row in shapes:
+def make_image(shapes, image_shape, channels=3):
+    canvas_shape = (image_shape[0], image_shape[1], channels)
+    image = np.full(canvas_shape, 255, dtype=np.uint8)
+    colors = _make_colors(num_colors=len(shapes), channels=channels)
+    for color, row in zip(colors, shapes):
         idx = make_shape(
             cx=row["x_center"],
             cy=row["y_center"],
@@ -53,7 +62,7 @@ def make_image(shapes, image_shape):
             w=row["width"],
             shape=image_shape,
         )
-        image[idx] = 1.
+        image[idx] = color
     return image
 
 
