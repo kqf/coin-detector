@@ -53,16 +53,15 @@ def make_blob(
 def make_image(shapes, image_shape, channels=3):
     canvas_shape = (image_shape[0], image_shape[1], channels)
     image = np.full(canvas_shape, 255, dtype=np.uint8)
-    colors = _make_colors(num_colors=len(shapes), channels=channels)
-    for color, row in zip(colors, shapes):
+    for shape in shapes:
         idx = make_shape(
-            cx=row["x_center"],
-            cy=row["y_center"],
-            h=row["height"],
-            w=row["width"],
+            cx=shape["x_center"],
+            cy=shape["y_center"],
+            h=shape["height"],
+            w=shape["width"],
             shape=image_shape,
         )
-        image[idx] = color
+        image[idx] = shape["colors"]
     return image
 
 
