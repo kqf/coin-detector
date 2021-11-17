@@ -12,7 +12,7 @@ def from_mask(file):
 def read_image(file):
     bgr = cv2.imread(file)
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    return rgb
+    return rgb.transpose(2, 1, 0)
 
 
 class DetectionDataset(torch.utils.data.Dataset):

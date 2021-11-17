@@ -13,5 +13,5 @@ def test_dataset(fake_dataset):
         assert len(labels["classes"].shape) == 1
 
     for image, labels in data:
-        plt.imshow(image)
+        plt.imshow(image.transpose(1, 2, 0))
         plt.show()
