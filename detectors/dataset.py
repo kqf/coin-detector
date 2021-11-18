@@ -3,10 +3,16 @@ import numpy as np
 import torch
 
 
-def read_image(file):
+def from_mask(file):
     bitmap = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
     image = np.stack([bitmap, bitmap, bitmap]).astype('float32')
     return image
+
+
+def read_image(file):
+    bgr = cv2.imread(file)
+    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+    return rgb.transpose(2, 1, 0)
 
 
 class DetectionDataset(torch.utils.data.Dataset):
