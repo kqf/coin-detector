@@ -49,4 +49,7 @@ def transform(train=True, mean=None, std=None, size=32 * 13):
             alb.Flip(0.5)
         ]
 
-    return alb.Compose(train_transforms + transforms)
+    return alb.Compose(
+        train_transforms + transforms,
+        bbox_params=alb.BboxParams("")
+    )
