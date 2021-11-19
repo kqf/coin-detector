@@ -21,3 +21,13 @@ def labels():
 def test_transforms(image, boxes, labels):
     convert = transform(train=True)
     timage, tboxes, tlabels = convert(image, boxes, labels)
+
+    # NB: height/width can change, while number of channels not.
+    assert timage.shape[0] == image.shape[0]
+    # Image is converted to torch already
+    # assert timage.dtype == image.dtype
+    assert tboxes.shape == tboxes.shape
+    assert tboxes.dtype == boxes.dtype
+
+    assert labels.shape == labels.shape
+    assert tlabels.dtype == labels.dtype
