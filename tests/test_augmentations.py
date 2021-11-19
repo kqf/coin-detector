@@ -19,8 +19,9 @@ from detectors.augmentations import transform
         np.array([[1], [0]])
     ),
 ])
-def test_transforms(image, boxes, labels):
-    convert = transform(train=True)
+@pytest.mark.parametrize("train", [True, False])
+def test_transforms(train, image, boxes, labels):
+    convert = transform(train=train)
     timage, tboxes, tlabels = convert(image, boxes, labels)
 
     # NB: height/width can change, while number of channels not.
