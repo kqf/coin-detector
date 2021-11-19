@@ -1,23 +1,24 @@
+import torch
 import numpy as np
 import pytest
 from detectors.augmentations import transform
 
 
-@pytest.fixture
-def image():
-    return np.zeros([3, 400, 400])
-
-
-@pytest.fixture
-def boxes():
-    return np.array([[0.5, 0.5, 0.25, 0.25]])
-
-
-@pytest.fixture
-def labels():
-    return np.array([1])[None, :]
-
-
+@pytest.mark.parametrize("image, boxes, labels", [
+    (
+        np.zeros([3, 400, 400]),
+        np.array([[0.5, 0.5, 0.25, 0.25]]),
+        np.array([[1]])
+    ),
+    (
+        np.zeros([3, 400, 400]),
+        np.array([
+            [0.5, 0.5, 0.25, 0.25],
+            [0.7, 0.7, 0.25, 0.25],
+        ]),
+        np.array([[1], [0]])
+    ),
+])
 def test_transforms(image, boxes, labels):
     convert = transform(train=True)
     timage, tboxes, tlabels = convert(image, boxes, labels)
@@ -25,7 +26,8 @@ def test_transforms(image, boxes, labels):
     # NB: height/width can change, while number of channels not.
     assert timage.shape[0] == image.shape[0]
     # Image is converted to torch already
-    # assert timage.dtype == image.dtype
+    assert type(timage) == torch.Tensor
+
     assert tboxes.shape == tboxes.shape
     assert tboxes.dtype == boxes.dtype
 
