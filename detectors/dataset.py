@@ -15,6 +15,15 @@ def read_image(file):
     return rgb.transpose(2, 1, 0).astype(np.float32)
 
 
+def to_yolo(boxes):
+    width, height = boxes[..., 2], boxes[..., 3]
+    yolo = boxes.copy()
+    yolo[..., 0] = yolo[..., 0] / width
+    yolo[..., 1] = yolo[..., 1] / height
+    yolo[..., 2] = yolo[..., 2] / width
+    yolo[..., 3] = yolo[..., 3] / height
+    return yolo, width, height
+
 class DetectionDataset(torch.utils.data.Dataset):
 
     def __init__(self, df, image_col="image_id", transforms=None):
@@ -32,6 +41,7 @@ class DetectionDataset(torch.utils.data.Dataset):
         image = read_image(file)
 
         boxes = records[['x_center', 'y_center', 'width', 'height']].values
+        yolo_boxes, width, height = to_yolo(boxes)
 
         labels = torch.tensor(
             records["class_id"].values,
