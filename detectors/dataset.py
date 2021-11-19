@@ -45,6 +45,7 @@ class DetectionDataset(torch.utils.data.Dataset):
 
         labels = records["class_id"].values
 
+        import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
         if self.transforms:
             image, boxes, labels = self.transforms(image, yolo_boxes, labels)
 
