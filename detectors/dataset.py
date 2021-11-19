@@ -46,16 +46,7 @@ class DetectionDataset(torch.utils.data.Dataset):
         labels = records["class_id"].values
 
         if self.transforms:
-            sample = {
-                'image': image.transpose(1, 2, 0),
-                'bboxes': yolo_boxes,
-                'labels': labels
-            }
-            transformed = self.transforms(**sample)
-
-            image = transformed['image']
-            boxes = torch.tensor(transformed['bboxes']).float()
-            labels = torch.tensor(transformed['labels'])
+            image, boxes, labels = self.transforms(image, yolo_boxes, labels)
 
         return image, {"boxes": boxes, "classes": labels}
 

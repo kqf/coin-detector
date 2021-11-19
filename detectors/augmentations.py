@@ -1,4 +1,7 @@
+import numpy as np
 import albumentations as alb
+import functools
+
 from albumentations.core.transforms_interface import DualTransform
 from albumentations.pytorch import ToTensorV2
 
@@ -27,7 +30,7 @@ class DebugAugmentations(DualTransform):
         return {}
 
 
-def transform(train=True, mean=None, std=None, size=32 * 13):
+def pipeline(train=True, mean=None, std=None, size=32 * 13):
     mean = mean or _mean
     std = std or _std
 
@@ -56,3 +59,22 @@ def transform(train=True, mean=None, std=None, size=32 * 13):
             label_fields=['labels']
         )
     )
+
+
+def apply(image, boxes, labels, transformations):
+    sample = {
+        'image': image.transpose(1, 2, 0),
+        'bboxes': boxes,
+        'labels': labels
+    }
+    transformed = transformations(**sample)
+
+    image = transformed['image']
+    boxes = np.array(transformed['bboxes'], dtype=boxes.dtype)
+    labels = np.array(transformed['labels'], dtype=labels.dtype)
+    return image, boxes, labels
+
+
+def transform(train=True, mean=None, std=None, size=32 * 13):
+    transformations = pipeline(train, mean, std, size)
+    return functools.partial(apply, transformations=transformations)
