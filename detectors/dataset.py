@@ -41,13 +41,10 @@ class DetectionDataset(torch.utils.data.Dataset):
         image = read_image(file)
 
         boxes = records[['x_center', 'y_center', 'width', 'height']].values
-        width, height = records[["w", "h"]].values
-        yolo_boxes = to_yolo(boxes, width, height)
-
         labels = records["class_id"].values
 
         if self.transforms:
-            image, boxes, labels = self.transforms(image, yolo_boxes, labels)
+            image, boxes, labels = self.transforms(image, boxes, labels)
 
         return image, {"boxes": boxes, "classes": labels}
 
