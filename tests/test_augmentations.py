@@ -30,7 +30,7 @@ def test_transforms(train, image, boxes, labels):
     assert type(timage) == torch.Tensor
 
     assert tboxes.shape == tboxes.shape
-    assert tboxes.dtype == boxes.dtype
+    assert tboxes.dtype == np.float32
 
     assert labels.shape == labels.shape
     assert tlabels.dtype == labels.dtype
