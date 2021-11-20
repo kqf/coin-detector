@@ -70,7 +70,7 @@ def apply(image, boxes, labels, transformations):
     transformed = transformations(**sample)
 
     image = transformed['image']
-    boxes = np.array(transformed['bboxes'], dtype=boxes.dtype)
+    boxes = np.array(transformed['bboxes'], dtype=np.float32)
     labels = np.array(transformed['labels'], dtype=labels.dtype)
     return image, boxes, labels
 
