@@ -15,15 +15,6 @@ def read_image(file):
     return rgb.transpose(2, 1, 0)
 
 
-def to_yolo(boxes, width, height):
-    yolo = boxes.copy()
-    yolo[..., 0] = yolo[..., 0] / width
-    yolo[..., 1] = yolo[..., 1] / height
-    yolo[..., 2] = yolo[..., 2] / width
-    yolo[..., 3] = yolo[..., 3] / height
-    return yolo
-
-
 class DetectionDataset(torch.utils.data.Dataset):
 
     def __init__(self, df, image_col="image_id", transforms=None):
