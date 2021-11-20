@@ -23,6 +23,7 @@ def to_yolo(boxes, width, height):
     yolo[..., 3] = yolo[..., 3] / height
     return yolo
 
+
 class DetectionDataset(torch.utils.data.Dataset):
 
     def __init__(self, df, image_col="image_id", transforms=None):
