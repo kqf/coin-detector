@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import pandas as pd
 import torch
 
 
@@ -14,6 +15,11 @@ def read_image(file):
     rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     return rgb.transpose(2, 1, 0)
 
+
+def read_dataset(path):
+    df = pd.read_csv(path)
+    df['bbox'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
+    return df
 
 class DetectionDataset(torch.utils.data.Dataset):
 

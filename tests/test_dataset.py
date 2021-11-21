@@ -1,10 +1,9 @@
-import pandas as pd
 import matplotlib.pyplot as plt
-from detectors.dataset import DetectionDataset
+from detectors.dataset import DetectionDataset, read_dataset
 
 
 def test_dataset(fake_dataset):
-    df = pd.read_csv(fake_dataset / "train.csv")
+    df = read_dataset(fake_dataset / "train.csv")
     data = DetectionDataset(df)
 
     for image, labels in data:
