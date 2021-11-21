@@ -31,7 +31,7 @@ class DetectionDataset(torch.utils.data.Dataset):
         file = records.loc[0, "image"]
         image = read_image(file)
 
-        boxes = records[['x_center', 'y_center', 'width', 'height']].values
+        boxes = records["bbox"].values
         labels = records["class_id"].values
 
         if self.transforms:
