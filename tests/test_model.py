@@ -1,7 +1,6 @@
 import pytest
-import pandas as pd
 from detectors.model import build_model
-from detectors.dataset import DetectionDataset
+from detectors.dataset import DetectionDataset, read_dataset
 from detectors.augmentations import transform
 
 
@@ -11,7 +10,7 @@ def max_epochs(request):
 
 
 def test_model(fake_dataset, max_epochs):
-    df = pd.read_csv(fake_dataset / "train.csv")
+    df = read_dataset(fake_dataset / "train.csv")
     train = DetectionDataset(df, transforms=transform())
 
     model = build_model(max_epochs=max_epochs)
