@@ -21,6 +21,7 @@ def read_dataset(path):
     df['bbox'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
     return df
 
+
 class DetectionDataset(torch.utils.data.Dataset):
 
     def __init__(self, df, image_col="image_id", transforms=None):
