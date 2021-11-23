@@ -1,21 +1,5 @@
 import numpy as np
-
-
-def make_shape(
-    cx=50,
-    cy=50,
-    h=90,
-    w=90,
-    shape=(2000, 2000),
-):
-    Y, X = np.ogrid[:shape[0], :shape[1]]
-
-    xx = (X[..., None] - cx)
-    yy = (Y[..., None] - cy)
-    dists = np.sqrt((xx / w) ** 2 + (yy / h) ** 2)
-
-    mask = dists <= 1. / 2.
-    return mask.sum(axis=-1).astype(np.bool8)
+from detectors.shapes import make_shape
 
 
 def make_colors(num_colors, channels=3, intensity_range=(0, 255)):
