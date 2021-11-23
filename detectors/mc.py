@@ -57,23 +57,3 @@ def make_image(shapes, image_shape, channels=3, fmt="coco"):
         idx = make_shape(*shape[fmt], shape=image_shape)
         image[idx] = shape["colors"]
     return image
-
-
-def annotations(n_points=32, h=2000, w=2000):
-    x = np.random.uniform(0, w, (n_points, 2))
-    y = np.random.uniform(0, h, (n_points, 2))
-    df = pd.DataFrame({
-        # NB: Replace np.arange by np.uniform(0, n_images, n_points)
-        #     to get the dataset with multiple images
-        "image_id": np.arange(n_points)
-    })
-
-    df["x_min"] = x.min(axis=1)
-    df["y_min"] = y.min(axis=1)
-
-    df["x_max"] = x.max(axis=1)
-    df["y_max"] = x.max(axis=1)
-    labels = (df["x_max"] - df["x_min"]) > (df["y_max"] - df["y_min"])
-    df["class_id"] = labels.astype(int)
-    df["class_name"] = labels.astype(str)
-    return df
