@@ -7,12 +7,12 @@ from detectors.mc import make_image
 def blobs():
     blobs = [
         {
-            "bbox": [50, 50, 90, 90],
+            "coco": [50, 50, 90, 90],
             "class_id": 0,
             "colors": [13, 46, 96],
         },
         {
-            "bbox": [150, 250, 90, 90],
+            "coco": [150, 250, 90, 90],
             "class_id": 1,
             "colors": [94, 103, 36],
         },

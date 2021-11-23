@@ -80,14 +80,14 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
     df['width'] = (x2 - x1)
     df['height'] = (y2 - y1)
 
-    df['bbox'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
+    df['coco'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
     df['colors'] = list(make_colors(len(df)))
     return df
 
 
 @pytest.fixture
 def fake_dataset(tmp_path, annotations, size=256, image_col="image_id"):
-    object_properties = ["bbox", "class_id", "colors"]
+    object_properties = ["coco", "class_id", "colors"]
     for image_id, blobs in annotations.groupby(image_col):
         image_shape = (blobs["w"].values[0], blobs["h"].values[0])
         shapes = blobs[object_properties].to_dict(orient="records")
