@@ -16,12 +16,13 @@ def box(cx, cy, w, h):
 
 
 def make_shape(
+    img,
     cx=50,
     cy=50,
     h=90,
     w=90,
-    shape=(2000, 2000),
 ):
+    shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
 
     xx = (X[..., None] - cx)
