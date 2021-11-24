@@ -15,13 +15,7 @@ def box(cx, cy, w, h):
     ax.add_patch(patch)
 
 
-def make_shape(
-    img,
-    cx=50,
-    cy=50,
-    h=90,
-    w=90,
-):
+def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
 
@@ -63,3 +57,22 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
     rr, cc = polygon(rows, cols, shape=img.shape)
     img[rr, cc] = 1
     return img
+
+
+_AVAILABLE_SHAPES = [
+    to_circle,
+    to_recatangle,
+    to_polygon,
+]
+
+
+def make_shape(
+    img,
+    cx=50,
+    cy=50,
+    h=90,
+    w=90,
+    image_id=0
+):
+    shape = _AVAILABLE_SHAPES[image_id]
+    return shape(img, cx, cy, h, w)
