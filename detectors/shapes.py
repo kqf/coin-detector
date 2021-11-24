@@ -21,7 +21,12 @@ def make_shape(
     cy=50,
     h=90,
     w=90,
+    image_id=0
 ):
+    pass
+
+
+def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
 
