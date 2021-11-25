@@ -44,7 +44,7 @@ def to_recatangle(img, cx, cy, w, h):
     end = (cy + h // 2, cx + w // 2)
 
     rr, cc = rectangle(start, end, shape=img.shape)
-    img[rr, cc] = 1
+    img[rr.astype(np.int32), cc.astype(np.int32)] = 1
     return img
 
 
