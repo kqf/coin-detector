@@ -72,7 +72,7 @@ def make_shape(
     cy=50,
     h=90,
     w=90,
-    image_id=0
+    shape=0
 ):
-    shape = _AVAILABLE_SHAPES[image_id]
+    shape = _AVAILABLE_SHAPES[shape]
     return shape(img, cx, cy, h, w)
