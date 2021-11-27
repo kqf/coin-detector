@@ -59,6 +59,8 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
         lambda x: to_image_path(tmp_path, str(x))
     )
 
+    # df['colors'] = list(make_colors(len(df)))
+    df["colors"] = [np.array([77, 180, 198]), ] * len(df)
     df.loc[:n_images // 2 - 1, 'x_min'] = 80.0 * shift
     df.loc[:n_images // 2 - 1, 'x_max'] = 80.0 * shift + width / 5.
     df.loc[:n_images // 2 - 1, 'y_min'] = 160.0 * shift
@@ -71,6 +73,8 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
     df.loc[n_images // 2:, 'y_max'] = 80.0 * shift + width / 5.
     df.loc[n_images // 2:, 'class_id'] = 1
 
+    # Hardcode the colors
+
     df["h"] = width
     df["w"] = width
 
@@ -81,7 +85,6 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
     df['height'] = (y2 - y1)
 
     df['coco'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
-    df['colors'] = list(make_colors(len(df)))
     return df
 
 

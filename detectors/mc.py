@@ -14,7 +14,6 @@ def make_image(
     canvas_shape = (image_shape[0], image_shape[1], channels)
     image = np.full(canvas_shape, 255, dtype=np.uint8)
     for shape in shapes:
-        print(shape)
         idx = make_shape(image, *shape[fmt], shape=shape[shape_col])
         image[idx] = shape["colors"]
     return image
