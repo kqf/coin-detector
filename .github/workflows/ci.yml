@@ -28,7 +28,7 @@ jobs:
         pytest --cov=detectors --cov-report term-missing tests/
     - name: Type Check
       run: |
-        mypy .
+        mypy --ignore-missing-imports .
     - name: Lint
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
