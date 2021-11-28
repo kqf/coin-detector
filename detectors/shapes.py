@@ -31,14 +31,14 @@ def to_disc(img, cx, cy, w, h):
     mask = np.zeros(img.shape[:2])
     rr, cc = disk((cy, cx), h / 2., shape=img.shape)
     mask[rr, cc] = 1
-    return mask
+    return mask.astype(np.bool8)
 
 
 def to_ellipse(img, cx, cy, w, h):
     mask = np.zeros(img.shape[:2])
     rr, cc = ellipse(cy, cx, h / 2., w / 2., shape=img.shape)
     mask[rr, cc] = 1
-    return mask
+    return mask.astype(np.bool8)
 
 
 def to_recatangle(img, cx, cy, w, h):
@@ -48,7 +48,7 @@ def to_recatangle(img, cx, cy, w, h):
 
     rr, cc = rectangle(start, end, shape=img.shape)
     img[rr.astype(np.int32), cc.astype(np.int32)] = 1
-    return mask
+    return mask.astype(np.bool8)
 
 
 def to_polygon(img, cx, cy, w, h, n=3, rot=0):
@@ -60,7 +60,7 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
 
     rr, cc = polygon(rows, cols, shape=img.shape)
     mask[rr, cc] = 1
-    return mask
+    return mask.astype(np.bool8)
 
 
 _AVAILABLE_SHAPES = [
