@@ -28,35 +28,39 @@ def to_circle(img, cx, cy, w, h):
 
 
 def to_disc(img, cx, cy, w, h):
+    mask = np.zeros(img.shape[:2])
     rr, cc = disk((cy, cx), h / 2., shape=img.shape)
-    img[rr, cc] = 1
-    return img
+    mask[rr, cc] = 1
+    return mask.astype(np.bool8)
 
 
 def to_ellipse(img, cx, cy, w, h):
+    mask = np.zeros(img.shape[:2])
     rr, cc = ellipse(cy, cx, h / 2., w / 2., shape=img.shape)
-    img[rr, cc] = 1
-    return img
+    mask[rr, cc] = 1
+    return mask.astype(np.bool8)
 
 
 def to_recatangle(img, cx, cy, w, h):
+    mask = np.zeros(img.shape[:2])
     start = (cy - h // 2, cx - w // 2)
     end = (cy + h // 2, cx + w // 2)
 
     rr, cc = rectangle(start, end, shape=img.shape)
     img[rr.astype(np.int32), cc.astype(np.int32)] = 1
-    return img
+    return mask.astype(np.bool8)
 
 
 def to_polygon(img, cx, cy, w, h, n=3, rot=0):
+    mask = np.zeros(img.shape[:2])
     i = np.arange(n)
 
     rows = cy + h / 2 * np.cos(2 * np.pi * i / n + rot)
     cols = cx + w / 2 * np.sin(2 * np.pi * i / n + rot)
 
     rr, cc = polygon(rows, cols, shape=img.shape)
-    img[rr, cc] = 1
-    return img
+    mask[rr, cc] = 1
+    return mask.astype(np.bool8)
 
 
 _AVAILABLE_SHAPES = [
