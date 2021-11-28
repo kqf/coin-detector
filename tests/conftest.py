@@ -59,7 +59,7 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
         lambda x: to_image_path(tmp_path, str(x))
     )
 
-    # df['colors'] = list(make_colors(len(df)))
+    df['colors'] = list(make_colors(len(df)))
     df["colors"] = [np.array([77, 180, 198]), ] * len(df)
     df.loc[:n_images // 2 - 1, 'x_min'] = 80.0 * shift
     df.loc[:n_images // 2 - 1, 'x_max'] = 80.0 * shift + width / 5.
