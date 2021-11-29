@@ -66,8 +66,8 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
 
 _AVAILABLE_SHAPES = [
     to_circle,
-    to_polygon,
     partial(to_polygon, n=4),
+    to_polygon,
 ]
 
 
