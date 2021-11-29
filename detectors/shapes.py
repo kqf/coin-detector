@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from skimage.draw import disk, ellipse, rectangle, polygon
+from functools import partial
 
 
 def box(cx, cy, w, h):
@@ -66,7 +67,7 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
 _AVAILABLE_SHAPES = [
     to_circle,
     to_polygon,
-    to_recatangle,
+    partial(to_polygon, n=4),
 ]
 
 
