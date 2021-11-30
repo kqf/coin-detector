@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 from detectors.dataset import DetectionDataset, read_dataset
 from detectors.shapes import box
+from detectors.augmentations import transform
 
 
 def test_dataset(fake_dataset):
     df = read_dataset(fake_dataset / "train.csv")
-    data = DetectionDataset(df)
+    data = DetectionDataset(df, transforms=transform())
 
     for image, labels in data:
         assert len(image.shape) == 3
