@@ -14,7 +14,7 @@ def test_dataset(fake_dataset):
         assert len(labels["classes"].shape) == 1
 
     for image, labels in data:
-        plt.imshow(image.transpose(1, 2, 0))
+        plt.imshow(image.cpu().numpy().transpose(1, 2, 0))
         for coords in labels["boxes"]:
             box(*coords)
         plt.show()
