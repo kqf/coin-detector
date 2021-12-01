@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 import albumentations as alb
 import functools
@@ -53,6 +54,13 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # alb.Flip(1),
             # bad
             # alb.RandomRotate90(),
+            alb.ShiftScaleRotate(
+                shift_limit=0.0625,
+                scale_limit=0.2,
+                rotate_limit=15,
+                p=0.9,
+                border_mode=cv2.BORDER_REFLECT
+            ),
         ]
 
     return alb.Compose(
