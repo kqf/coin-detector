@@ -49,7 +49,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     train_transforms = []
     if train:
         train_transforms = [
-            alb.Flip(0.5)
+            alb.Flip(1)
         ]
 
     return alb.Compose(
