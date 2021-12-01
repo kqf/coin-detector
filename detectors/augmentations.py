@@ -35,13 +35,13 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     std = std or _std
 
     transforms = [
-        alb.PadIfNeeded(
-            min_height=int(size),
-            min_width=int(size),
-            # border_mode=cv2.BORDER_CONSTANT,
-        ),
-        # DebugAugmentations(),
-        alb.Resize(size, size),
+        # alb.PadIfNeeded(
+        #     min_height=int(size),
+        #     min_width=int(size),
+        #     # border_mode=cv2.BORDER_CONSTANT,
+        # ),
+        # # DebugAugmentations(),
+        # alb.Resize(size, size),
         alb.Normalize(mean=mean, std=std, max_pixel_value=255.0, p=1.0),
         ToTensorV2(p=1.0)
     ]
