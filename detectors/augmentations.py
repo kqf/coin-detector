@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 import albumentations as alb
 import functools
@@ -67,6 +68,11 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             #     alb.GridDistortion(p=.1),
             #     alb.IAAPiecewiseAffine(p=0.3),
             # ], p=0.3),
+            alb.OneOf([
+                alb.OpticalDistortion(p=0.3),
+                alb.GridDistortion(p=.1),
+                alb.IAAPiecewiseAffine(p=0.3),
+            ], p=0.3),
         ]
 
     return alb.Compose(
