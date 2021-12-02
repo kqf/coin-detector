@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 import albumentations as alb
 import functools
@@ -68,7 +69,6 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             #     alb.IAAPiecewiseAffine(p=0.3),
             # ], p=0.3),
             alb.HueSaturationValue(10, 15, 10),
-
         ]
 
     return alb.Compose(
