@@ -62,6 +62,12 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             #     p=0.9,
             #     border_mode=cv2.BORDER_REFLECT
             # ),
+            # Not implemented for bouding boxes
+            # alb.OneOf([
+            #     alb.OpticalDistortion(p=0.3),
+            #     alb.GridDistortion(p=.1),
+            #     alb.IAAPiecewiseAffine(p=0.3),
+            # ], p=0.3),
             alb.OneOf([
                 alb.OpticalDistortion(p=0.3),
                 alb.GridDistortion(p=.1),
