@@ -54,13 +54,19 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # alb.Flip(1),
             # bad
             # alb.RandomRotate90(),
-            alb.ShiftScaleRotate(
-                shift_limit=0.0625,
-                scale_limit=0.2,
-                rotate_limit=15,
-                p=0.9,
-                border_mode=cv2.BORDER_REFLECT
-            ),
+            # Slightly worse
+            # alb.ShiftScaleRotate(
+            #     shift_limit=0.0625,
+            #     scale_limit=0.2,
+            #     rotate_limit=15,
+            #     p=0.9,
+            #     border_mode=cv2.BORDER_REFLECT
+            # ),
+            alb.OneOf([
+                alb.OpticalDistortion(p=0.3),
+                alb.GridDistortion(p=.1),
+                alb.IAAPiecewiseAffine(p=0.3),
+            ], p=0.3),
         ]
 
     return alb.Compose(
