@@ -67,9 +67,11 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             #     alb.GridDistortion(p=.1),
             #     alb.IAAPiecewiseAffine(p=0.3),
             # ], p=0.3),
-            alb.HueSaturationValue(10, 15, 10),
-            alb.CLAHE(clip_limit=2),
-            alb.RandomBrightnessContrast(),
+            alb.OneOf([
+                alb.HueSaturationValue(10, 15, 10),
+                alb.CLAHE(clip_limit=2),
+                alb.RandomBrightnessContrast(),
+            ], p=0.3)
         ]
 
     return alb.Compose(
