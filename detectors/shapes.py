@@ -14,6 +14,7 @@ def box(cx, cy, w, h):
         facecolor='none'
     )
     ax.add_patch(patch)
+    plt.arrow(cx, cy + h / 2, 0, -h)
 
 
 def to_circle(img, cx, cy, w, h):
