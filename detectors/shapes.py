@@ -6,9 +6,10 @@ from functools import partial
 
 
 def box(cx, cy, w, h):
+    print("Box ", cx, cy, w, h)
     ax = plt.gca()
     patch = patches.Rectangle(
-        (cx - w / 2, cy - h / 2), w, h,
+        (cx - w / 2, cy - h * 1.5), w, h,
         linewidth=2,
         edgecolor='r',
         facecolor='none'
@@ -21,10 +22,17 @@ def box(cx, cy, w, h):
         width=2, color="r", edgecolor="r"
     )
 
+    plt.arrow(
+        cx, cy + h, 0, -h,
+        length_includes_head=True,
+        width=2, color="b", edgecolor="b"
+    )
+
 
 def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
+    print("Circle ", cx, cy, w, h)
 
     xx = (X[..., None] - cx)
     yy = (Y[..., None] - cy)
