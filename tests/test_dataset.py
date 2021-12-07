@@ -16,5 +16,5 @@ def test_dataset(fake_dataset):
     for image, labels in data:
         plt.imshow(image.cpu().numpy().transpose(1, 2, 0))
         for coords in labels["boxes"]:
-            box(*coords)
+            box(image, *coords)
         plt.show()
