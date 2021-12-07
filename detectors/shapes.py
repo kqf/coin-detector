@@ -6,7 +6,7 @@ from functools import partial
 
 
 def box(img, cx, cy, w, h):
-    imw, imh, _ = img.shape
+    imw, imh, *_ = img.shape
 
     print("Box ", cx, cy, w, h)
     ax = plt.gca()
