@@ -17,20 +17,20 @@ def image():
 def test_shapes(image):
     bbox = [350, 50, 80, 50]
     image = to_ellipse(image, *bbox)
-    box(*bbox)
+    box(image, *bbox)
 
     bbox = [350, 150, 50, 80]
     image = to_recatangle(image, *bbox)
-    box(*bbox)
+    box(image, *bbox)
 
     bbox = [350, 250, 50, 80]
     image = to_disc(image, *bbox)
-    box(*bbox)
+    box(image, *bbox)
 
     bbox = [350, 350, 50, 100]
     image = to_polygon(image, *bbox)
-    box(*bbox)
+    box(image, *bbox)
 
     plt.imshow(image)
-    box(*bbox)
+    box(image, *bbox)
     plt.show()

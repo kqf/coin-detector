@@ -5,7 +5,9 @@ from skimage.draw import disk, ellipse, rectangle, polygon
 from functools import partial
 
 
-def box(cx, cy, w, h):
+def box(img, cx, cy, w, h):
+    imw, imh, _ = img.shape
+
     print("Box ", cx, cy, w, h)
     ax = plt.gca()
     patch = patches.Rectangle(
