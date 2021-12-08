@@ -3,9 +3,9 @@ name: tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master-origin ]
   pull_request:
-    branches: [ master ]
+    branches: [ master-origin ]
 
 jobs:
   build:
