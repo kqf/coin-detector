@@ -11,7 +11,7 @@ def box(img, cx, cy, w, h):
     print("Box ", cx, cy, w, h)
     ax = plt.gca()
     patch = patches.Rectangle(
-        (cx - w / 2, cy - h * 1.5), w, h,
+        (cx + w / 2, cy - h * 1.5), w, h,
         linewidth=2,
         edgecolor='r',
         facecolor='none'
@@ -19,15 +19,17 @@ def box(img, cx, cy, w, h):
     ax.add_patch(patch)
 
     plt.arrow(
-        cx, cy + h / 2 * 0.8, 0, -h * 0.8,
+        cx + w, cy + h / 2 * 0.8, 0, -h * 0.8,
         length_includes_head=True,
         width=2, color="r", edgecolor="r"
     )
 
     plt.arrow(
-        cx, cy + h, 0, -h,
+        cx + w, cy - h, 0, -h,
         length_includes_head=True,
-        width=2, color="b", edgecolor="b"
+        width=2,
+        color="b",
+        edgecolor="b",
     )
 
 
