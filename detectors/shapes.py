@@ -25,7 +25,7 @@ def box(img, cx, cy, w, h):
     )
 
     plt.arrow(
-        cx, cy + h, 0, -h,
+        cx, imh - (cy + h), 0, imh - h,
         length_includes_head=True,
         width=2, color="b", edgecolor="b"
     )
