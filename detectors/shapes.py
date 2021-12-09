@@ -8,7 +8,7 @@ from functools import partial
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
 
-    print("Box ", cx, cy, w, h)
+    print("Box >", cx, cy, w, h)
     ax = plt.gca()
     patch = patches.Rectangle(
         (cx + w / 2, cy - h * 1.5), w, h,
@@ -36,7 +36,7 @@ def box(img, cx, cy, w, h):
 def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
-    print("Circle ", cx, cy, w, h)
+    print("Circle ~>", cx, cy, w, h)
 
     xx = (X[..., None] - cx)
     yy = (Y[..., None] - cy)
