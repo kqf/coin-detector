@@ -9,28 +9,29 @@ def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
 
     print("Box >", cx, cy, w, h)
+    print("Patch >", (cx + w / 2, (imh - cy) - h))
     ax = plt.gca()
     patch = patches.Rectangle(
-        (cx + w / 2, cy - h * 1.5), w, h,
+        (cx + w / 2, (imh - cy)), w, h,
         linewidth=2,
         edgecolor='r',
         facecolor='none'
     )
     ax.add_patch(patch)
 
-    plt.arrow(
-        cx + w, cy + h / 2 * 0.8, 0, -h * 0.8,
-        length_includes_head=True,
-        width=2, color="r", edgecolor="r"
-    )
+    # plt.arrow(
+    #     cx + w, cy + h / 2 * 0.8, 0, -h * 0.8,
+    #     length_includes_head=True,
+    #     width=2, color="r", edgecolor="r"
+    # )
 
-    plt.arrow(
-        cx + w, cy - h, 0, -h,
-        length_includes_head=True,
-        width=2,
-        color="b",
-        edgecolor="b",
-    )
+    # plt.arrow(
+    #     cx + w, cy - h, 0, -h,
+    #     length_includes_head=True,
+    #     width=2,
+    #     color="b",
+    #     edgecolor="b",
+    # )
 
 
 def to_circle(img, cx, cy, w, h):
