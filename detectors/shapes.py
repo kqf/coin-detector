@@ -5,13 +5,17 @@ from skimage.draw import disk, ellipse, rectangle, polygon
 from functools import partial
 
 
+def _patch(xy, *args, **kwargs):
+    print("Patch >", xy)
+    return patches.Rectangle(xy, *args, **kwargs)
+
+
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
 
     print("Box >", cx, cy, w, h)
-    print("Patch >", (cx + w / 2, (imh - cy) - h))
     ax = plt.gca()
-    patch = patches.Rectangle(
+    patch = _patch(
         (cx + w / 2, (imh - cy)), w, h,
         linewidth=2,
         edgecolor='r',
