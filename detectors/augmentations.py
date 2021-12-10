@@ -51,8 +51,8 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
         train_transforms = [
             # It looks like horizaonatal flip doesn't alter the image
             # But it changes the box annotations
-            # alb.HorizontalFlip(),
-            alb.VerticalFlip(),
+            alb.HorizontalFlip(),
+            # alb.VerticalFlip(),
             # alb.RandomRotate90(),
             # bad
             # alb.Flip(1),
