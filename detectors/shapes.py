@@ -18,11 +18,12 @@ def arrows():
     ax.spines['top'].set_visible(False)
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
+    ax.xaxis.tick_top()
 
     # make arrows
     ax.plot((1), (0), ls="", marker=">", ms=10, color="k",
             transform=ax.get_yaxis_transform(), clip_on=False)
-    ax.plot((1), (0), ls="", marker=">", ms=10, color="k",
+    ax.plot((1), (0), ls="", marker="v", ms=10, color="k",
             transform=ax.get_xaxis_transform(), clip_on=False)
 
 
