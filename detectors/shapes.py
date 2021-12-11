@@ -10,6 +10,22 @@ def _patch(xy, *args, **kwargs):
     return patches.Rectangle(xy, *args, **kwargs)
 
 
+def arrows():
+    ax = plt.gca()
+    ax.spines['left'].set_position('zero')
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_position('zero')
+    ax.spines['top'].set_visible(False)
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+
+    # make arrows
+    ax.plot((1), (0), ls="", marker=">", ms=10, color="k",
+            transform=ax.get_yaxis_transform(), clip_on=False)
+    ax.plot((1), (0), ls="", marker=">", ms=10, color="k",
+            transform=ax.get_xaxis_transform(), clip_on=False)
+
+
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
 

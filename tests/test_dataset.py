@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from detectors.dataset import DetectionDataset, read_dataset
-from detectors.shapes import box
+from detectors.shapes import box, arrows
 from detectors.augmentations import transform
 
 
@@ -17,4 +17,5 @@ def test_dataset(fake_dataset):
         plt.imshow(image.cpu().numpy().transpose(1, 2, 0))
         for coords in labels["boxes"]:
             box(image, *coords)
+        arrows()
         plt.show()
