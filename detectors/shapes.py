@@ -10,6 +10,16 @@ def _patch(xy, *args, **kwargs):
     return patches.Rectangle(xy, *args, **kwargs)
 
 
+def arrows():
+    ax = plt.gca()
+    for direction in ["xzero", "yzero"]:
+        ax.axis[direction].set_axisline_style("-|>")
+        ax.axis[direction].set_visible(True)
+
+    for direction in ["left", "right", "bottom", "top"]:
+        ax.axis[direction].set_visible(False)
+
+
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
 
