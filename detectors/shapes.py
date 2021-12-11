@@ -11,6 +11,7 @@ def _patch(xy, *args, **kwargs):
 
 
 def arrows():
+    plt.grid()
     ax = plt.gca()
     ax.spines['left'].set_position('zero')
     ax.spines['right'].set_visible(False)
