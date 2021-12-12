@@ -20,7 +20,7 @@ from detectors.augmentations import transform
     ),
 ])
 @pytest.mark.parametrize("train", [True, False])
-def test_transforms(train, image, boxes, labels):
+def test_transforms(train, image, boxes, labels, fixed_seed):
     convert = transform(train=train)
     timage, tboxes, tlabels = convert(image, boxes, labels)
 
