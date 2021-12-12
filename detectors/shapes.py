@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+
+from matplotlib.ticker import MultipleLocator
 from skimage.draw import disk, ellipse, rectangle, polygon
 from functools import partial
 
@@ -11,6 +13,7 @@ def _patch(xy, *args, **kwargs):
 
 
 def arrows():
+    plt.grid(which="minor")
     ax = plt.gca()
     ax.spines['left'].set_position('zero')
     ax.spines['right'].set_visible(False)
@@ -19,12 +22,15 @@ def arrows():
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
     ax.xaxis.tick_top()
+    ax.minorticks_on()
 
     # make arrows
     ax.plot((1), (0), ls="", marker=">", ms=10, color="k",
             transform=ax.get_yaxis_transform(), clip_on=False)
     ax.plot((1), (0), ls="", marker="v", ms=10, color="k",
             transform=ax.get_xaxis_transform(), clip_on=False)
+
+    # plt.axes().yaxis.set_minor_locator(MultipleLocator(8))
 
 
 def box(img, cx, cy, w, h):
