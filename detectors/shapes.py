@@ -7,7 +7,7 @@ from functools import partial
 
 
 def _patch(xy, *args, **kwargs):
-    # print("Patch >", xy)
+    print("Patch >", xy)
     return patches.Rectangle(xy, *args, **kwargs)
 
 
