@@ -7,7 +7,7 @@ from functools import partial
 
 
 def _patch(xy, *args, **kwargs):
-    print("Patch >", xy)
+    # print("Patch >", xy)
     return patches.Rectangle(xy, *args, **kwargs)
 
 
@@ -101,8 +101,8 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
     mask = np.zeros(img.shape[:2])
     i = np.arange(n)
 
-    rows = cy + h / 2 * np.cos(2 * np.pi * i / n + rot)
-    cols = cx + w / 2 * np.sin(2 * np.pi * i / n + rot)
+    cols = cy + h / 2 * np.cos(2 * np.pi * i / n + rot)
+    rows = cx + w / 2 * np.sin(2 * np.pi * i / n + rot)
 
     rr, cc = polygon(rows, cols, shape=img.shape)
     mask[rr, cc] = 1
