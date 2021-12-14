@@ -38,7 +38,7 @@ def box(img, cx, cy, w, h):
     print("Box ~~>", (cx, cy), w, h)
     ax = plt.gca()
     patch = _patch(
-        (cx - w / 2, cy + h / 2), w, h,
+        (cx - w / 2, cy - h / 2), w, h,
         linewidth=2,
         edgecolor='r',
         facecolor='none'
