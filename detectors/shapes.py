@@ -40,7 +40,7 @@ def box(img, cx, cy, w, h):
     patch = _patch(
         (cx - w / 2, cy - h / 2), w, h,
         linewidth=2,
-        edgecolor='r',
+        edgecolor='g',
         facecolor='none'
     )
     ax.add_patch(patch)
