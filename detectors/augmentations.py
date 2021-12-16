@@ -3,7 +3,6 @@ import numpy as np
 import albumentations as alb
 import functools
 
-from albumentations.core.transforms_interface import DualTransform
 from albumentations.pytorch import ToTensorV2
 
 _mean = [0, 0, 0]
