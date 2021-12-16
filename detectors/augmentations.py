@@ -47,11 +47,6 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # ),
             # Not implemented for bouding boxes
             alb.OneOf([
-                alb.OpticalDistortion(p=0.3),
-                alb.GridDistortion(p=.1),
-                alb.IAAPiecewiseAffine(p=0.3),
-            ], p=0.3),
-            alb.OneOf([
                 alb.HueSaturationValue(10, 15, 10),
                 alb.CLAHE(clip_limit=2),
                 alb.RandomBrightnessContrast(),
