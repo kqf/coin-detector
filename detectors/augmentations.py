@@ -34,7 +34,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # bad
             # alb.Flip(1),
             # bad
-            alb.RandomRotate90(),
+            # alb.RandomRotate90(),
             # Slightly worse
             # alb.ShiftScaleRotate(
             #     shift_limit=0.0625,
