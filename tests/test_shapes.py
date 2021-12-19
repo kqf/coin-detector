@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from detectors.shapes import to_ellipse, to_recatangle, to_disc, to_polygon
-
 from detectors.shapes import box
 
 
@@ -14,23 +13,15 @@ def image():
     return img
 
 
-def test_shapes(image):
-    bbox = [350, 50, 80, 50]
-    image = to_ellipse(image, *bbox)
+@pytest.mark.parametrize("method", [
+    to_ellipse,
+    to_recatangle,
+    to_disc,
+    to_polygon,
+])
+def test_shapes(method, image):
+    bbox = [150, 50, 80, 50]
+    image = method(image, *bbox)
     box(image, *bbox)
-
-    bbox = [350, 150, 50, 80]
-    image = to_recatangle(image, *bbox)
-    box(image, *bbox)
-
-    bbox = [350, 250, 50, 80]
-    image = to_disc(image, *bbox)
-    box(image, *bbox)
-
-    bbox = [350, 350, 50, 100]
-    image = to_polygon(image, *bbox)
-    box(image, *bbox)
-
     plt.imshow(image)
-    box(image, *bbox)
     plt.show()
