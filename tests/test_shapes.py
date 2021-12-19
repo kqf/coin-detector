@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from detectors.shapes import to_ellipse, to_recatangle, to_disc, to_polygon
-
 from detectors.shapes import box
 
 
@@ -21,7 +20,7 @@ def image():
     to_polygon,
 ])
 def test_shapes(method, image):
-    bbox = [350, 50, 80, 50]
+    bbox = [150, 50, 80, 50]
     image = method(image, *bbox)
     box(image, *bbox)
     plt.imshow(image)
