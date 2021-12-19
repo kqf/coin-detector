@@ -13,7 +13,7 @@ def image():
     return img
 
 
-def on_box(image, cx, cy, w, h):
+def box_mask(image, cx, cy, w, h):
     x0, x1 = cx - w / 2, cx + w / 2
     y0, y1 = cy - h / 2, cy + h / 2
 
@@ -37,6 +37,6 @@ def test_shapes(method, image):
     box(image, *bbox)
     plt.imshow(image)
     plt.show()
-    mask = on_box(image, *bbox)
-    assert image[mask].any()
-    assert not image[~mask].any()
+    within_box = box_mask(image, *bbox)
+    assert image[within_box].any(), "There is something within the box"
+    assert not image[~within_box].any(), "There is nothing outside the box"
