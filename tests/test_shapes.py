@@ -21,15 +21,15 @@ def box_mask(image, cx, cy, w, h):
         np.arange(image.shape[0]),
         np.arange(image.shape[1]),
     )
-    mask = (x0 < xx) & (xx < x1) & (y0 < yy) & (yy < y1)
+    mask = (x0 <= xx) & (xx <= x1) & (y0 <= yy) & (yy <= y1)
     return mask
 
 
 @pytest.mark.parametrize("method", [
     to_ellipse,
-    # to_recatangle,
-    # to_disc,
+    to_recatangle,
     # to_polygon,
+    # to_disc,
 ])
 def test_shapes(method, image):
     bbox = [150, 50, 80, 50]
