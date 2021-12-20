@@ -104,7 +104,7 @@ def to_polygon(img, cx, cy, w, h, n=3, rot=0):
     cols = cy + h / 2 * np.cos(2 * np.pi * i / n + rot)
     rows = cx + w / 2 * np.sin(2 * np.pi * i / n + rot)
 
-    rr, cc = polygon(rows, cols, shape=img.shape)
+    rr, cc = polygon(cols, rows, shape=img.shape)
     mask[rr, cc] = 1
     return mask.astype(np.bool8)
 

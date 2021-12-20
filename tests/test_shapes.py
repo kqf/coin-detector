@@ -28,7 +28,7 @@ def box_mask(image, cx, cy, w, h):
 @pytest.mark.parametrize("method", [
     to_ellipse,
     to_recatangle,
-    # to_polygon,
+    to_polygon,
     to_disc,
 ])
 def test_shapes(method, image):
