@@ -89,8 +89,8 @@ def to_ellipse(img, cx, cy, w, h):
 
 def to_recatangle(img, cx, cy, w, h):
     mask = np.zeros(img.shape[:2])
-    start = (cy - h // 2, cx - w // 2)
-    end = (cy + h // 2, cx + w // 2)
+    start = (int(cy - h / 2), int(cx - w / 2))
+    end = (int(cy + h / 2), int(cx + w / 2))
 
     rr, cc = rectangle(start, end, shape=img.shape)
     mask[rr, cc] = 1
