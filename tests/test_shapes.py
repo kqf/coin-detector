@@ -31,12 +31,16 @@ def box_mask(image, cx, cy, w, h):
     to_polygon,
     to_disc,
 ])
-def test_shapes(method, image):
-    bbox = [150, 50, 80, 50]
+@pytest.mark.parametrize("cx", np.arange(400, step=40))
+@pytest.mark.parametrize("cy", np.arange(400, step=40))
+def test_shapes(method, image, cx, cy):
+    bbox = [cx, cy, 80, 50]
     image = method(image, *bbox)
     box(image, *bbox)
+    plt.show(block=False)
     plt.imshow(image)
-    plt.show()
+    # plt.draw()
+    # plt.pause(0.000001)
     within_box = box_mask(image, *bbox)
     assert image[within_box].any(), "There is something within the box"
     assert not image[~within_box].any(), "There is nothing outside the box"
