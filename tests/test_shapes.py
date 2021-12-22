@@ -42,7 +42,6 @@ def test_shapes(method, image, cx, cy, w, h):
     bbox = [cx, cy, w, 50]
     image = method(image, *bbox)
     box(image, *bbox)
-    plt.show(block=False)
     plt.imshow(image)
     plt.draw()
     plt.pause(0.000001)
