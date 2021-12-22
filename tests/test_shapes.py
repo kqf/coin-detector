@@ -34,12 +34,12 @@ def box_mask(image, cx, cy, w, h):
 @pytest.mark.parametrize("cx", np.arange(0, 400, step=40))
 @pytest.mark.parametrize("cy", np.arange(0, 400, step=40))
 @pytest.mark.parametrize("w, h", [
-    (80, 50),
+    # (80, 50),
     (50, 80),
-    (50, 50),
+    # (50, 50),
 ])
 def test_shapes(method, image, cx, cy, w, h):
-    bbox = [cx, cy, w, 50]
+    bbox = [cx, cy, w, h]
     image = method(image, *bbox)
     box(image, *bbox)
     plt.imshow(image)
