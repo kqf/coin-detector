@@ -31,17 +31,17 @@ def bbox(cx, cy, w, h):
 
 
 @pytest.mark.parametrize("method", [
-    to_ellipse,
-    to_recatangle,
-    to_polygon,
+    # to_ellipse,
+    # to_recatangle,
+    # to_polygon,
     to_disc,
 ])
 @pytest.mark.parametrize("cx", np.arange(0, 400, step=40))
 @pytest.mark.parametrize("cy", np.arange(0, 400, step=40))
 @pytest.mark.parametrize("w, h", [
-    (80, 50),
+    # (80, 50),
     (50, 80),
-    (50, 50),
+    # (50, 50),
 ])
 def test_shapes(method, image, bbox):
     image = method(image, *bbox)
