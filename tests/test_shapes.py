@@ -31,9 +31,9 @@ def bbox(cx, cy, w, h):
 
 
 @pytest.mark.parametrize("method", [
-    # to_ellipse,
-    # to_recatangle,
-    # to_polygon,
+    to_ellipse,
+    to_recatangle,
+    to_polygon,
     to_disc,
 ])
 @pytest.mark.parametrize("cx", np.arange(0, 400, step=40))
