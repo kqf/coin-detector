@@ -75,7 +75,8 @@ def to_circle(img, cx, cy, w, h):
 
 def to_disc(img, cx, cy, w, h):
     mask = np.zeros(img.shape[:2])
-    rr, cc = disk((cx, cy), h / 2., shape=img.shape)
+    diameter = min(w, h)
+    rr, cc = disk((cx, cy), diameter / 2., shape=img.shape)
     mask[cc, rr] = 1
     return mask.astype(np.bool8)
 
