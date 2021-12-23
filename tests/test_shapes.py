@@ -25,6 +25,11 @@ def box_mask(image, cx, cy, w, h):
     return mask
 
 
+@pytest.fixture
+def bbox(cx, cy, w, h):
+    return [cx, cy, w, h]
+
+
 @pytest.mark.parametrize("method", [
     to_ellipse,
     to_recatangle,
@@ -38,8 +43,7 @@ def box_mask(image, cx, cy, w, h):
     (50, 80),
     (50, 50),
 ])
-def test_shapes(method, image, cx, cy, w, h):
-    bbox = [cx, cy, w, 50]
+def test_shapes(method, image, bbox):
     image = method(image, *bbox)
     box(image, *bbox)
     plt.imshow(image)
