@@ -16,11 +16,12 @@ def test_dataset(fake_dataset):
         assert len(labels["classes"].shape) == 1
 
     for image, labels in data:
-        plt.imshow(image.cpu().numpy().transpose(1, 2, 0))
+        channels_last = image.cpu().numpy().transpose(1, 2, 0)
+        plt.imshow(channels_last)
         masks = []
         for coords in labels["boxes"]:
-            box(image, *coords)
-            masks.append(box_mask(image, *coords))
+            box(channels_last, *coords)
+            masks.append(box_mask(channels_last, *coords))
         masks = np.stack(masks)
         arrows()
         plt.show()
