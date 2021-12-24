@@ -11,6 +11,18 @@ def _patch(xy, *args, **kwargs):
     return patches.Rectangle(xy, *args, **kwargs)
 
 
+def box_mask(image, cx, cy, w, h):
+    x0, x1 = cx - w / 2, cx + w / 2
+    y0, y1 = cy - h / 2, cy + h / 2
+
+    xx, yy = np.meshgrid(
+        np.arange(image.shape[0]),
+        np.arange(image.shape[1]),
+    )
+    mask = (x0 <= xx) & (xx <= x1) & (y0 <= yy) & (yy <= y1)
+    return mask
+
+
 def arrows():
     plt.grid(which="minor")
     ax = plt.gca()
