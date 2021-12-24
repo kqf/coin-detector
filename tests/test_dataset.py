@@ -1,7 +1,9 @@
+import numpy as np
 import matplotlib.pyplot as plt
 from detectors.dataset import DetectionDataset, read_dataset
 from detectors.shapes import box, arrows
 from detectors.augmentations import transform
+from detectors.shapes import box_mask
 
 
 def test_dataset(fake_dataset):
@@ -15,7 +17,10 @@ def test_dataset(fake_dataset):
 
     for image, labels in data:
         plt.imshow(image.cpu().numpy().transpose(1, 2, 0))
+        masks = []
         for coords in labels["boxes"]:
             box(image, *coords)
+            masks.append(box_mask(image, *coords))
+        masks = np.stack(masks)
         arrows()
         plt.show()
