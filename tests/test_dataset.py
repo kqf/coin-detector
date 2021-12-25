@@ -22,6 +22,6 @@ def test_dataset(fake_dataset):
         for coords in labels["boxes"]:
             box(channels_last, *coords)
             masks.append(box_mask(channels_last, *coords))
-        masks = np.stack(masks)
+        masks = np.stack(masks).any(axis=0)
         arrows()
         plt.show()
