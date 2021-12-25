@@ -17,11 +17,16 @@ def test_dataset(fake_dataset):
 
     for image, labels in data:
         channels_last = image.cpu().numpy().transpose(1, 2, 0)
-        plt.imshow(channels_last)
         masks = []
         for coords in labels["boxes"]:
             box(channels_last, *coords)
             masks.append(box_mask(channels_last, *coords))
-        masks = np.stack(masks).any(axis=0)
+
+        has_object = np.stack(masks).any(axis=0)
+        any_pixel = channels_last.sum(axis=-1)
+
+        assert (any_pixel[has_object] < 3).any()
+
         arrows()
+        plt.imshow(channels_last)
         plt.show()
