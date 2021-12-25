@@ -26,6 +26,7 @@ def test_dataset(fake_dataset):
         any_pixel = channels_last.sum(axis=-1)
 
         assert (any_pixel[has_object] < 3).any()
+        assert not (any_pixel[~has_object] < 3).any()
 
         arrows()
         plt.imshow(channels_last)
