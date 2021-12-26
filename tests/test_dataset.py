@@ -25,9 +25,9 @@ def test_dataset(fake_dataset):
         has_object = np.stack(masks).any(axis=0)
         nontrivial_pixel = channels_last.mean(axis=-1) < 1
 
-        # arrows()
-        # plt.imshow(channels_last)
-        # plt.show()
+        arrows()
+        plt.imshow(channels_last)
+        plt.show()
 
         assert nontrivial_pixel[has_object].any()
         assert not nontrivial_pixel[~has_object].any()
