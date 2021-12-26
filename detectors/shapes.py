@@ -45,8 +45,6 @@ def arrows():
 
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
-
-    print("Box ~~>", (cx, cy), w, h)
     ax = plt.gca()
     patch = _patch(
         (cx - w / 2, cy - h / 2), w, h,
