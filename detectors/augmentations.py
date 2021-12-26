@@ -26,7 +26,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     train_transforms = []
     if train:
         train_transforms = [
-            # alb.HorizontalFlip(),
+            alb.HorizontalFlip(),
             # Vertical flips don't change the position of an image
             # they seem to change only annotations
             # alb.VerticalFlip(),
