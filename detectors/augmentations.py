@@ -26,15 +26,19 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     train_transforms = []
     if train:
         train_transforms = [
+            # This one is definitely broken
             # alb.HorizontalFlip(),
             # Vertical flips don't change the position of an image
             # they seem to change only annotations
+            # This one is definitely broken
             # alb.VerticalFlip(),
+            # This one is definitely broken
             # alb.RandomRotate90(),
             # bad
+            # This one is definitely broken
             # alb.Flip(1),
-            # bad
-            # alb.RandomRotate90(),
+            # This one is definitely broken
+            # alb.ShiftScaleRotate(p=0.5),
             # Slightly worse
             # alb.ShiftScaleRotate(
             #     shift_limit=0.0625,
@@ -43,7 +47,8 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             #     p=0.9,
             #     border_mode=cv2.BORDER_REFLECT
             # ),
-            # Not implemented for bouding boxes
+            # This one is definitely broken
+            # alb.RandomCrop(width=350, height=350),
             alb.OneOf([
                 alb.HueSaturationValue(10, 15, 10),
                 alb.RandomBrightnessContrast(),
