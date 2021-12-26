@@ -72,7 +72,6 @@ def box(img, cx, cy, w, h):
 def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
-    print("Circle ~>", cx, cy, w, h)
 
     xx = (X[..., None] - cx)
     yy = (Y[..., None] - cy)
