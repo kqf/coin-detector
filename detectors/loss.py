@@ -51,11 +51,11 @@ def default_losses():
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
             enc_true=encode,
+            weight=0,
         ),
         "classes": WeightedLoss(
             torch.nn.CrossEntropyLoss(),
             enc_true=lambda y, _: y.reshape(-1).long(),
-            weight=0.05,
             needs_negatives=True,
         ),
     }
