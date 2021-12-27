@@ -7,7 +7,6 @@ from functools import partial
 
 
 def _patch(xy, *args, **kwargs):
-    print("Patch >", xy)
     return patches.Rectangle(xy, *args, **kwargs)
 
 
@@ -46,8 +45,6 @@ def arrows():
 
 def box(img, cx, cy, w, h):
     imw, imh, *_ = img.shape
-
-    print("Box ~~>", (cx, cy), w, h)
     ax = plt.gca()
     patch = _patch(
         (cx - w / 2, cy - h / 2), w, h,
@@ -75,7 +72,6 @@ def box(img, cx, cy, w, h):
 def to_circle(img, cx, cy, w, h):
     shape = img.shape
     Y, X = np.ogrid[:shape[0], :shape[1]]
-    print("Circle ~>", cx, cy, w, h)
 
     xx = (X[..., None] - cx)
     yy = (Y[..., None] - cy)
