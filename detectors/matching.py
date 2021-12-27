@@ -35,7 +35,7 @@ def match(
     # Negatives are the anchors that have quite small
     # largest overlap with objects
     # overlap[batch_size, n_obj, n_anchor]
-    overlap_, _ = overlap.max(dim=2)
+    overlap_, _ = overlap.max(dim=1)
     negative = overlap_ < neg_th
 
     return positive, negative

@@ -24,11 +24,14 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     y_true_neg_shape = [y_pred_neg.shape[0]]
     if len(y_true_pos.shape) > 1:
         y_true_neg_shape.append(y_true_pos.shape[-1])
+
+    # Assume that zero is the negative class, increase the labels by 1
     y_true_neg = torch.zeros(y_true_neg_shape, device=y_true_pos.device)
 
     y_pred_tot = torch.cat([y_pred_pos, y_pred_neg], dim=0)
     anchor_tot = torch.cat([anchor_pos, anchor_neg], dim=0)
-    y_true_tot = torch.squeeze(torch.cat([y_true_pos, y_true_neg], dim=0))
+    # Increase y_true_pos by 1 since negatives are zeros
+    y_true_tot = torch.squeeze(torch.cat([y_true_pos + 1, y_true_neg], dim=0))
     return y_pred_tot, y_true_tot, anchor_tot
 
 
