@@ -22,7 +22,7 @@ class DetectionNet(skorch.NeuralNet):
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
-    base_lr = 0.000001
+    base_lr = 0.0002
     batch_size = 16
 
     # scheduler = skorch.callbacks.LRScheduler(
