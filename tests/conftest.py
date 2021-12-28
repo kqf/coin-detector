@@ -72,7 +72,7 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
     df.loc[n_images // 2:, 'x_max'] = 160.0 * shift + width / 5.
     df.loc[n_images // 2:, 'y_min'] = 160.0 * shift
     df.loc[n_images // 2:, 'y_max'] = 160.0 * shift + width / 5.
-    df.loc[n_images // 2:, 'class_id'] = 0
+    df.loc[n_images // 2:, 'class_id'] = 1
 
     # Hardcode the colors
 
