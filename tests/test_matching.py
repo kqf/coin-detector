@@ -36,4 +36,4 @@ def test_matches(
 
     positives, negatives = match(target_boxes, mask, anchors)
     assert positives.shape == (batch_size, n_targets, n_anchors)
-    assert negatives.shape == (batch_size, n_targets)
+    assert negatives.shape == (batch_size, n_anchors)
