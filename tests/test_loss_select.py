@@ -43,7 +43,10 @@ def total_len(use_neg, positive, negative):
 @pytest.mark.parametrize("n_outputs", [2])
 @pytest.mark.parametrize("n_targets", [10])
 @pytest.mark.parametrize("n_anchors", [144])
-@pytest.mark.parametrize("use_neg", [False, True])
+@pytest.mark.parametrize("use_neg", [
+    # False,
+    True
+])
 def test_selects_samples(y_pred, y_true, anchors, positive, negative, use_neg):
     y_pred_, y_true_, anchor_ = select(
         y_pred, y_true, anchors, positive, negative, use_negatives=use_neg
