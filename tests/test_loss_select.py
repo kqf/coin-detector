@@ -16,7 +16,7 @@ def y_true(batch_size, n_targets, n_outputs):
 
 @pytest.fixture
 def anchors(batch_size, n_anchors):
-    return torch.zeros((batch_size, n_anchors)) + 3
+    return torch.zeros((batch_size, n_anchors)) + 4
 
 
 @pytest.fixture
