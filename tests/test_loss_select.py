@@ -58,5 +58,6 @@ def test_selects_samples(y_pred, y_true, anchors, positive, negative, use_neg):
     assert anchor_.shape[0] == n_samples
 
     assert torch.all(y_pred_ == 1)
-    assert torch.all(y_true_ <= 2)
+    # nobj + 1 is the maximal y_true_
+    assert torch.all(y_true_ <= 3)
     assert torch.all(anchor_ == 3)
