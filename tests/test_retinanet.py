@@ -20,9 +20,10 @@ def test_fpn(layer_outputs, feature_size=256):
     assert x3.shape[1] == 256
     assert x4.shape[1] == 256
     assert x5.shape[1] == 256
-    assert x6.shape[1] == 256
-    assert x7.shape[1] == 256
 
-    # assert x3.shape == o3.shape
-    # assert x4.shape == o4.shape
-    # assert x5.shape == o5.shape
+    assert x3.shape[2:] == o3.shape[2:]
+    assert x4.shape[2:] == o4.shape[2:]
+    assert x5.shape[2:] == o5.shape[2:]
+
+    assert x6.shape == (4, feature_size, 8, 8)
+    assert x7.shape == (4, feature_size, 4, 4)
