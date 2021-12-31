@@ -12,8 +12,16 @@ def layer_outputs(batch_size=4):
     return x1, x2, x3
 
 
+def initialize(model):
+    for p in model.parameters():
+        torch.nn.init.constant_(p, 1.)
+
+
+
 def test_fpn(layer_outputs, feature_size=256):
     model = FPN(16, 32, 64, feature_size=256)
+    initialize(model)
+
     o3, o4, o5 = layer_outputs
     x3, x4, x5, x6, x7 = model(layer_outputs)
 
@@ -27,3 +35,4 @@ def test_fpn(layer_outputs, feature_size=256):
 
     assert x6.shape == (4, feature_size, 8, 8)
     assert x7.shape == (4, feature_size, 4, 4)
+    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
