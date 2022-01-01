@@ -13,8 +13,20 @@ class PyramidBlock(torch.nn.Module):
         if skip is not None:
             x1 = x1 + skip
         xu = self.pu(x1)
-        x2 = self.p2(x1)
+        x2 = self.p2
         return x2, xu
+
+
+class Cumulative(torch.nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        self.steps = torch.nn.ModuleList(args)
+
+    def forward(self, x):
+        output = []
+        for step in self.steps:
+            output.append(step(output[-1]))
+        return output[1:]
 
 
 class FPN(torch.nn.Module):
