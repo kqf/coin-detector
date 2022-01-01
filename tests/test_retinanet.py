@@ -45,5 +45,7 @@ def test_fpn(layer_outputs, feature_size=256):
     assert x7.shape == (4, feature_size, 4, 4)
 
     x3_exp = expected((4, 256, 64, 64), 264961., 176641, 117761)
-    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
     torch.testing.assert_allclose(x3, x3_exp)
+
+    x4_exp = expected((4, 256, 32, 32), 225_793., 150_529., 100_353.)
+    torch.testing.assert_allclose(x4, x4_exp)
