@@ -2,11 +2,12 @@ import torch
 
 
 class PyramidBlock(torch.nn.Module):
-    def __init__(self, inp, out):
+    def __init__(self, inp, out, stride_2=1):
         super().__init__()
         self.p1 = torch.nn.Conv2d(inp, out, kernel_size=1, stride=1, padding=0)
         self.pu = torch.nn.Upsample(scale_factor=2, mode='nearest')
-        self.p2 = torch.nn.Conv2d(out, out, kernel_size=3, stride=1, padding=1)
+        self.p2 = torch.nn.Conv2d(
+            out, out, kernel_size=3, stride=stride_2, padding=1)
 
     def forward(self, x):
         x1 = self.p1(x)
