@@ -17,11 +17,17 @@ def initialize(model):
         torch.nn.init.constant_(p, 1.)
 
 
-def expected(shape, fill, edge, corner):
+def expected(shape, fill, edge, corner, upper_left=False):
     x = torch.full(shape, fill)
-    x[:, :, :, [0, -1]] = edge
-    x[:, :, [0, -1]] = edge
+    x[:, :, :, 0] = edge
+    x[:, :, 0] = edge
     x[:, :, 0, 0] = corner
+
+    if upper_left:
+        return x
+
+    x[:, :, :, -1] = edge
+    x[:, :, -1] = edge
     x[:, :, 0, -1] = corner
     x[:, :, -1, 0] = corner
     x[:, :, -1, -1] = corner
@@ -53,6 +59,10 @@ def test_fpn(layer_outputs, feature_size=256):
 
     x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
     torch.testing.assert_allclose(x5, x5_exp)
-    # TODO: Fix me
-    # x6_exp = expected((4, 256, 8, 8), 577., 385., 257.)
-    # torch.testing.assert_allclose(x6, x6_exp)
+
+    x6_exp = expected((4, 256, 8, 8), 577., 385., 257., upper_left=True)
+    torch.testing.assert_allclose(x6, x6_exp)
+
+    x7_exp = expected((4, 256, 4, 4), 1_329_409.,
+                      738_817., 410_625., upper_left=True)
+    torch.testing.assert_allclose(x7, x7_exp)
