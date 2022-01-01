@@ -19,7 +19,8 @@ def initialize(model):
 
 def expected(shape, fill, edge, corner):
     x = torch.full(shape, fill)
-    x[:, :, :, [0, -1]] = x[:, :, [0, -1]] = edge
+    x[:, :, :, [0, -1]] = edge
+    x[:, :, [0, -1]] = edge
     x[:, :, 0, 0] = corner
     x[:, :, 0, -1] = corner
     x[:, :, -1, 0] = corner
@@ -44,6 +45,14 @@ def test_fpn(layer_outputs, feature_size=256):
     assert x6.shape == (4, feature_size, 8, 8)
     assert x7.shape == (4, feature_size, 4, 4)
 
-    x3_exp = expected((4, 256, 64, 64), 264961., 176641, 117761)
-    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
+    x3_exp = expected((4, 256, 64, 64), 264_961., 176_641, 117_761)
     torch.testing.assert_allclose(x3, x3_exp)
+
+    x4_exp = expected((4, 256, 32, 32), 225_793., 150_529., 100_353.)
+    torch.testing.assert_allclose(x4, x4_exp)
+
+    x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
+    torch.testing.assert_allclose(x5, x5_exp)
+    # TODO: Fix me
+    # x6_exp = expected((4, 256, 8, 8), 577., 385., 257.)
+    # torch.testing.assert_allclose(x6, x6_exp)
