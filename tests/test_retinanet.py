@@ -19,7 +19,8 @@ def initialize(model):
 
 def expected(shape, fill, edge, corner):
     x = torch.full(shape, fill)
-    x[:, :, :, [0, -1]] = x[:, :, [0, -1]] = edge
+    x[:, :, :, [0, -1]] = edge
+    x[:, :, [0, -1]] = edge
     x[:, :, 0, 0] = corner
     x[:, :, 0, -1] = corner
     x[:, :, -1, 0] = corner
@@ -52,3 +53,6 @@ def test_fpn(layer_outputs, feature_size=256):
 
     x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
     torch.testing.assert_allclose(x5, x5_exp)
+    # TODO: Fix me
+    # x6_exp = expected((4, 256, 8, 8), 577., 385., 257.)
+    # torch.testing.assert_allclose(x6, x6_exp)
