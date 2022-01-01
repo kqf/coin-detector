@@ -1,16 +1,26 @@
 import torch
 
 
+class PyramidBlock(torch.nn.Module):
+    def __init__(self, inp, out):
+        super().__init__()
+        self.p1 = torch.nn.Conv2d(inp, out, kernel_size=1, stride=1, padding=0)
+        self.pu = torch.nn.Upsample(scale_factor=2, mode='nearest')
+        self.p2 = torch.nn.Conv2d(out, out, kernel_size=3, stride=1, padding=1)
+
+    def forward(self, x):
+        x1 = self.p1(x)
+        xu = self.pu(x1)
+        x2 = self.p2(x1)
+        return x2, xu
+
+
 class FPN(torch.nn.Module):
     def __init__(self, c3, c4, c5, feature_size=256):
         super(FPN, self).__init__()
 
         # upsample c5 to get p5 from the fpn paper
-        self.p5_1 = torch.nn.Conv2d(c5, feature_size,
-                                    kernel_size=1, stride=1, padding=0)
-        self.p5_upsampled = torch.nn.Upsample(scale_factor=2, mode='nearest')
-        self.p5_2 = torch.nn.Conv2d(feature_size, feature_size,
-                                    kernel_size=3, stride=1, padding=1)
+        self.p5 = PyramidBlock(c5, feature_size)
 
         # add p5 elementwise to c4
         self.p4_1 = torch.nn.Conv2d(c4, feature_size,
@@ -37,9 +47,7 @@ class FPN(torch.nn.Module):
     def forward(self, inputs):
         c3, c4, c5 = inputs
 
-        p5_x = self.p5_1(c5)
-        p5_upsampled_x = self.p5_upsampled(p5_x)
-        p5_x = self.p5_2(p5_x)
+        p5_x, p5_upsampled_x = self.p5(c5)
 
         p4_x = self.p4_1(c4)
         p4_x = p5_upsampled_x + p4_x
