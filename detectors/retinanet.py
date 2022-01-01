@@ -44,11 +44,11 @@ class FPN(torch.nn.Module):
     def forward(self, inputs):
         c3, c4, c5 = inputs
 
-        p5_x, p5_upsampled_x = self.p5(c5)
-        p4_x, p4_upsampled_x = self.p4(c4, p5_upsampled_x)
-        p3_x, ______________ = self.p3(c3, p4_upsampled_x)
+        x5, u5 = self.p5(c5)
+        x4, u4 = self.p4(c4, u5)
+        x3, __ = self.p3(c3, u4)
 
-        p6_x = self.p6(c5)
-        p7_x = self.p7(p6_x)
+        x6 = self.p6(c5)
+        x7 = self.p7(x6)
 
-        return p3_x, p4_x, p5_x, p6_x, p7_x
+        return x3, x4, x5, x6, x7
