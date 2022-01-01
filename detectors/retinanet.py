@@ -29,6 +29,19 @@ class Cumulative(torch.nn.Module):
         return output[1:]
 
 
+class Pyramial(torch.nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        self.steps = torch.nn.ModuleList(args)
+
+    def forward(self, features, *args):
+        output = []
+        for x, step in zip(features, self.steps):
+            x_out, *args = step(x, *args)
+            output.append(x_out)
+        return output[::-1]
+
+
 class FPN(torch.nn.Module):
     def __init__(self, c3, c4, c5, feature_size=256):
         super(FPN, self).__init__()
