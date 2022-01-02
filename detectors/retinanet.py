@@ -64,5 +64,4 @@ class FPN(torch.nn.Module):
         x3, __ = self.p3(c3, u4)
 
         x6, x7 = self.p6_7(c5)
-
         return x3, x4, x5, x6, x7
