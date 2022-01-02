@@ -53,12 +53,11 @@ class FPN(torch.nn.Module):
             # add p4 elementwise to c3
             PyramidBlock(c3, feature_size, scale_factor=1),
         )
-
+        
         self.p6_7 = Cumulative(
             # "p6 is obtained via a 3x3 stride-2 conv on c5"
             torch.nn.Conv2d(c5, feature_size,
                             kernel_size=3, stride=2, padding=1),
-
             # "p7 is computed by applying relu followed
             # by a 3x3 stride-2conv on p6
             torch.nn.Sequential(
@@ -78,5 +77,4 @@ class FPN(torch.nn.Module):
         x5, x4, x3 = self.p5_4_3(inputs[::-1])
 
         x6, x7 = self.p6_7(c5)
-
         return x3, x4, x5, x6, x7
