@@ -76,5 +76,13 @@ def test_default_fpn(layer_outputs, feature_size=256):
     initialize(model)
 
     inputs = OrderedDict([(str(i), l) for i, l in enumerate(layer_outputs)])
-    outputs = model(inputs)
-    print(outputs)
+    output = OrderedDict(model(inputs))
+
+    x3_exp = expected((4, 256, 64, 64), 264_961., 176_641, 117_761)
+    torch.testing.assert_allclose(output["0"], x3_exp)
+
+    x4_exp = expected((4, 256, 32, 32), 225_793., 150_529., 100_353.)
+    torch.testing.assert_allclose(output["1"], x4_exp)
+
+    x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
+    torch.testing.assert_allclose(output["2"], x5_exp)
