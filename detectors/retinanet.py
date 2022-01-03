@@ -82,7 +82,7 @@ class FPN(torch.nn.Module):
 
 
 class RetinaNet(torch.nn.Module):
-    def __init__(self, layer_idx=None):
+    def __init__(self, layer_idx=None, out_channels=256):
         super().__init__()
         backbone = None
         layer_idx = layer_idx or [1, 2, 3, 4]
@@ -94,5 +94,4 @@ class RetinaNet(torch.nn.Module):
         in_channels_stage2 = backbone.inplanes // 8
         in_channels_list = [in_channels_stage2 *
                             2 ** (i - 1) for i in return_layers]
-        out_channels = 256
         self.fpn = FPN(*in_channels_list, feature_size=out_channels)
