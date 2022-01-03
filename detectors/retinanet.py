@@ -29,24 +29,35 @@ class Cumulative(torch.nn.Module):
         return output[1:]
 
 
+class Pyramial(torch.nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        self.steps = torch.nn.ModuleList(args)
+
+    def forward(self, features, *args):
+        output = []
+        for x, step in zip(features, self.steps):
+            x_out, *args = step(x, *args)
+            output.append(x_out)
+        return output
+
+
 class FPN(torch.nn.Module):
     def __init__(self, c3, c4, c5, feature_size=256):
         super(FPN, self).__init__()
-
-        # upsample c5 to get p5 from the fpn paper
-        self.p5 = PyramidBlock(c5, feature_size)
-
-        # add p5 elementwise to c4
-        self.p4 = PyramidBlock(c4, feature_size)
-
-        # add p4 elementwise to c3
-        self.p3 = PyramidBlock(c3, feature_size, scale_factor=1)
+        self.p5_4_3 = Pyramial(
+            # upsample c5 to get p5 from the fpn paper
+            PyramidBlock(c5, feature_size),
+            # add p5 elementwise to c4
+            PyramidBlock(c4, feature_size),
+            # add p4 elementwise to c3
+            PyramidBlock(c3, feature_size, scale_factor=1),
+        )
 
         self.p6_7 = Cumulative(
             # "p6 is obtained via a 3x3 stride-2 conv on c5"
             torch.nn.Conv2d(c5, feature_size,
                             kernel_size=3, stride=2, padding=1),
-
             # "p7 is computed by applying relu followed
             # by a 3x3 stride-2conv on p6
             torch.nn.Sequential(
@@ -57,11 +68,13 @@ class FPN(torch.nn.Module):
         )
 
     def forward(self, inputs):
-        c3, c4, c5 = inputs
+        *_, c5 = inputs
 
-        x5, u5 = self.p5(c5)
-        x4, u4 = self.p4(c4, u5)
-        x3, __ = self.p3(c3, u4)
+        # x5, u5 = self.p5(c5)
+        # x4, u4 = self.p4(c4, u5)
+        # x3, __ = self.p3(c3, u4)
+
+        x5, x4, x3 = self.p5_4_3(inputs[::-1])
 
         x6, x7 = self.p6_7(c5)
         return x3, x4, x5, x6, x7
