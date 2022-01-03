@@ -1,5 +1,8 @@
+from collections import OrderedDict
+
 import pytest
 import torch
+from torchvision.ops import FeaturePyramidNetwork
 
 from detectors.retinanet import FPN
 
@@ -66,3 +69,12 @@ def test_fpn(layer_outputs, feature_size=256):
     x7_exp = expected((4, 256, 4, 4), 1_329_409.,
                       738_817., 410_625., upper_left=True)
     torch.testing.assert_allclose(x7, x7_exp)
+
+
+def test_default_fpn(layer_outputs, feature_size=256):
+    model = FeaturePyramidNetwork(layer_outputs, feature_size)
+    initialize(model)
+
+    inputs = OrderedDict([(str(i), l) for i, l in enumerate(layer_outputs)])
+    outputs = model(inputs)
+    print(outputs)
