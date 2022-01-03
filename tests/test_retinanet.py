@@ -37,8 +37,8 @@ def expected(shape, fill, edge, corner, upper_left=False):
     return x
 
 
-def test_fpn(layer_outputs, feature_size=256):
-    model = FPN(16, 32, 64, feature_size=256)
+def test_fpn(layer_outputs, out_channels=256):
+    model = FPN(16, 32, 64, out_channels=out_channels)
     initialize(model)
     o3, o4, o5 = layer_outputs
     x3, x4, x5, x6, x7 = model(layer_outputs)
@@ -51,8 +51,8 @@ def test_fpn(layer_outputs, feature_size=256):
     assert x4.shape[2:] == o4.shape[2:]
     assert x5.shape[2:] == o5.shape[2:]
 
-    assert x6.shape == (4, feature_size, 8, 8)
-    assert x7.shape == (4, feature_size, 4, 4)
+    assert x6.shape == (4, out_channels, 8, 8)
+    assert x7.shape == (4, out_channels, 4, 4)
 
     x3_exp = expected((4, 256, 64, 64), 264_961., 176_641, 117_761)
     torch.testing.assert_allclose(x3, x3_exp)
