@@ -1,4 +1,5 @@
 import torch
+from torchvision.models._utils import IntermediateLayerGetter
 
 
 class PyramidBlock(torch.nn.Module):
@@ -78,3 +79,20 @@ class FPN(torch.nn.Module):
 
         x6, x7 = self.p6_7(c5)
         return x3, x4, x5, x6, x7
+
+
+class RetinaNet(torch.nn.Module):
+    def __init__(self, layer_idx=None):
+        super().__init__()
+        backbone = None
+        layer_idx = layer_idx or [1, 2, 3, 4]
+        return_layers = {f"layer{k}": str(v) for v, k in enumerate(layer_idx)}
+
+        self.body = IntermediateLayerGetter(
+            backbone, return_layers=return_layers)
+
+        in_channels_stage2 = backbone.inplanes // 8
+        in_channels_list = [in_channels_stage2 *
+                            2 ** (i - 1) for i in return_layers]
+        out_channels = 256
+        self.fpn = FPN(*in_channels_list, feature_size=out_channels)
