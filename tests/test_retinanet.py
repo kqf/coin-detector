@@ -72,7 +72,7 @@ def test_fpn(layer_outputs, feature_size=256):
 
 
 def test_default_fpn(layer_outputs, feature_size=256):
-    model = FeaturePyramidNetwork(layer_outputs, feature_size)
+    model = FeaturePyramidNetwork([16, 32, 64], feature_size)
     initialize(model)
 
     inputs = OrderedDict([(str(i), l) for i, l in enumerate(layer_outputs)])
