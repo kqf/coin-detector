@@ -1,7 +1,6 @@
 import torch
-from torchvision.models._utils import IntermediateLayerGetter
 from torchvision.models import resnet50
-
+from torchvision.models._utils import IntermediateLayerGetter
 
 
 class PyramidBlock(torch.nn.Module):

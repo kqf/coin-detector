@@ -4,7 +4,7 @@ import pytest
 import torch
 from torchvision.ops import FeaturePyramidNetwork
 
-from detectors.retinanet import FPN
+from detectors.retinanet import FPN, RetinaNet
 
 
 @pytest.fixture
@@ -86,3 +86,14 @@ def test_default_fpn(layer_outputs, feature_size=256):
 
     x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
     torch.testing.assert_allclose(output["2"], x5_exp)
+
+
+@pytest.fixture
+def batch(batch_size=4):
+    return torch.ones(batch_size, 3, 360, 360)
+
+
+def test_retinanet(batch):
+    model = RetinaNet()
+    output = model(batch)
+    print(output)
