@@ -1,5 +1,7 @@
 import torch
 from torchvision.models._utils import IntermediateLayerGetter
+from torchvision.models import resnet50
+
 
 
 class PyramidBlock(torch.nn.Module):
@@ -82,9 +84,10 @@ class FPN(torch.nn.Module):
 
 
 class RetinaNet(torch.nn.Module):
-    def __init__(self, layer_idx=None, out_channels=256):
+    def __init__(self, layer_idx=None, out_channels=256, pretrained=True):
         super().__init__()
-        backbone = None
+        backbone = resnet50(pretrained=pretrained)
+
         layer_idx = layer_idx or [1, 2, 3, 4]
         return_layers = {f"layer{k}": str(v) for v, k in enumerate(layer_idx)}
 
