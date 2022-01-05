@@ -93,7 +93,11 @@ def batch(batch_size=4):
     return torch.ones(batch_size, 3, 480, 480)
 
 
-def test_retinanet(batch):
-    model = RetinaNet()
-    output = model(batch)
-    print(output)
+def test_retinanet(batch, output_features=256):
+    model = RetinaNet(out_channels=output_features)
+    x3, x4, x5, x6, x7 = model(batch)
+    assert x3.shape == (4, 256, 60, 60)
+    assert x4.shape == (4, 256, 30, 30)
+    assert x5.shape == (4, 256, 15, 15)
+    assert x6.shape == (4, 256, 8, 8)
+    assert x7.shape == (4, 256, 4, 4)
