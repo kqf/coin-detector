@@ -94,7 +94,6 @@ def batch(batch_size=4):
 
 
 def test_retinanet(batch):
-    RetinaNet()
-    # model = RetinaNet()
-    # output = model(batch)
-    # print(output)
+    model = RetinaNet()
+    output = model(batch)
+    print(output)
