@@ -87,7 +87,7 @@ class RetinaNet(torch.nn.Module):
         super().__init__()
         backbone = resnet50(pretrained=pretrained)
 
-        # layer_idx = layer_idx or [1, 2, 3, 4]
+        # layer_idx = layer_idx or [1, 2, 3]
         layer_idx = layer_idx or [2, 3, 4]
         return_layers = {f"layer{k}": str(v) for v, k in enumerate(layer_idx)}
 
@@ -98,3 +98,8 @@ class RetinaNet(torch.nn.Module):
         in_channels_list = [in_channels_stage2 *
                             2 ** (i - 1) for i in layer_idx]
         self.fpn = FPN(*in_channels_list, out_channels=out_channels)
+
+    def forward(self, x):
+        body = self.body(x)
+        output = self.fpn(list(body.values()))
+        return output
