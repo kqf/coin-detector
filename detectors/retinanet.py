@@ -95,5 +95,5 @@ class RetinaNet(torch.nn.Module):
 
         in_channels_stage2 = backbone.inplanes // 8
         in_channels_list = [in_channels_stage2 *
-                            2 ** (i - 1) for i in return_layers]
+                            2 ** (i - 1) for i in layer_idx]
         self.fpn = FPN(*in_channels_list, out_channels=out_channels)
