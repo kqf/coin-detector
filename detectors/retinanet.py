@@ -87,7 +87,8 @@ class RetinaNet(torch.nn.Module):
         super().__init__()
         backbone = resnet50(pretrained=pretrained)
 
-        layer_idx = layer_idx or [1, 2, 3, 4]
+        # layer_idx = layer_idx or [1, 2, 3, 4]
+        layer_idx = layer_idx or [2, 3, 4]
         return_layers = {f"layer{k}": str(v) for v, k in enumerate(layer_idx)}
 
         self.body = IntermediateLayerGetter(
