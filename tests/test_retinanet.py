@@ -95,6 +95,7 @@ def batch(batch_size=4):
 
 def test_retinanet(batch, output_features=256):
     model = RetinaNet(out_channels=output_features)
+    initialize(model)
     x3, x4, x5, x6, x7 = model(batch)
     assert x3.shape == (4, output_features, 60, 60)
     assert x4.shape == (4, output_features, 30, 30)
