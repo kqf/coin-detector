@@ -101,4 +101,3 @@ def test_retinanet(batch, output_features=256):
     assert x5.shape == (4, output_features, 15, 15)
     assert x6.shape == (4, output_features, 8, 8)
     assert x7.shape == (4, output_features, 4, 4)
-
