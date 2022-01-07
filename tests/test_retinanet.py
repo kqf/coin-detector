@@ -98,7 +98,9 @@ def test_retinanet(batch, output_features=256):
     initialize(model)
     x3, x4, x5, x6, x7 = model(batch)
 
-    assert len(torch.unique(x3)) == 1141
+    assert x3.min() == 3073.
+    assert x3.median() == 56829228.
+
     assert x3.shape == (4, output_features, 60, 60)
     assert x4.shape == (4, output_features, 30, 30)
     assert x5.shape == (4, output_features, 15, 15)
