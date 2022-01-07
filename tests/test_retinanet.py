@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 import pytest
 import torch
+import matplotlib.pyplot as plt
 from torchvision.ops import FeaturePyramidNetwork
 
 from detectors.retinanet import FPN, RetinaNet
@@ -96,13 +97,17 @@ def batch(batch_size=4):
 def test_retinanet(batch, output_features=256):
     model = RetinaNet(out_channels=output_features)
     initialize(model)
-    x3, x4, x5, x6, x7 = model(batch)
+    outputs = model(batch)
 
+    x3, x4, x5, x6, x7 = outputs
     assert x3.min() == 3073.
-    assert x3.median() == 56829228.
 
     assert x3.shape == (4, output_features, 60, 60)
     assert x4.shape == (4, output_features, 30, 30)
     assert x5.shape == (4, output_features, 15, 15)
     assert x6.shape == (4, output_features, 8, 8)
     assert x7.shape == (4, output_features, 4, 4)
+
+    for layer in outputs:
+        plt.imshow(layer[0, 0].detach().numpy())
+        plt.show()
