@@ -99,7 +99,6 @@ def test_retinanet(batch, output_features=256):
     x3, x4, x5, x6, x7 = model(batch)
 
     assert x3.min() == 3073.
-    assert x3.mean() == 45475116.
     assert x3.max() == 78254864.
 
     assert x3.shape == (4, output_features, 60, 60)

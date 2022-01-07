@@ -5,8 +5,8 @@ mypy
 numpy
 pandas
 opencv-python
-torch==1.10.1
-torchvision==0.11.2
+torch
+torchvision
 skorch
 matplotlib
 albumentations
