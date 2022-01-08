@@ -90,7 +90,7 @@ def test_default_fpn(layer_outputs, feature_size=256):
 
 
 @pytest.fixture
-def batch(image_size, batch_size=4):
+def batch(image_size=480, batch_size=4):
     return torch.ones(batch_size, 3, image_size, image_size)
 
 
