@@ -90,10 +90,11 @@ def test_default_fpn(layer_outputs, feature_size=256):
 
 
 @pytest.fixture
-def batch(batch_size=4, image_size=480 * 2):
+def batch(image_size, batch_size=4):
     return torch.ones(batch_size, 3, image_size, image_size)
 
 
+@pytest.mark.parametrize("image_size", [480, 2 * 480, 560])
 def test_retinanet(batch, output_features=256):
     model = RetinaNet(out_channels=output_features)
     initialize(model)
