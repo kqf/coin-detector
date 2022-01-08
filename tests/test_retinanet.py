@@ -101,6 +101,8 @@ def test_retinanet(batch, output_features=256):
 
     x3, x4, x5, x6, x7 = outputs
     assert x3.min() == 3073.
+    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
+    assert x3.max() > 1e5
 
     assert x3.shape == (4, output_features, 60, 60)
     assert x4.shape == (4, output_features, 30, 30)
