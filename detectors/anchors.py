@@ -53,18 +53,21 @@ class AnchorBoxes(torch.nn.Module):
 
                 # outs[layer_h, layer_w, 4] -> outs[layer_h * layer_w, 4]
                 anchors.append(outs.reshape(num_anchors, -1))
+
             # list of num_layers tensors [n_anchors * layer_h * layer_w, 4]
             out_layers.append(torch.cat(anchors, dim=0))
             # create a lookup for which anchor comes from which layer
-            idx_tensor.append(torch.full(num_anchors, idx, device=self.device))
+            idx_tensor.append(
+                torch.full((num_anchors,), idx, device=self.device)
+            )
 
         # single_example[n_layers * n_anchors * h * w, 4]
         single_example = torch.cat(out_layers, dim=0)
-        single_indices = torch.cat(out_layers, dim=0)
+        single_indices = torch.cat(idx_tensor, dim=0)
 
         # batch[batch_size, n_layers * n_anchors * h * w, 4]
         batch = single_example.repeat((b, 1, 1))
-        batch_indices = single_indices.repeat((b, 1, 1))
+        batch_indices = single_indices.repeat((b, 1))
         return batch, batch_indices
 
     def to(self, device):
