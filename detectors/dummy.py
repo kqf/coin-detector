@@ -42,7 +42,10 @@ class DummyDetector(torch.nn.Module):
         outputs = {n: h(latent) for n, h in self.heads.items()}
 
         _, _, *image_shape = x.shape
-        return outputs, self.anchors(image_shape, [latent])
+
+        # Ignore the layer indices
+        anchors, _ = self.anchors(image_shape, [latent])
+        return outputs, anchors
 
     def to(self, device):
         self.anchors.to(device)
