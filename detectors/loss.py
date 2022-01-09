@@ -77,7 +77,7 @@ class DetectionLoss(torch.nn.Module):
         positives, negatives = match(
             to_coords(y["boxes"]),
             y["classes"] < 0,
-            to_coords(anchors[..., 1:])
+            to_coords(anchors)
         )
 
         # fselect -- selects only matched positives / negatives
@@ -94,7 +94,7 @@ class DetectionLoss(torch.nn.Module):
             # ~> anchor_[n_samples, 4]
 
             y_pred_, y_true_, anchor_ = fselect(
-                preds[name], y[name], anchors[..., 1:],
+                preds[name], y[name], anchors,
                 use_negatives=subloss.needs_negatives
             )
 
