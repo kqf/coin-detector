@@ -17,6 +17,8 @@ def features(image_shape, batch_size=16, channels=3):
 def test_anchors(image_shape, features):
     boxlayer = AnchorBoxes()
     boxes = boxlayer(image_shape, [features])
+    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
+    
     batch_size, n_anchors, n_coords = boxes.shape
     assert n_coords == 5
 
