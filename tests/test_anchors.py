@@ -16,9 +16,12 @@ def features(image_shape, batch_size=16, channels=3):
 
 def test_anchors(image_shape, features):
     boxlayer = AnchorBoxes()
-    boxes = boxlayer(image_shape, [features])
+    boxes, boxes_idx = boxlayer(image_shape, [features])
+
+    assert boxes.shape[:2] == boxes_idx.shape
+
     batch_size, n_anchors, n_coords = boxes.shape
-    assert n_coords == 5
+    assert n_coords == 4
 
     exp_batch_size, _, features_h, features_w = features.shape
     assert n_anchors == len(DEFAULT_ANCHORS[0]) * features_w * features_h
