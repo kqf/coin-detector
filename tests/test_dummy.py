@@ -16,4 +16,4 @@ def test_dummy(batch, kernel_size=6):
     assert outputs["boxes"].shape == (16, 36, 4)
     assert outputs["classes"].shape == (16, 36, 3)
     n_anchors = len(DEFAULT_ANCHORS[0]) * kernel_size * kernel_size
-    assert anchors.shape == (16, n_anchors, 6)
+    assert anchors.shape == (16, n_anchors, 4)
