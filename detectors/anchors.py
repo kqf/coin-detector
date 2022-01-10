@@ -66,9 +66,9 @@ class AnchorBoxes(torch.nn.Module):
         single_indices = torch.cat(idx_tensor, dim=0)
 
         # batch[batch_size, n_layers * n_anchors * h * w, 4]
-        batch = single_example.repeat((b, 1, 1))
-        batch_indices = single_indices.repeat((b, 1))
-        return batch, batch_indices
+        # batch = single_example.repeat((b, 1, 1))
+        # batch_indices = single_indices.repeat((b, 1))
+        return single_example, single_indices
 
     def to(self, device):
         self.device = device
