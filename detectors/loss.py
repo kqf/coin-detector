@@ -12,7 +12,7 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     batch_, obj_, anchor_ = torch.where(positives)
     y_pred_pos = y_pred[batch_, anchor_]
     y_true_pos = y_true[batch_, obj_]
-    anchor_pos = anchor[batch_, anchor_]
+    anchor_pos = anchor[anchor_]
 
     if not use_negatives:
         return y_pred_pos, y_true_pos, anchor_pos
@@ -77,7 +77,7 @@ class DetectionLoss(torch.nn.Module):
         positives, negatives = match(
             to_coords(y["boxes"]),
             y["classes"] < 0,
-            to_coords(anchors)
+            to_coords(anchors[None])
         )
 
         # fselect -- selects only matched positives / negatives
