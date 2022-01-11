@@ -89,7 +89,7 @@ class RetinaNet(torch.nn.Module):
             self,
             layer_idx=None,
             out_channels=256,
-            n_classes=3,
+            n_classes=2,
             pretrained=True
     ):
         super().__init__()
