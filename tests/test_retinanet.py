@@ -99,4 +99,4 @@ def test_retinanet(batch, output_features=256):
     outputs = model(batch)
 
     assert outputs["boxes"].shape == (4, 4805, 4)
-    assert outputs["classes"].shape == (4, 4805, 4)
+    assert outputs["classes"].shape == (4, 4805, 3)
