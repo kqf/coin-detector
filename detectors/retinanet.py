@@ -116,7 +116,9 @@ class RetinaNet(torch.nn.Module):
         body = self.body(x)
         pyramids = self.fpn(list(body.values()))
 
-        outputs = {n: [l(x) for x in pyramids] for n, l in self.heads.items()}
-        print(outputs)
+        outputs = {
+            name: torch.cat([h(x) for x in pyramids], dim=1)
+            for name, h in self.heads.items()
+        }
 
-        return pyramids
+        return outputs
