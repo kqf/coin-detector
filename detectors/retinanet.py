@@ -89,7 +89,8 @@ class RetinaNet(torch.nn.Module):
             self,
             layer_idx=None,
             out_channels=256,
-            n_classes=3,
+            n_classes=2,
+            kernel_size=1,
             pretrained=True
     ):
         super().__init__()
@@ -109,7 +110,7 @@ class RetinaNet(torch.nn.Module):
         self.heads = default_heads(
             n_classes=n_classes,
             channels=out_channels,
-            kernel_size=1
+            kernel_size=kernel_size,
         )
 
     def forward(self, x):
