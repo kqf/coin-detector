@@ -2,6 +2,8 @@ import torch
 from torchvision.models import resnet50
 from torchvision.models._utils import IntermediateLayerGetter
 
+from detectors.dummy import default_heads
+
 
 class PyramidBlock(torch.nn.Module):
     def __init__(self, inp, out, scale_factor=2):
@@ -83,7 +85,13 @@ class FPN(torch.nn.Module):
 
 
 class RetinaNet(torch.nn.Module):
-    def __init__(self, layer_idx=None, out_channels=256, pretrained=True):
+    def __init__(
+            self,
+            layer_idx=None,
+            out_channels=256,
+            n_classes=3,
+            pretrained=True
+    ):
         super().__init__()
         backbone = resnet50(pretrained=pretrained)
 
@@ -98,8 +106,19 @@ class RetinaNet(torch.nn.Module):
         in_channels_list = [in_channels_stage2 *
                             2 ** (i - 1) for i in layer_idx]
         self.fpn = FPN(*in_channels_list, out_channels=out_channels)
+        self.heads = default_heads(
+            n_classes=n_classes,
+            channels=out_channels,
+            kernel_size=1
+        )
 
     def forward(self, x):
         body = self.body(x)
-        output = self.fpn(list(body.values()))
-        return output
+        pyramids = self.fpn(list(body.values()))
+
+        outputs = {
+            name: torch.cat([h(x) for x in pyramids], dim=1)
+            for name, h in self.heads.items()
+        }
+
+        return outputs
