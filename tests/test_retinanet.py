@@ -101,3 +101,4 @@ def test_retinanet(batch, output_features=256, kernel_size=1):
     n_anchors = 4805
     assert outputs["boxes"].shape == (4, n_anchors, 4)
     assert outputs["classes"].shape == (4, n_anchors, 3)
+    assert anchors.shape == (4, n_anchors, 4)
