@@ -3,7 +3,7 @@ from torchvision.models import resnet50
 from torchvision.models._utils import IntermediateLayerGetter
 
 from detectors.dummy import default_heads
-from detectors.anchors import AnchorBoxes
+from detectors.anchors import AnchorBoxes, DEFAULT_ANCHORS
 
 
 class PyramidBlock(torch.nn.Module):
@@ -92,7 +92,7 @@ class RetinaNet(torch.nn.Module):
             out_channels=256,
             n_classes=2,
             kernel_size=1,
-            pretrained=True
+            pretrained=True,
     ):
         super().__init__()
         backbone = resnet50(pretrained=pretrained)
@@ -113,7 +113,7 @@ class RetinaNet(torch.nn.Module):
             channels=out_channels,
             kernel_size=kernel_size,
         )
-        self.anchors = AnchorBoxes()
+        self.anchors = AnchorBoxes(DEFAULT_ANCHORS * 5)
 
     def forward(self, x):
         body = self.body(x)
