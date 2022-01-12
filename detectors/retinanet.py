@@ -93,6 +93,7 @@ class RetinaNet(torch.nn.Module):
             n_classes=2,
             kernel_size=1,
             pretrained=True,
+            anchors=None,
     ):
         super().__init__()
         backbone = resnet50(pretrained=pretrained)
@@ -113,7 +114,7 @@ class RetinaNet(torch.nn.Module):
             channels=out_channels,
             kernel_size=kernel_size,
         )
-        self.anchors = AnchorBoxes(DEFAULT_ANCHORS * 5)
+        self.anchors = AnchorBoxes(anchors or DEFAULT_ANCHORS * 5)
 
     def forward(self, x):
         body = self.body(x)
