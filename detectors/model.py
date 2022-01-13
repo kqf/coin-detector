@@ -1,6 +1,7 @@
 import skorch
 import torch
-from detectors.dummy import DummyDetector
+# from detectors.dummy import DummyDetector
+from detectors.retinanet import RetinaNet
 from detectors.loss import DetectionLoss
 
 
@@ -36,7 +37,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # )
 
     model = DetectionNet(
-        DummyDetector,
+        RetinaNet,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
