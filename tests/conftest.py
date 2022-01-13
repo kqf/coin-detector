@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 import pytest
 import torch
-from detectors.mc import make_image, make_colors
+
+from detectors.mc import make_colors, make_image
 
 
 def pytest_addoption(parser):
@@ -37,7 +38,7 @@ def to_image_path(path, x, extension=".png"):
 
 
 @pytest.fixture
-def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
+def annotations(fixed_seed, tmp_path, width=480, num_classes=2, n_samples=8):
     """
                                image_id          class_name  class_id rad_id   x_min   y_min   x_max   y_max
     0  50a418190bc3fb1ef1633bf9678929b3          No finding        14    R11     NaN     NaN     NaN     NaN
@@ -52,7 +53,6 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
 
     n_images = len(df)
     shift = 1 + df.index / len(df)
-    shift = 1
     df["image_id"] = df.index % n_samples
     df["class_id"] = -1
     df["image"] = df["image_id"].apply(
@@ -61,17 +61,19 @@ def annotations(fixed_seed, tmp_path, width=400, num_classes=2, n_samples=8):
 
     df['colors'] = list(make_colors(len(df)))
     df["colors"] = [np.array([77, 180, 198]), ] * len(df)
-    df.loc[:n_images // 2 - 1, 'x_min'] = 80.0 * shift
-    df.loc[:n_images // 2 - 1, 'x_max'] = 80.0 * shift + width / 5.
-    df.loc[:n_images // 2 - 1, 'y_min'] = 80.0 * shift
-    df.loc[:n_images // 2 - 1, 'y_max'] = 80.0 * shift + width / 5.
+
+    shift = width / 5.
+    df.loc[:n_images // 2 - 1, 'x_min'] = shift
+    df.loc[:n_images // 2 - 1, 'x_max'] = shift + shift
+    df.loc[:n_images // 2 - 1, 'y_min'] = shift
+    df.loc[:n_images // 2 - 1, 'y_max'] = shift + shift
     df.loc[:n_images // 2 - 1, 'class_id'] = 0
     # df = df.loc[:n_images // 2 - 1, :]
 
-    df.loc[n_images // 2:, 'x_min'] = 160.0 * shift
-    df.loc[n_images // 2:, 'x_max'] = 160.0 * shift + width / 5.
-    df.loc[n_images // 2:, 'y_min'] = 160.0 * shift
-    df.loc[n_images // 2:, 'y_max'] = 160.0 * shift + width / 5.
+    df.loc[n_images // 2:, 'x_min'] = 2 * shift
+    df.loc[n_images // 2:, 'x_max'] = 2 * shift + shift
+    df.loc[n_images // 2:, 'y_min'] = 2 * shift
+    df.loc[n_images // 2:, 'y_max'] = 2 * shift + shift
     df.loc[n_images // 2:, 'class_id'] = 1
 
     # Hardcode the colors
