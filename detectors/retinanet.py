@@ -126,5 +126,5 @@ class RetinaNet(torch.nn.Module):
         }
 
         _, _, *image_shape = x.shape
-        acnhors = self.anchors(image_shape, pyramids)
+        acnhors, _ = self.anchors(image_shape, pyramids)
         return outputs, acnhors
