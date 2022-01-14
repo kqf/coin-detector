@@ -1,9 +1,10 @@
 import torch
 from torchvision.models import resnet50
 from torchvision.models._utils import IntermediateLayerGetter
+from torchvision.models.detection.backbone_utils import mobilenet_backbone
 
+from detectors.anchors import DEFAULT_ANCHORS, AnchorBoxes
 from detectors.dummy import default_heads
-from detectors.anchors import AnchorBoxes, DEFAULT_ANCHORS
 
 
 class PyramidBlock(torch.nn.Module):
@@ -109,6 +110,43 @@ class RetinaNet(torch.nn.Module):
         in_channels_list = [in_channels_stage2 *
                             2 ** (i - 1) for i in layer_idx]
         self.fpn = FPN(*in_channels_list, out_channels=out_channels)
+        self.heads = default_heads(
+            n_classes=n_classes,
+            channels=out_channels,
+            kernel_size=kernel_size,
+        )
+        self.anchors = AnchorBoxes(anchors or DEFAULT_ANCHORS * 5)
+
+    def forward(self, x):
+        body = self.body(x)
+        pyramids = self.fpn(list(body.values()))
+
+        outputs = {
+            name: torch.cat([h(x) for x in pyramids], dim=1)
+            for name, h in self.heads.items()
+        }
+
+        _, _, *image_shape = x.shape
+        acnhors, _ = self.anchors(image_shape, pyramids)
+        return outputs, acnhors
+
+
+class MobileRetinaNet(torch.nn.Module):
+    def __init__(
+            self,
+            layer_idx=None,
+            out_channels=256,
+            n_classes=2,
+            kernel_size=1,
+            pretrained=True,
+            anchors=None,
+    ):
+        super().__init__()
+        self.fpn = mobilenet_backbone(
+            "mobilenetv2",
+            pretrained=pretrained,
+            fpn=True
+        )
         self.heads = default_heads(
             n_classes=n_classes,
             channels=out_channels,
