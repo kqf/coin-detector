@@ -143,7 +143,7 @@ class MobileRetinaNet(torch.nn.Module):
     ):
         super().__init__()
         self.fpn = mobilenet_backbone(
-            "mobilenetv2",
+            "mobilenet_v2",
             pretrained=pretrained,
             fpn=True
         )
@@ -155,14 +155,14 @@ class MobileRetinaNet(torch.nn.Module):
         self.anchors = AnchorBoxes(anchors or DEFAULT_ANCHORS * 5)
 
     def forward(self, x):
-        body = self.body(x)
-        pyramids = self.fpn(list(body.values()))
+        pyramids = self.fpn(x)
+        import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
 
         outputs = {
-            name: torch.cat([h(x) for x in pyramids], dim=1)
+            name: torch.cat([h(x) for x in pyramids.values()], dim=1)
             for name, h in self.heads.items()
         }
 
         _, _, *image_shape = x.shape
-        acnhors, _ = self.anchors(image_shape, pyramids)
+        acnhors, _ = self.anchors(image_shape, pyramids.values())
         return outputs, acnhors

@@ -4,7 +4,7 @@ import pytest
 import torch
 from torchvision.ops import FeaturePyramidNetwork
 
-from detectors.retinanet import FPN, RetinaNet
+from detectors.retinanet import FPN, MobileRetinaNet, RetinaNet
 
 
 @pytest.fixture
@@ -95,6 +95,18 @@ def batch(image_size=480, batch_size=4):
 
 def test_retinanet(batch, output_features=256, kernel_size=1):
     model = RetinaNet(out_channels=output_features, kernel_size=kernel_size)
+    initialize(model)
+    outputs, (anchors, _) = model(batch)
+
+    n_anchors = 4805
+    assert outputs["boxes"].shape == (4, n_anchors, 4)
+    assert outputs["classes"].shape == (4, n_anchors, 3)
+    assert anchors.shape == (4, n_anchors, 4)
+
+
+def test_mobileretinanet(batch, output_features=256, kernel_size=1):
+    model = MobileRetinaNet(out_channels=output_features,
+                            kernel_size=kernel_size)
     initialize(model)
     outputs, (anchors, _) = model(batch)
 
