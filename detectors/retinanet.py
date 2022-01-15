@@ -156,7 +156,6 @@ class MobileRetinaNet(torch.nn.Module):
 
     def forward(self, x):
         pyramids = self.fpn(x)
-        import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
 
         outputs = {
             name: torch.cat([h(x) for x in pyramids.values()], dim=1)
