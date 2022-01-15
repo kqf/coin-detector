@@ -110,7 +110,7 @@ def test_mobileretinanet(batch, output_features=256, kernel_size=1):
     initialize(model)
     outputs, anchors = model(batch)
 
-    n_anchors = 4805
+    n_anchors = 514
     assert outputs["boxes"].shape == (4, n_anchors, 4)
     assert outputs["classes"].shape == (4, n_anchors, 3)
     assert anchors.shape == (4, n_anchors, 4)
