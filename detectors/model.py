@@ -106,7 +106,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
             skorch.callbacks.PassthroughScoring(
-                name='boxes',
+                name='train_boxes',
                 on_train=True,
             ),
             skorch.callbacks.PassthroughScoring(
