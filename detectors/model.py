@@ -78,6 +78,14 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             skorch.callbacks.ProgressBar(),
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
+            skorch.callbacks.PassthroughScoring(
+                name='boxes',
+                on_train=True,
+            ),
+            skorch.callbacks.PassthroughScoring(
+                name='train_classes',
+                on_train=True,
+            ),
         ],
         device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
     )
