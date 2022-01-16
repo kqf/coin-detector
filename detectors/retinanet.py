@@ -128,7 +128,7 @@ class RetinaNet(torch.nn.Module):
 
         _, _, *image_shape = x.shape
         acnhors, _ = self.anchors(image_shape, pyramids)
-        return outputs, acnhors
+        return outputs, acnhors.to(x.device)
 
 
 class MobileRetinaNet(torch.nn.Module):
