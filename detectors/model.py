@@ -48,7 +48,12 @@ class DetectionNet(skorch.NeuralNet):
         for batch in self.get_iterator(dataset, training=training):
             self.notify("on_batch_begin", batch=batch, training=training)
             step = step_fn(batch, **fit_params)
-            self.history.record_batch(prefix + "_loss", step["loss"].item())
+
+            for name, output in step.items():
+                if name == "y_pred":
+                    continue
+                self.history.record_batch(f"{prefix}_{name}", output.item())
+
             batch_size = (
                 skorch.dataset.get_len(batch[0])
                 if isinstance(batch, (tuple, list))
