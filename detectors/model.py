@@ -20,6 +20,24 @@ class DetectionNet(skorch.NeuralNet):
                 y_probas.append(skorch.utils.to_numpy(scale))
         return y_probas
 
+    def validation_step(self, batch, **fit_params):
+        self._set_training(False)
+        Xi, yi = skorch.dataset.unpack_data(batch)
+        with torch.no_grad():
+            y_pred = self.infer(Xi, **fit_params)
+            losses = self.get_loss(y_pred, yi, X=Xi, training=False)
+        losses["y_pred"] = y_pred
+        return losses
+
+    def train_step_single(self, batch, **fit_params):
+        self._set_training(True)
+        Xi, yi = skorch.dataset.unpack_data(batch)
+        y_pred = self.infer(Xi, **fit_params)
+        losses = self.get_loss(y_pred, yi, X=Xi, training=True)
+        losses["loss"].backward()
+        losses["y_pred"] = y_pred
+        return losses
+
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
@@ -60,6 +78,14 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             skorch.callbacks.ProgressBar(),
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
+            skorch.callbacks.PassthroughScoring(
+                name='boxes',
+                on_train=True,
+            ),
+            skorch.callbacks.PassthroughScoring(
+                name='train_classes',
+                on_train=True,
+            ),
         ],
         device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
     )

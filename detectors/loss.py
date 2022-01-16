@@ -82,7 +82,7 @@ class DetectionLoss(torch.nn.Module):
 
         # fselect -- selects only matched positives / negatives
         fselect = partial(select, positives=positives, negatives=negatives)
-        losses = []
+        losses = {}
         for name, subloss in self.sublosses.items():
             # fselect(
             #   y_pred[batch, n_detections, dim1],
@@ -97,8 +97,7 @@ class DetectionLoss(torch.nn.Module):
                 preds[name], y[name], anchors,
                 use_negatives=subloss.needs_negatives
             )
+            losses[name] = subloss(y_pred_, y_true_, anchor_)
 
-            losses.append(subloss(y_pred_, y_true_, anchor_))
-            # print(name, torch.softmax(y_pred_, dim=-1), y_true_, losses[-1])
-
-        return torch.stack(losses).sum()
+        losses["loss"] = torch.stack(tuple(losses.values())).sum()
+        return losses
