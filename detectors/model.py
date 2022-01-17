@@ -38,6 +38,33 @@ class DetectionNet(skorch.NeuralNet):
         losses["y_pred"] = y_pred
         return losses
 
+    def run_single_epoch(
+            self, dataset, training, prefix, step_fn, **fit_params
+    ):
+        if dataset is None:
+            return
+
+        batch_count = 0
+        for batch in self.get_iterator(dataset, training=training):
+            self.notify("on_batch_begin", batch=batch, training=training)
+            step = step_fn(batch, **fit_params)
+
+            for name, output in step.items():
+                if name == "y_pred":
+                    continue
+                self.history.record_batch(f"{prefix}_{name}", output.item())
+
+            batch_size = (
+                skorch.dataset.get_len(batch[0])
+                if isinstance(batch, (tuple, list))
+                else skorch.dataset.get_len(batch)
+            )
+            self.history.record_batch(prefix + "_batch_size", batch_size)
+            self.notify("on_batch_end", batch=batch, training=training, **step)
+            batch_count += 1
+
+        self.history.record(prefix + "_batch_count", batch_count)
+
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
@@ -79,7 +106,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
             skorch.callbacks.PassthroughScoring(
-                name='boxes',
+                name='train_boxes',
                 on_train=True,
             ),
             skorch.callbacks.PassthroughScoring(
