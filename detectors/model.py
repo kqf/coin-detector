@@ -9,7 +9,6 @@ from detectors.shapes import box
 
 
 def init(w):
-
     if w.dim() < 2:
         return w
     return torch.nn.init.xavier_normal_(w)
