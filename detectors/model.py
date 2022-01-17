@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 import skorch
 import torch
 
+from detectors.dummy import DummyDetector
 from detectors.loss import DetectionLoss
-# from detectors.dummy import DummyDetector
-from detectors.retinanet import RetinaNet
+# from detectors.retinanet import RetinaNet
+from detectors.shapes import box
 
 
 def init(w):
@@ -73,6 +74,7 @@ class DetectionNet(skorch.NeuralNet):
 
         class Debug:
             def __init__(self, name, subloss, images):
+                self.name = name
                 self.subloss = subloss
                 self.needs_negatives = subloss.needs_negatives
                 self.images = images
@@ -80,8 +82,18 @@ class DetectionNet(skorch.NeuralNet):
             def __call__(self, y_pred, y_true, anchors):
                 batch = zip(self.images, y_pred, y_true, anchors)
                 for i, (image, pred, true, anchor) in enumerate(batch):
-                    plt.imshow(image.numpy())
+                    channels_last = image.permute(2, 1, 0).numpy()
+                    plt.imshow(channels_last)
+
+                    if not self.needs_negatives:
+                        for coords in y_true:
+                            box(channels_last, *coords)
+
+                    for coords in anchors:
+                        box(channels_last, *coords, color="r")
+
                     plt.savefig(f"{self.name}-{i}.png")
+                    plt.show()
                 return self.subloss(y_pred, y_true, anchors)
 
         sublosses = self.criterion_.sublosses
@@ -108,7 +120,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # )
 
     model = DetectionNet(
-        RetinaNet,
+        DummyDetector,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
