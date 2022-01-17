@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import skorch
 import torch
 
@@ -69,13 +70,32 @@ class DetectionNet(skorch.NeuralNet):
 
     def get_loss(self, y_pred, y_true, X=None, training=False):
         y_true = skorch.utils.to_tensor(y_true, device=self.device)
-        return self.criterion_(y_pred, y_true)
+
+        class Debug:
+            def __init__(self, name, subloss, images):
+                self.subloss = subloss
+                self.needs_negatives = subloss.needs_negatives
+                self.images = images
+
+            def __call__(self, y_pred, y_true, anchors):
+                batch = zip(self.images, y_pred, y_true, anchors)
+                for i, (image, pred, true, anchor) in enumerate(batch):
+                    plt.imshow(image.numpy())
+                    plt.savefig(f"{self.name}-{i}.png")
+                return self.subloss(y_pred, y_true, anchors)
+
+        sublosses = self.criterion_.sublosses
+        deblosses = {name: Debug(name, l, X) for name, l in sublosses.items()}
+        self.criterion_.sublosses = deblosses
+        loss = self.criterion_(y_pred, y_true)
+        self.criterion_.sublosses = sublosses
+        return loss
 
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
     base_lr = 0.0002
-    batch_size = 16
+    batch_size = 4
 
     # scheduler = skorch.callbacks.LRScheduler(
     #     policy=torch.optim.lr_scheduler.CyclicLR,
