@@ -57,7 +57,9 @@ def default_losses():
             weight=0,
         ),
         "classes": WeightedLoss(
-            torch.nn.CrossEntropyLoss(),
+            torch.nn.CrossEntropyLoss(
+                weight=torch.tensor([0.01, 1, 1, 1, 1]),
+            ),
             enc_true=lambda y, _: y.reshape(-1).long(),
             needs_negatives=True,
         ),
