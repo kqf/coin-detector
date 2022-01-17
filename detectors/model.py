@@ -1,11 +1,13 @@
 import skorch
 import torch
+
+from detectors.loss import DetectionLoss
 # from detectors.dummy import DummyDetector
 from detectors.retinanet import RetinaNet
-from detectors.loss import DetectionLoss
 
 
 def init(w):
+
     if w.dim() < 2:
         return w
     return torch.nn.init.xavier_normal_(w)
@@ -39,7 +41,7 @@ class DetectionNet(skorch.NeuralNet):
         return losses
 
     def run_single_epoch(
-            self, dataset, training, prefix, step_fn, **fit_params
+        self, dataset, training, prefix, step_fn, **fit_params
     ):
         if dataset is None:
             return
@@ -64,6 +66,10 @@ class DetectionNet(skorch.NeuralNet):
             batch_count += 1
 
         self.history.record(prefix + "_batch_count", batch_count)
+
+    def get_loss(self, y_pred, y_true, X=None, training=False):
+        y_true = skorch.utils.to_tensor(y_true, device=self.device)
+        return self.criterion_(y_pred, y_true)
 
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
