@@ -69,6 +69,7 @@ class DetectionNet(skorch.NeuralNet):
 
         self.history.record(prefix + "_batch_count", batch_count)
 
+class DebugDetectionNet(DetectionNet):
     def get_loss(self, y_pred, y_true, X=None, training=False):
         y_true = skorch.utils.to_tensor(y_true, device=self.device)
 
