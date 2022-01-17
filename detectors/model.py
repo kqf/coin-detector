@@ -1,11 +1,15 @@
+import matplotlib.pyplot as plt
 import skorch
 import torch
-# from detectors.dummy import DummyDetector
-from detectors.retinanet import RetinaNet
+
+from detectors.dummy import DummyDetector
 from detectors.loss import DetectionLoss
+# from detectors.retinanet import RetinaNet
+from detectors.shapes import box
 
 
 def init(w):
+
     if w.dim() < 2:
         return w
     return torch.nn.init.xavier_normal_(w)
@@ -39,7 +43,7 @@ class DetectionNet(skorch.NeuralNet):
         return losses
 
     def run_single_epoch(
-            self, dataset, training, prefix, step_fn, **fit_params
+        self, dataset, training, prefix, step_fn, **fit_params
     ):
         if dataset is None:
             return
@@ -65,11 +69,45 @@ class DetectionNet(skorch.NeuralNet):
 
         self.history.record(prefix + "_batch_count", batch_count)
 
+    def get_loss(self, y_pred, y_true, X=None, training=False):
+        y_true = skorch.utils.to_tensor(y_true, device=self.device)
+
+        class Debug:
+            def __init__(self, name, subloss, images):
+                self.name = name
+                self.subloss = subloss
+                self.needs_negatives = subloss.needs_negatives
+                self.images = images
+
+            def __call__(self, y_pred, y_true, anchors):
+                batch = zip(self.images, y_pred, y_true, anchors)
+                for i, (image, pred, true, anchor) in enumerate(batch):
+                    channels_last = image.permute(2, 1, 0).numpy()
+                    plt.imshow(channels_last)
+
+                    if not self.needs_negatives:
+                        for coords in y_true:
+                            box(channels_last, *coords)
+
+                    for coords in anchors:
+                        box(channels_last, *coords, color="r")
+
+                    plt.savefig(f"{self.name}-{i}.png")
+                    plt.show()
+                return self.subloss(y_pred, y_true, anchors)
+
+        sublosses = self.criterion_.sublosses
+        deblosses = {name: Debug(name, l, X) for name, l in sublosses.items()}
+        self.criterion_.sublosses = deblosses
+        loss = self.criterion_(y_pred, y_true)
+        self.criterion_.sublosses = sublosses
+        return loss
+
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
     base_lr = 0.0002
-    batch_size = 16
+    batch_size = 4
 
     # scheduler = skorch.callbacks.LRScheduler(
     #     policy=torch.optim.lr_scheduler.CyclicLR,
@@ -82,7 +120,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # )
 
     model = DetectionNet(
-        RetinaNet,
+        DummyDetector,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
