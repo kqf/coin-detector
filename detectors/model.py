@@ -81,8 +81,7 @@ class DebugDetectionNet(DetectionNet):
                 self.images = images
 
             def __call__(self, y_pred, y_true, anchors):
-                batch = zip(self.images, y_pred, y_true, anchors)
-                for i, (image, pred, true, anchor) in enumerate(batch):
+                for i, image in enumerate(self.images):
                     channels_last = image.permute(2, 1, 0).numpy()
                     plt.imshow(channels_last)
 
