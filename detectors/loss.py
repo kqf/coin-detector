@@ -35,13 +35,27 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     return y_pred_tot, y_true_tot, anchor_tot
 
 
-@dataclass
-class WeightedLoss:
+class WeightedLoss(torch.nn.Module):
     loss: torch.nn.Module
     weight: float = 1.
     enc_pred: Callable = lambda x, _: x
     enc_true: Callable = lambda x, _: x
     needs_negatives: bool = False
+
+    def __init__(
+        self,
+        loss,
+        weight=1.,
+        enc_pred=lambda x, _: x,
+        enc_true=lambda x, _: x,
+        needs_negatives=False,
+    ):
+        super().__init__()
+        self.loss = loss
+        self.weigt = weight
+        self.enc_pred = enc_pred
+        self.enc_true = enc_true
+        self.needs_negatives = needs_negatives
 
     def __call__(self, y_pred, y_true, anchors):
         y_pred_encoded = self.enc_pred(y_pred, anchors)
@@ -57,7 +71,9 @@ def default_losses():
             weight=0,
         ),
         "classes": WeightedLoss(
-            torch.nn.CrossEntropyLoss(),
+            torch.nn.CrossEntropyLoss(
+                weight=torch.tensor([0.02, 1, 1]),
+            ),
             enc_true=lambda y, _: y.reshape(-1).long(),
             needs_negatives=True,
         ),
@@ -68,7 +84,7 @@ def default_losses():
 class DetectionLoss(torch.nn.Module):
     def __init__(self, sublosses=None):
         super().__init__()
-        self.sublosses = sublosses or default_losses()
+        self.sublosses = torch.nn.ModuleDict(sublosses or default_losses())
 
     def forward(self, y_pred, y):
         preds, anchors = y_pred
