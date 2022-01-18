@@ -9,7 +9,6 @@ from detectors.shapes import box
 
 
 def init(w):
-
     if w.dim() < 2:
         return w
     return torch.nn.init.xavier_normal_(w)
@@ -69,6 +68,7 @@ class DetectionNet(skorch.NeuralNet):
 
         self.history.record(prefix + "_batch_count", batch_count)
 
+class DebugDetectionNet(DetectionNet):
     def get_loss(self, y_pred, y_true, X=None, training=False):
         y_true = skorch.utils.to_tensor(y_true, device=self.device)
 
@@ -80,8 +80,7 @@ class DetectionNet(skorch.NeuralNet):
                 self.images = images
 
             def __call__(self, y_pred, y_true, anchors):
-                batch = zip(self.images, y_pred, y_true, anchors)
-                for i, (image, pred, true, anchor) in enumerate(batch):
+                for i, image in enumerate(self.images):
                     channels_last = image.permute(2, 1, 0).numpy()
                     plt.imshow(channels_last)
 
