@@ -1,11 +1,11 @@
-import torch
-
-from typing import Callable
 from dataclasses import dataclass
 from functools import partial
+from typing import Callable
 
+import torch
+
+from detectors.encode import encode, to_coords
 from detectors.matching import match
-from detectors.encode import to_coords, encode
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -35,27 +35,13 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
     return y_pred_tot, y_true_tot, anchor_tot
 
 
+@dataclass
 class WeightedLoss(torch.nn.Module):
     loss: torch.nn.Module
     weight: float = 1.
     enc_pred: Callable = lambda x, _: x
     enc_true: Callable = lambda x, _: x
     needs_negatives: bool = False
-
-    def __init__(
-        self,
-        loss,
-        weight=1.,
-        enc_pred=lambda x, _: x,
-        enc_true=lambda x, _: x,
-        needs_negatives=False,
-    ):
-        super().__init__()
-        self.loss = loss
-        self.weigt = weight
-        self.enc_pred = enc_pred
-        self.enc_true = enc_true
-        self.needs_negatives = needs_negatives
 
     def __call__(self, y_pred, y_true, anchors):
         y_pred_encoded = self.enc_pred(y_pred, anchors)
