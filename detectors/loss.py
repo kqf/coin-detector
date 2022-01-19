@@ -84,7 +84,11 @@ def default_losses():
 class DetectionLoss(torch.nn.Module):
     def __init__(self, sublosses=None):
         super().__init__()
-        self.sublosses = torch.nn.ModuleDict(sublosses or default_losses())
+        self.sublosses = sublosses or default_losses()
+        # We need to register the losses to manage things properly
+        self.registered = torch.nn.ModuleList([
+            loss.loss for loss in self.sublosses.values()
+        ])
 
     def forward(self, y_pred, y):
         preds, anchors = y_pred
