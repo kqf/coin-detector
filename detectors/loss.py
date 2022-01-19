@@ -36,7 +36,7 @@ def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
 
 
 @dataclass
-class WeightedLoss(torch.nn.Module):
+class WeightedLoss:
     loss: torch.nn.Module
     weight: float = 1.
     enc_pred: Callable = lambda x, _: x
