@@ -164,4 +164,4 @@ class MobileRetinaNet(torch.nn.Module):
 
         _, _, *image_shape = x.shape
         anchors, _ = self.anchors(image_shape, pyramids.values())
-        return outputs, anchors
+        return outputs, anchors.to(x.device)
