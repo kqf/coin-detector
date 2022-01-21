@@ -1,4 +1,3 @@
-import numpy as np
 from dataclasses import dataclass
 from functools import partial
 from typing import Callable
@@ -66,7 +65,7 @@ def default_losses():
         ),
         "classes": WeightedLoss(
             torchvision.ops.sigmoid_focal_loss,
-            enc_true=lambda y, _: to_one_hot(y),
+            enc_true=lambda y, _: torch.nn.functional.one_hot(y.reshape(-1)),
             needs_negatives=True,
         ),
     }
