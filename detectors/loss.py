@@ -1,8 +1,10 @@
+import numpy as np
 from dataclasses import dataclass
 from functools import partial
 from typing import Callable
 
 import torch
+import torchvision
 
 from detectors.encode import encode, to_coords
 from detectors.matching import match
@@ -49,6 +51,12 @@ class WeightedLoss:
         return self.weight * self.loss(y_pred_encoded, y_true_encoded)
 
 
+def to_one_hot(x):
+    encoded = np.zeros((x.size, x.max() + 1))
+    encoded[np.arange(x.size), x] = 1
+    return encoded
+
+
 def default_losses():
     losses = {
         "boxes": WeightedLoss(
@@ -57,10 +65,8 @@ def default_losses():
             weight=0,
         ),
         "classes": WeightedLoss(
-            torch.nn.CrossEntropyLoss(
-                weight=torch.tensor([0.02, 1, 1]),
-            ),
-            enc_true=lambda y, _: y.reshape(-1).long(),
+            torchvision.ops.sigmoid_focal_loss,
+            enc_true=lambda y, _: to_one_hot(y),
             needs_negatives=True,
         ),
     }
