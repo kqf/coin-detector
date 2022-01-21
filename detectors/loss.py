@@ -52,8 +52,8 @@ class WeightedLoss:
 
 
 def to_one_hot(x):
-    encoded = np.zeros((x.size, x.max() + 1))
-    encoded[np.arange(x.size), x] = 1
+    encoded = torch.zeros((x.size, x.max() + 1))
+    encoded[torch.arange(x.size), x] = 1
     return encoded
 
 
