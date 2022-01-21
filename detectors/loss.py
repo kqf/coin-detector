@@ -74,6 +74,7 @@ class DetectionLoss(torch.nn.Module):
         # We need to register the losses to manage things properly
         self.registered = torch.nn.ModuleList([
             loss.loss for loss in self.sublosses.values()
+            if issubclass(loss.loss, torch.nn.Module)
         ])
 
     def forward(self, y_pred, y):
