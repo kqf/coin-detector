@@ -65,7 +65,8 @@ def default_losses():
         ),
         "classes": WeightedLoss(
             torchvision.ops.sigmoid_focal_loss,
-            enc_true=lambda y, _: torch.nn.functional.one_hot(y.reshape(-1)),
+            enc_true=lambda y, _: torch.nn.functional.one_hot(
+                y.reshape(-1).long()).float(),
             needs_negatives=True,
         ),
     }
