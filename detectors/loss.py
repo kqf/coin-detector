@@ -86,8 +86,8 @@ def default_metrics():
         )
 
     losses = {
-        "classes": {"f1", f1},
-        "boxes": {}
+        "classes": {"f1": f1},
+        "boxes": {},
     }
     return losses
 
