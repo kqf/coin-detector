@@ -7,6 +7,7 @@ import torchvision
 
 from detectors.encode import encode, to_coords
 from detectors.matching import match
+from sklearn.metrics import f1_score
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -76,8 +77,22 @@ def default_losses():
     return losses
 
 
+def default_metrics():
+    def f1(y_pred, y_true, anchors_):
+        return f1_score(
+            y_pred.argmax(-1).detach().cpu().numpy(),
+            y_true.cpu().numpy(),
+            average="micro",
+        )
+
+    losses = {
+        "classes": f1,
+    }
+    return losses
+
+
 class DetectionLoss(torch.nn.Module):
-    def __init__(self, sublosses=None):
+    def __init__(self, sublosses=None, metrics=None):
         super().__init__()
         self.sublosses = sublosses or default_losses()
         # We need to register the losses to manage things properly
@@ -85,6 +100,7 @@ class DetectionLoss(torch.nn.Module):
             loss.loss for loss in self.sublosses.values()
             if isinstance(loss.loss, torch.nn.Module)
         ])
+        self.metrics = metrics or default_metrics()
 
     def forward(self, y_pred, y):
         preds, anchors = y_pred
@@ -98,7 +114,7 @@ class DetectionLoss(torch.nn.Module):
 
         # fselect -- selects only matched positives / negatives
         fselect = partial(select, positives=positives, negatives=negatives)
-        losses = {}
+        losses, metrics = {}, {}
         for name, subloss in self.sublosses.items():
             # fselect(
             #   y_pred[batch, n_detections, dim1],
@@ -114,6 +130,8 @@ class DetectionLoss(torch.nn.Module):
                 use_negatives=subloss.needs_negatives
             )
             losses[name] = subloss(y_pred_, y_true_, anchor_)
+            if name in self.metrics:
+                metrics[name] = self.metrics[name](y_pred_, y_true_, anchor_)
 
         losses["loss"] = torch.stack(tuple(losses.values())).sum()
         return losses
