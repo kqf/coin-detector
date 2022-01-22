@@ -86,7 +86,8 @@ def default_metrics():
         )
 
     losses = {
-        "classes": f1,
+        "classes": {"f1", f1},
+        "boxes": {}
     }
     return losses
 
@@ -130,8 +131,9 @@ class DetectionLoss(torch.nn.Module):
                 use_negatives=subloss.needs_negatives
             )
             losses[name] = subloss(y_pred_, y_true_, anchor_)
-            if name in self.metrics:
-                metrics[name] = self.metrics[name](y_pred_, y_true_, anchor_)
+            for mname, metric in self.metrics[name].items():
+                metrics[f"{name}_{mname}"] = metric(y_pred_, y_true_, anchor_)
 
         losses["loss"] = torch.stack(tuple(losses.values())).sum()
+        losses.update(metrics)
         return losses
