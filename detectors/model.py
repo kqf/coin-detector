@@ -60,6 +60,10 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
                 name='train_classes',
                 on_train=True,
             ),
+            skorch.callbacks.PassthroughScoring(
+                name='train_classes_f1',
+                on_train=True,
+            ),
         ],
         device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
     )
