@@ -62,7 +62,7 @@ def default_losses():
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
             enc_true=encode,
-            weight=0,
+            weight=1.0,
         ),
         "classes": WeightedLoss(
             partial(
