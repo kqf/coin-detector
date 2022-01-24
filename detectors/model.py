@@ -2,7 +2,7 @@ import skorch
 import torch
 
 # from detectors.dummy import DummyDetector
-from detectors.loss import DetectionLoss
+from detectors.loss import DetectionLoss, default_losses
 from detectors.retinanet import RetinaNet
 from detectors.detnet import DetectionNet
 
@@ -28,12 +28,16 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         mode="triangular2",
     )
 
+    sublosses = default_losses()
+    sublosses["boxes"].weight = 0.05
+
     model = DetectionNet(
         RetinaNet,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
         criterion=DetectionLoss,
+        criterion__sublosses=sublosses,
         # optimizer=torch.optim.Adam,
         # optimizer__momentum=0.9,
         iterator_train__shuffle=True,
