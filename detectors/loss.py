@@ -51,12 +51,6 @@ class WeightedLoss:
         return self.weight * self.loss(y_pred_encoded, y_true_encoded)
 
 
-def to_one_hot(x):
-    encoded = torch.zeros((x.size, x.max() + 1))
-    encoded[torch.arange(x.size), x] = 1
-    return encoded
-
-
 def default_losses():
     losses = {
         "boxes": WeightedLoss(
