@@ -15,7 +15,7 @@ def init(w):
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
-    base_lr = 0.0002
+    base_lr = 0.002
     batch_size = 4
 
     # scheduler = skorch.callbacks.LRScheduler(
