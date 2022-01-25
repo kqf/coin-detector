@@ -34,6 +34,7 @@ class AnchorBoxes(torch.nn.Module):
             cell_y, cell_x = torch.meshgrid(
                 torch.arange(layer_shape[0], device=self.device),
                 torch.arange(layer_shape[1], device=self.device),
+                indexing="ij",
             )
 
             # create heights and widths
