@@ -5,8 +5,8 @@ def nms(predictions, anchors, threshold=0.5, min_iou=0.5, top_n=None):
     # Filter out the boxes with low objectness score
     classes = predictions["classes"]
     boxes = predictions["boxes"]
-    
-    x = predictions[classes > threshold]
+
+    x = predictions[classes[..., 0] > threshold]
 
     # Ensure everything is calculated per class
     same_object = x[:, None, -1] == x[None, :, -1]
