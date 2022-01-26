@@ -1,9 +1,9 @@
 from detectors.iou import iou
 
 
-def nms(bboxes, anchors, threshold=0.5, min_iou=0.5, top_n=None):
+def nms(predictions, anchors, threshold=0.5, min_iou=0.5, top_n=None):
     # Filter out the boxes with low objectness score
-    x = bboxes[bboxes[:, 0] > threshold]
+    x = predictions[predictions[:, 0] > threshold]
 
     # Ensure everything is calculated per class
     same_object = x[:, None, -1] == x[None, :, -1]
