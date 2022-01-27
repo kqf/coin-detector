@@ -15,7 +15,10 @@ def candidates(n_candidates=13 * 3 + 26 * 3 + 52 * 3):
     x[:, 2] = np.linspace(0.4, 0.5, n_candidates)
     x[:, 3] = 0.2
     predictions["boxes"] = x
-   return predictions
+
+    classes = np.zeros((n_candidates, 4))
+    predictions["classes"] = classes
+    return predictions
 
 
 def test_nms(candidates):
