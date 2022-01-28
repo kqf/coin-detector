@@ -20,7 +20,6 @@ def candidates(n_candidates=13 * 3 + 26 * 3 + 52 * 3):
     predictions["classes"] = classes
     return predictions
 
-
 def test_nms(candidates):
     sup = nms(candidates)
     # top = candidates.shape[0] // 2
