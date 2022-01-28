@@ -2,7 +2,7 @@ import torch
 import pytest
 import numpy as np
 
-from detection.inference import nms
+from detectors.inference import nms
 
 
 @pytest.fixture
