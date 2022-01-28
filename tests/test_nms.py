@@ -6,11 +6,9 @@ from detection.inference import nms
 
 
 @pytest.fixture
-def candidates(n_anchors=400):
+def candidates(n_anchors=400, n_classes=4):
     x = np.zeros((n_anchors, 4))
     x[:, 0] = np.linspace(0.4, 0.6, n_anchors)
-    x[n_anchors // 2, 0] = 1
-
     x[:, 1] = np.linspace(0.4, 0.5, n_anchors)
     x[:, 2] = np.linspace(0.4, 0.5, n_anchors)
     x[:, 3] = 0.2
@@ -18,7 +16,7 @@ def candidates(n_anchors=400):
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
 
-    classes = np.zeros((n_anchors, 4))
+    classes = np.zeros((n_anchors, n_classes))
     predictions["classes"] = torch.tensor(classes)
     return predictions
 
