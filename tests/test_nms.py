@@ -2,23 +2,21 @@ import torch
 import pytest
 import numpy as np
 
-from detection.inference import nms
+from detectors.inference import nms
 
 
 @pytest.fixture
-def candidates(n_candidates=13 * 3 + 26 * 3 + 52 * 3):
-    x = np.zeros((n_candidates, 4))
-    x[:, 0] = np.linspace(0.4, 0.6, n_candidates)
-    x[n_candidates // 2, 0] = 1
-
-    x[:, 1] = np.linspace(0.4, 0.5, n_candidates)
-    x[:, 2] = np.linspace(0.4, 0.5, n_candidates)
+def candidates(n_anchors=400, n_classes=4):
+    x = np.zeros((n_anchors, 4))
+    x[:, 0] = np.linspace(0.4, 0.6, n_anchors)
+    x[:, 1] = np.linspace(0.4, 0.5, n_anchors)
+    x[:, 2] = np.linspace(0.4, 0.5, n_anchors)
     x[:, 3] = 0.2
 
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
 
-    classes = np.zeros((n_candidates, 4))
+    classes = np.zeros((n_anchors, n_classes))
     predictions["classes"] = torch.tensor(classes)
     return predictions
 
