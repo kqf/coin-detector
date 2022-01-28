@@ -1,7 +1,7 @@
 from detectors.iou import iou
 
 
-def nms(predictions, anchors, threshold=0.5, min_iou=0.5, top_n=None):
+def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     # Filter out the boxes with low objectness score
     classes = predictions["classes"]
     boxes = predictions["boxes"]
@@ -17,7 +17,7 @@ def nms(predictions, anchors, threshold=0.5, min_iou=0.5, top_n=None):
     not_maximum = objectness_per_class < maximum
 
     # IoUs
-    ious = iou(boxes, anchors)
+    ious = iou(boxes[:, None], boxes[None, :])
 
     # Putting it all together
     noise = same_object * not_maximum * (ious > min_iou).squeeze(-1)
