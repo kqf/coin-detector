@@ -9,7 +9,8 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     # classes[anchors, 4]
     boxes = predictions["boxes"]
 
-    x = predictions[classes[..., 0] > threshold]
+    # n_anchors
+    x = classes.argmax(-1)
 
     # Ensure everything is calculated per class
     same_object = x[:, None, -1] == x[None, :, -1]
