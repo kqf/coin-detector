@@ -12,6 +12,11 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     # n_anchors
     x = classes.argmax(-1)
 
+    non_background = x != 0
+    x = x[non_background]
+    boxes = boxes[non_background]
+    classes = classes[non_background]
+
     # Ensure everything is calculated per class
     same_object = x[:, None, -1] == x[None, :, -1]
 
