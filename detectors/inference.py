@@ -3,7 +3,10 @@ from detectors.iou import iou
 
 def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     # Filter out the boxes with low objectness score
+    # classes[anchors, n_clases]
     classes = predictions["classes"]
+
+    # classes[anchors, 4]
     boxes = predictions["boxes"]
 
     x = predictions[classes[..., 0] > threshold]

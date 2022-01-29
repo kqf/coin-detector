@@ -21,6 +21,7 @@ def candidates(n_anchors=400, n_classes=4):
     return predictions
 
 
+@pytest.mark.skip
 def test_nms(candidates):
     sup = nms(candidates)
     print(sup.shape)
