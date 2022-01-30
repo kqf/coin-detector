@@ -25,7 +25,7 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     boxes = boxes[non_background]
     classes = classes[non_background]
 
-    one_hot_classes = one_hot(x, clases.shape[-1])
+    one_hot_classes = one_hot(x, classes.shape[-1])
 
     # Find non-maximum elements
     objectness_per_class = one_hot_classes * classes
@@ -36,6 +36,6 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     ious = iou(boxes[:, None], boxes[None, :])
 
     # Putting it all together
-    noise = same_object * not_maximum * (ious > min_iou).squeeze(-1)
+    noise = not_maximum * (ious > min_iou).squeeze(-1)
     suppressed = (~noise).all(0)
     return x[suppressed, 1:]
