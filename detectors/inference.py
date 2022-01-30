@@ -37,5 +37,5 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
 
     # Putting it all together
     noise = not_maximum * (ious > min_iou).squeeze(-1)
-    suppressed = (~noise).all(0)
-    return x[suppressed, 1:]
+    suppressed = (~noise).all(1)
+    return boxes[suppressed, 1:]
