@@ -25,11 +25,10 @@ def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     boxes = boxes[non_background]
     classes = classes[non_background]
 
-    # Ensure everything is calculated per class
-    same_object = x[:, None, -1] == x[None, :, -1]
+    one_hot_classes = one_hot(x, clases.shape[-1])
 
     # Find non-maximum elements
-    objectness_per_class = same_object * x[None, :, 0]
+    objectness_per_class = one_hot_classes * classes
     maximum = objectness_per_class.max(-1, keepdim=True).values
     not_maximum = objectness_per_class < maximum
 
