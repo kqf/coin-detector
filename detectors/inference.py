@@ -1,4 +1,12 @@
+import numpy as np
+
 from detectors.iou import iou
+
+
+def one_hot(data, n_classes):
+    encoded = np.zeros((data.shape[0], n_classes))
+    encoded[np.arange(data.shape[0]), data] = 1
+    return encoded
 
 
 def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
