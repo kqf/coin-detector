@@ -2,12 +2,12 @@ import torch
 import pytest
 import numpy as np
 
-from detectors.inference import nms
+from detectors.inference import infer
 
 
 @pytest.fixture
-def candidates(n_anchors=400, n_classes=4):
-    x = np.zeros((n_anchors, 4))
+def candidates(batch_size=4, n_anchors=400, n_classes=4):
+    x = np.zeros((batch_size, n_anchors, 4))
     x[:, 0] = np.linspace(0.4, 0.6, n_anchors)
     x[:, 1] = np.linspace(0.4, 0.5, n_anchors)
     x[:, 2] = np.linspace(0.4, 0.5, n_anchors)
@@ -16,15 +16,15 @@ def candidates(n_anchors=400, n_classes=4):
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
 
-    classes = np.zeros((n_anchors, n_classes))
+    classes = np.zeros((batch_size, n_anchors, n_classes))
     predictions["classes"] = torch.tensor(classes)
     return predictions
 
 
 @pytest.mark.skip
-def test_nms(candidates):
-    sup = nms(candidates)
-    print(sup.shape)
+def test_inference(candidates):
+    sup = infer(candidates)
+    print(len(sup))
     # top = candidates.shape[0] // 2
 
     # assert torch.equal(sup[0], candidates[top, 1:])

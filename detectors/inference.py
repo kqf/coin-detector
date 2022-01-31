@@ -3,6 +3,13 @@ import numpy as np
 from detectors.iou import iou
 
 
+def infer(batch, **kwargs):
+    predictions = []
+    for image, in batch:
+        predictions.append(nms(batch, **kwargs))
+    return predictions
+
+
 def one_hot(data, n_classes):
     encoded = np.zeros((data.shape[0], n_classes))
     encoded[np.arange(data.shape[0]), data] = 1
