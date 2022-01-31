@@ -15,3 +15,4 @@ def test_model(fake_dataset, max_epochs):
 
     model = build_model(max_epochs=max_epochs)
     model.fit(train)
+    model.predict_proba(train)
