@@ -25,7 +25,7 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 
 # @pytest.mark.skip
 def test_inference(candidates):
-    sup = infer(candidates)
+    sup = infer([candidates])
     print(len(sup))
     # top = candidates.shape[0] // 2
 
