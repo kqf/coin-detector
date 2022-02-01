@@ -5,8 +5,8 @@ from detectors.iou import iou
 
 def infer(batch, **kwargs):
     predictions = []
-    for image in batch:
-        predictions.append(nms(batch, **kwargs))
+    for preds, anchors in batch:
+        predictions.append(nms(preds, **kwargs))
     return predictions
 
 
