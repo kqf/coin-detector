@@ -19,7 +19,7 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     classes = np.zeros((batch_size, n_anchors, n_classes))
     predictions["classes"] = torch.tensor(classes)
 
-    anchors = np.ones((batch_size, n_anchors, 4))
+    anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
     return predictions, anchors
 
 
