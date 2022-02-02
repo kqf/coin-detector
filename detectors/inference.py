@@ -1,14 +1,14 @@
 import numpy as np
+from torchvision.ops import batched_nms
 
 from detectors.iou import iou
-from torchvision.ops import nms
 
 
 def infer(batch, thr=0.5, **kwargs):
     predictions = []
     for preds, anchors in batch:
         scores, classes = preds["classes"].max(dim=-1)
-        predictions.append(nms(preds["boxes"], scores, thr))
+        predictions.append(batched_nms(preds["boxes"], scores, thr))
     return predictions
 
 
@@ -18,7 +18,7 @@ def one_hot(data, n_classes):
     return encoded
 
 
-def nms_(predictions, threshold=0.5, min_iou=0.5, top_n=None):
+def nms(predictions, threshold=0.5, min_iou=0.5, top_n=None):
     # Filter out the boxes with low objectness score
     # classes[anchors, n_clases]
     classes = predictions["classes"]
