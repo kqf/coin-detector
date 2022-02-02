@@ -1,12 +1,14 @@
 import numpy as np
+from torchvision.ops import batched_nms
 
 from detectors.iou import iou
 
 
-def infer(batch, **kwargs):
+def infer(batch, thr=0.5, **kwargs):
     predictions = []
     for preds, anchors in batch:
-        predictions.append(nms(preds, **kwargs))
+        scores, classes = preds["classes"].max(dim=-1)
+        predictions.append(batched_nms(preds["boxes"], scores, thr))
     return predictions
 
 
