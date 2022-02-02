@@ -26,8 +26,5 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 # @pytest.mark.skip
 def test_inference(candidates):
     sup = infer(candidates)
-    print(len(sup))
-    # top = candidates.shape[0] // 2
-
-    # assert torch.equal(sup[0], candidates[top, 1:])
-    # assert torch.equal(sup[-1], candidates[-1, 1:])
+    print(sup)
+    # assert len(sup) == candaites[-1].shape[0]
