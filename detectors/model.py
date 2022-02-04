@@ -5,6 +5,8 @@ import torch
 from detectors.loss import DetectionLoss, default_losses
 from detectors.retinanet import RetinaNet
 from detectors.detnet import DetectionNet
+from detectors.inference import infer
+from functools import partial
 
 
 def init(w):
@@ -45,12 +47,10 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         iterator_valid__shuffle=False,
         iterator_valid__num_workers=6,
         train_split=train_split,
-        # predict_nonlinearity=partial(
-        #     infer,
-        #     top_n=top_n,
-        #     min_iou=0.5,
-        #     threshold=0.5,
-        # ),
+        predict_nonlinearity=partial(
+            infer,
+            threshold=0.5,
+        ),
         callbacks=[
             # scheduler,
             skorch.callbacks.ProgressBar(),
