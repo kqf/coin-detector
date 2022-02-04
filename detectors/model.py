@@ -6,6 +6,7 @@ from detectors.loss import DetectionLoss, default_losses
 from detectors.retinanet import RetinaNet
 from detectors.detnet import DetectionNet
 from detectors.inference import infer
+from functools import partial
 
 
 def init(w):
