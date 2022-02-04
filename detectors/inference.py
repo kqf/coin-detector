@@ -1,4 +1,5 @@
 from torchvision.ops import batched_nms
+
 from detectors.encode import decode
 
 
@@ -9,5 +10,7 @@ def infer(batch, threshold=0.5, **kwargs):
     for boxes_, classes_, anchors_ in zip(boxes, classes, anchors):
         scores_, class_ids_ = classes_.max(dim=-1)
         decoded = decode(boxes_, anchors_)
-        predictions.append(batched_nms(decoded, scores_, class_ids_, thr))
+        predictions.append(
+            batched_nms(decoded, scores_, class_ids_, threshold)
+        )
     return predictions
