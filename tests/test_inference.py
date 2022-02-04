@@ -1,7 +1,8 @@
-import torch
-import pytest
 import numpy as np
+import pytest
+import torch
 
+from detectors.encode import decode
 from detectors.inference import infer
 
 
@@ -25,5 +26,5 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 
 # @pytest.mark.skip
 def test_inference(candidates):
-    sup = infer(candidates)
+    sup = infer(candidates, decode=decode)
     assert len(sup) == candidates[-1].shape[0]
