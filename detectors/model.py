@@ -6,12 +6,9 @@ import torch
 from detectors.detnet import DetectionNet
 from detectors.encode import decode
 from detectors.inference import infer
-# from detectors.dummy import DummyDetector
+from detectors.dummy import DummyDetector
 from detectors.loss import DetectionLoss, default_losses
-from detectors.retinanet import RetinaNet
-from detectors.detnet import DetectionNet
-from detectors.inference import infer
-from functools import partial
+# from detectors.retinanet import RetinaNet
 
 
 def init(w):
@@ -39,7 +36,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     sublosses["boxes"].weight = 0.05
 
     model = DetectionNet(
-        RetinaNet,
+        DummyDetector,
         batch_size=batch_size,
         max_epochs=max_epochs,
         lr=base_lr,
