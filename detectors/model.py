@@ -1,6 +1,11 @@
+from functools import partial
+
 import skorch
 import torch
 
+from detectors.detnet import DetectionNet
+from detectors.encode import decode
+from detectors.inference import infer
 # from detectors.dummy import DummyDetector
 from detectors.loss import DetectionLoss, default_losses
 from detectors.retinanet import RetinaNet
@@ -49,6 +54,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         train_split=train_split,
         predict_nonlinearity=partial(
             infer,
+            decode=decode,
             threshold=0.5,
         ),
         callbacks=[
