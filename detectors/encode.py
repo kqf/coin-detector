@@ -13,6 +13,12 @@ def to_coords(cchw):
     return x
 
 
+def to_cchw(xyxy):
+    wh = xyxy[..., 2:] - xyxy[..., :2]
+    cc = xyxy[..., :2] + wh / 2
+    return torch.cat([cc, wh], dim=-1)
+
+
 def encode(boxes, anchors):
     # Convert to cchw
     # wh = x1y1 - x0y0
