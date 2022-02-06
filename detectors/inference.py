@@ -1,4 +1,5 @@
 from torchvision.ops import batched_nms
+from detectors.encode import to_cchw
 
 
 def infer(batch, decode, threshold=0.5, **kwargs):
@@ -9,5 +10,5 @@ def infer(batch, decode, threshold=0.5, **kwargs):
         scores_, class_ids_ = classes_.max(dim=-1)
         decoded = decode(boxes_, anchors_)
         selected = batched_nms(decoded, scores_, class_ids_, threshold)
-        predictions.append((decoded[selected], class_ids_[selected]))
+        predictions.append((to_cchw(decoded[selected]), class_ids_[selected]))
     return predictions
