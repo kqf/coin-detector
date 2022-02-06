@@ -21,9 +21,9 @@ def test_model(fake_dataset, max_epochs):
     predictions = model.predict_proba(train)
 
     # Now visually check the results
-    for (image, labels), preds in zip(train, predictions):
+    for (image, labels), (preds, classes) in zip(train, predictions):
         channels_last = image.cpu().numpy().transpose(1, 2, 0)
-        for coords, _ in preds:
+        for coords in preds:
             box(channels_last, *coords)
         plt.imshow(channels_last)
         arrows()
