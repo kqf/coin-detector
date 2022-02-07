@@ -42,7 +42,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         lr=base_lr,
         criterion=DetectionLoss,
         criterion__sublosses=sublosses,
-        optimizer=torch.optim.Adam,
+        # optimizer=torch.optim.Adam,
         # optimizer__momentum=0.9,
         iterator_train__shuffle=True,
         iterator_train__num_workers=6,
