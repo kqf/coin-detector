@@ -51,7 +51,6 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # alb.RandomCrop(width=350, height=350),
             alb.OneOf([
                 alb.HueSaturationValue(10, 15, 10),
-                alb.ISONoise(),
                 alb.RandomBrightnessContrast(),
             ], p=0.3)
         ]
