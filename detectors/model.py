@@ -26,8 +26,8 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         policy=torch.optim.lr_scheduler.CyclicLR,
         base_lr=base_lr,
         max_lr=0.001,
-        step_size_up=4,
-        step_size_down=5,
+        step_size_up=1,
+        step_size_down=1,
         step_every='epoch',
         mode="triangular2",
     )
