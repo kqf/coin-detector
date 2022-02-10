@@ -41,20 +41,20 @@ def decoded(decoder, encoded, anchors):
 
 @pytest.mark.parametrize("x0, y0, x1, y1", [
     (0.2, 0.2, 0.8, 0.8),
-    # (0.1, 0.2, 0.8, 0.8),
-    # (0.2, 0.1, 0.8, 0.8),
-    # (0.2, 0.1, 0.8, 0.9),
-    # (0.1, 0.2, 0.9, 0.8),
+    (0.1, 0.2, 0.8, 0.8),
+    (0.2, 0.1, 0.8, 0.8),
+    (0.2, 0.1, 0.8, 0.9),
+    (0.1, 0.2, 0.9, 0.8),
 ])
 @pytest.mark.parametrize("shift", [
-    # -0.1,
-    # +0.1,
-    # 0.05,
-    # +0.05,
+    -0.1,
+    +0.1,
+    0.05,
+    +0.05,
     0.00,
 ])
 @pytest.mark.parametrize("encoder, decoder", [
-    # (encode, decode),
+    (encode, decode),
     (lambda x, _: to_coords(x), lambda x, _: to_cchw(x)),
 ])
 def test_encoded_decode_correct(decoded, original):
