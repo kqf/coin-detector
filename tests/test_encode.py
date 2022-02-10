@@ -30,13 +30,13 @@ def original(batch_size, x0, y0, x1, y1):
 
 
 @pytest.fixture
-def encoded(original, anchors):
-    return encode(original, anchors)
+def encoded(encoder, original, anchors):
+    return encoder(original, anchors)
 
 
 @pytest.fixture
-def decoded(encoded, anchors):
-    return decode(encoded[None], anchors)[0]
+def decoded(decoder, encoded, anchors):
+    return decoder(encoded[None], anchors)[0]
 
 
 @pytest.mark.parametrize("x0, y0, x1, y1", [
@@ -52,6 +52,9 @@ def decoded(encoded, anchors):
     0.05,
     +0.05,
     0.00,
+])
+@pytest.mark.parametrize("encoder, decoder", [
+    (encode, decode),
 ])
 def test_encoded_decode_correct(decoded, original):
     torch.testing.assert_close(decoded, original)
