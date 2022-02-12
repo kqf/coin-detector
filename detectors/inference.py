@@ -11,7 +11,7 @@ def infer(batch, decode, threshold=0.5, **kwargs):
         scores_, class_ids_ = classes_.max(dim=-1)
         decoded = decode(boxes_, anchors_)
         selected = batched_nms(decoded, scores_, class_ids_, threshold)
-        predictions.append(
-            (to_coords(decoded[selected]), class_ids_[selected])
-        )
+        output_boxes = to_coords(decoded[selected])
+        predictions.append((output_boxes, class_ids_[selected]))
+
     return predictions
