@@ -1,5 +1,4 @@
 from torchvision.ops import batched_nms
-from detectors.encode import to_cchw
 
 
 def infer(batch, decode, encode_results, threshold=0.5, **kwargs):
