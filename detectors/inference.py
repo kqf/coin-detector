@@ -11,4 +11,5 @@ def infer(batch, decode, encode_results, threshold=0.5, **kwargs):
         selected = batched_nms(decoded, scores_, class_ids_, threshold)
         encoded = encode_results(decoded[selected])
         predictions.append((encoded, class_ids_[selected]))
+
     return predictions
