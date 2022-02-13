@@ -26,5 +26,5 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 
 # @pytest.mark.skip
 def test_inference(candidates):
-    sup = infer(candidates, decode=decode, encode_results=to_cchw)
+    sup = infer(candidates, decode=decode, encode=to_cchw)
     assert len(sup) == candidates[-1].shape[0]
