@@ -54,6 +54,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             decode=decode,
             encode=to_cchw,
             threshold=0.6,
+            background_class=0,
         ),
         callbacks=[
             scheduler,
