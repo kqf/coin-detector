@@ -1,15 +1,22 @@
 from torchvision.ops import batched_nms
 
 
-def infer(batch, decode, encode, threshold=0.2, **kwargs):
+def infer(batch, decode, encode, background_class=0, threshold=0.2, **kwargs):
     predictions = []
     preds, anchors = batch
     boxes, classes = preds["boxes"], preds["classes"]
     for boxes_, classes_, anchors_ in zip(boxes, classes, anchors):
         scores_, class_ids_ = classes_.max(dim=-1)
-        decoded = decode(boxes_, anchors_)
+
+        # Filter out the background detections
+        pos = class_ids_ != background_class
+        decoded = decode(boxes_, anchors_)[pos]
+        scores_ = scores_[pos]
+        class_ids_ = class_ids_[pos]
+
         selected = batched_nms(decoded, scores_, class_ids_, threshold)
-        encoded = encode(decoded[selected])
-        predictions.append((encoded, class_ids_[selected]))
+
+        encoded = encode(decoded)
+        predictions.append((encoded[selected], class_ids_[selected]))
 
     return predictions
