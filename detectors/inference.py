@@ -1,7 +1,7 @@
 from torchvision.ops import batched_nms
 
 
-def infer(batch, decode, encode, threshold=0.5, **kwargs):
+def infer(batch, decode, encode, threshold=0.2, **kwargs):
     predictions = []
     preds, anchors = batch
     boxes, classes = preds["boxes"], preds["classes"]
