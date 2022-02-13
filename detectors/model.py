@@ -52,7 +52,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         predict_nonlinearity=partial(
             infer,
             decode=decode,
-            encode_results=to_cchw,
+            encode=to_cchw,
             threshold=0.6,
         ),
         callbacks=[
