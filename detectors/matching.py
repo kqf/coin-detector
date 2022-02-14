@@ -24,7 +24,7 @@ def match(
     # ~> overlap[batch_size, n_obj, n_anchor]
     overlap = criterion(
         to_coords(anchors[:, None]),
-        boxes[:, :, None],
+        to_coords(boxes[:, :, None]),
     )
 
     # Remove all scores that are masked
