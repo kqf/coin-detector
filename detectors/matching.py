@@ -1,5 +1,6 @@
 import torch
 from detectors.iou import iou
+from detectors.encode import to_coords
 
 
 def match_positives(score, pos_th):
@@ -21,7 +22,10 @@ def match(
 ):
     # criterion([batch_size, 1, n_anchors, 4], [batch_size, n_obj, 1, 4])
     # ~> overlap[batch_size, n_obj, n_anchor]
-    overlap = criterion(anchors[:, None], boxes[:, :, None])
+    overlap = criterion(
+        to_coords(anchors[:, None]),
+        boxes[:, :, None],
+    )
 
     # Remove all scores that are masked
     overlap[mask] = fill_value
