@@ -22,15 +22,15 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     base_lr = 0.00002
     batch_size = 4
 
-    scheduler = skorch.callbacks.LRScheduler(
-        policy=torch.optim.lr_scheduler.CyclicLR,
-        base_lr=base_lr,
-        max_lr=0.001,
-        step_size_up=4,
-        step_size_down=5,
-        step_every='epoch',
-        mode="triangular2",
-    )
+    # scheduler = skorch.callbacks.LRScheduler(
+    #     policy=torch.optim.lr_scheduler.CyclicLR,
+    #     base_lr=base_lr,
+    #     max_lr=0.001,
+    #     step_size_up=4,
+    #     step_size_down=5,
+    #     step_every='epoch',
+    #     mode="triangular2",
+    # )
 
     sublosses = default_losses()
     sublosses["boxes"].weight = 1.
@@ -42,7 +42,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         lr=base_lr,
         criterion=DetectionLoss,
         criterion__sublosses=sublosses,
-        # optimizer=torch.optim.Adam,
+        optimizer=torch.optim.Adam,
         # optimizer__momentum=0.9,
         iterator_train__shuffle=True,
         iterator_train__num_workers=6,
@@ -57,7 +57,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             background_class=0,
         ),
         callbacks=[
-            scheduler,
+            # scheduler,
             skorch.callbacks.ProgressBar(),
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
