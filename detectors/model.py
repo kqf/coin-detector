@@ -53,7 +53,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             infer,
             decode=decode,
             encode=to_cchw,
-            threshold=0.6,
+            threshold=0.2,
             background_class=0,
         ),
         callbacks=[
