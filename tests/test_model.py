@@ -17,7 +17,13 @@ def test_model(fake_dataset, max_epochs):
     train = DetectionDataset(df, transforms=transform())
 
     model = build_model(max_epochs=max_epochs)
-    model.fit(train)
+    model.initialize()
+    try:
+        model.load_params(f_params="debug-weights.pt")
+    except FileNotFoundError:
+        model.fit(train)
+        model.save_params(f_params="debug-weights.pt")
+
     predictions = model.predict_proba(train)
 
     # Now visually check the results

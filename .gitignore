@@ -20,3 +20,4 @@ deleteme.*
 *.jpg
 *.png
 .tmp/
+*.pt
