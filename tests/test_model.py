@@ -22,7 +22,7 @@ def test_model(fake_dataset, max_epochs):
         model.load_params(f_params="debug-weights.pt")
     except FileNotFoundError:
         model.fit(train)
-    model.save_params(f_params="debug-weights.pt")
+        model.save_params(f_params="debug-weights.pt")
 
     predictions = model.predict_proba(train)
 
