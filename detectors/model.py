@@ -34,7 +34,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
 
     scheduler = skorch.callbacks.LRScheduler(
         policy=torch.optim.lr_scheduler.ReduceLROnPlateau,
-        base_lr=base_lr,
+        # base_lr=base_lr,
     )
 
     sublosses = default_losses()
