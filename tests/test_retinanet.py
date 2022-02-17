@@ -4,7 +4,7 @@ import pytest
 import torch
 from torchvision.ops import FeaturePyramidNetwork
 
-from detectors.retinanet import FPN, MobileRetinaNet, RetinaNet
+from detectors.retinanet import MobileRetinaNet
 
 
 @pytest.fixture
@@ -37,40 +37,6 @@ def expected(shape, fill, edge, corner, upper_left=False):
     return x
 
 
-def test_fpn(layer_outputs, out_channels=256):
-    model = FPN(16, 32, 64, out_channels=out_channels)
-    initialize(model)
-    o3, o4, o5 = layer_outputs
-    x3, x4, x5, x6, x7 = model(layer_outputs)
-
-    assert x3.shape[1] == 256
-    assert x4.shape[1] == 256
-    assert x5.shape[1] == 256
-
-    assert x3.shape[2:] == o3.shape[2:]
-    assert x4.shape[2:] == o4.shape[2:]
-    assert x5.shape[2:] == o5.shape[2:]
-
-    assert x6.shape == (4, out_channels, 8, 8)
-    assert x7.shape == (4, out_channels, 4, 4)
-
-    x3_exp = expected((4, 256, 64, 64), 264_961., 176_641, 117_761)
-    torch.testing.assert_allclose(x3, x3_exp)
-
-    x4_exp = expected((4, 256, 32, 32), 225_793., 150_529., 100_353.)
-    torch.testing.assert_allclose(x4, x4_exp)
-
-    x5_exp = expected((4, 256, 16, 16), 149_761., 99_841., 66_561.)
-    torch.testing.assert_allclose(x5, x5_exp)
-
-    x6_exp = expected((4, 256, 8, 8), 577., 385., 257., upper_left=True)
-    torch.testing.assert_allclose(x6, x6_exp)
-
-    x7_exp = expected((4, 256, 4, 4), 1_329_409.,
-                      738_817., 410_625., upper_left=True)
-    torch.testing.assert_allclose(x7, x7_exp)
-
-
 def test_default_fpn(layer_outputs, feature_size=256):
     model = FeaturePyramidNetwork([16, 32, 64], feature_size)
     initialize(model)
@@ -91,17 +57,6 @@ def test_default_fpn(layer_outputs, feature_size=256):
 @pytest.fixture
 def batch(image_size=480, batch_size=4):
     return torch.ones(batch_size, 3, image_size, image_size)
-
-
-def test_retinanet(batch, output_features=256, kernel_size=1):
-    model = RetinaNet(out_channels=output_features, kernel_size=kernel_size)
-    initialize(model)
-    outputs, anchors = model(batch)
-
-    n_anchors = 4805
-    assert outputs["boxes"].shape == (4, n_anchors, 4)
-    assert outputs["classes"].shape == (4, n_anchors, 3)
-    assert anchors.shape == (4, n_anchors, 4)
 
 
 def test_mobileretinanet(batch, output_features=256, kernel_size=1):
