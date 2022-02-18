@@ -37,7 +37,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         # base_lr=base_lr,
     )
     sublosses = default_losses()
-    sublosses["boxes"].weight = 0.01
+    sublosses["boxes"].weight = 1.
 
     model = DetectionNet(
         DummyDetector,
@@ -61,7 +61,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             background_class=0,
         ),
         callbacks=[
-            # scheduler,
+            scheduler,
             skorch.callbacks.ProgressBar(),
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
