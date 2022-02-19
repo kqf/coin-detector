@@ -1,6 +1,8 @@
 import pytest
 import torch
+
 from detectors.anchors import AnchorBoxes
+from detectors.encode import to_coords
 from detectors.matching import match
 
 
@@ -37,7 +39,11 @@ def test_matches(
 
     _, n_anchors, _ = anchors.shape
 
-    positives, negatives = match(target_boxes, mask, anchors)
+    positives, negatives = match(
+        to_coords(target_boxes),
+        mask,
+        to_coords(anchors)
+    )
 
     exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
     assert (exp_positives == positives).all()
