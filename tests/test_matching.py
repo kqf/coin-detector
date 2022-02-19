@@ -26,7 +26,7 @@ def anchors(batch_size, n_anchors):
 
 @pytest.mark.parametrize("n_anchors", [144])
 @pytest.mark.parametrize("n_outputs", [6])
-@pytest.mark.parametrize("n_targets", [10])
+@pytest.mark.parametrize("n_targets", [2])
 @pytest.mark.parametrize("batch_size", [16])
 def test_matches(
     y_pred, target_boxes, target_classes, anchors, batch_size,
