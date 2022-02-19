@@ -11,12 +11,18 @@ def y_pred(batch_size, n_anchors, n_outputs):
 
 @pytest.fixture
 def target_boxes(batch_size, n_targets):
-    return torch.ones((batch_size, n_targets, 4))
+    x = torch.ones((batch_size, n_targets, 4))
+    x[:, 0, :] = [144.0, 144.0, 96., 96.0]
+    x[:, 1, :] = [240.0, 240.0, 96., 96.0]
+    return x
 
 
 @pytest.fixture
 def target_classes(batch_size, n_targets):
-    return torch.ones((batch_size, n_targets))
+    x = torch.ones((batch_size, n_targets))
+    x[:, 0, :] = 0
+    x[:, 1, :] = 1
+    return x
 
 
 @pytest.fixture
