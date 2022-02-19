@@ -39,7 +39,8 @@ def test_matches(
 
     positives, negatives = match(target_boxes, mask, anchors)
 
-    expected_positives = (anchors[:, :, None] == target_boxes[:, None]).all(dim=-1)
-    assert (expected_positives == positives).all()
+    exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
+    assert (exp_positives == positives).all()
+
     assert positives.shape == (batch_size, n_targets, n_anchors)
     assert negatives.shape == (batch_size, n_anchors)
