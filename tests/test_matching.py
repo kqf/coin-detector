@@ -56,6 +56,9 @@ def test_matches(
         print(anchor)
         box(image, *anchor)
 
+    for target in target_boxes[0]:
+        box(image, *target, color="b")
+
     plt.imshow(image)
     plt.show()
     return
