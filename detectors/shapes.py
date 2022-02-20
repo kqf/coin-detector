@@ -43,15 +43,15 @@ def arrows():
     # plt.axes().yaxis.set_minor_locator(MultipleLocator(8))
 
 
-def box(img, cx, cy, w, h, color="g"):
+def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.1):
     imw, imh, *_ = img.shape
     ax = plt.gca()
     patch = _patch(
         (cx - w / 2, cy - h / 2), w, h,
-        linewidth=2,
+        linewidth=lw,
         edgecolor=color,
         facecolor='none',
-        alpha=0.1
+        alpha=alpha
     )
     ax.add_patch(patch)
 
