@@ -50,7 +50,8 @@ def box(img, cx, cy, w, h, color="g"):
         (cx - w / 2, cy - h / 2), w, h,
         linewidth=2,
         edgecolor=color,
-        facecolor='none'
+        facecolor='none',
+        alpha=0.1
     )
     ax.add_patch(patch)
 

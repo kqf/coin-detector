@@ -1,9 +1,11 @@
+import matplotlib.pyplot as plt
 import pytest
 import torch
 
 from detectors.anchors import AnchorBoxes
 from detectors.encode import to_coords
 from detectors.matching import match
+from detectors.shapes import box
 
 
 @pytest.fixture
@@ -23,17 +25,22 @@ def target_classes(batch_size, n_targets):
 
 
 @pytest.fixture
-def anchors(batch_size, image_shape=(480, 480), latent_size=5):
+def image():
+    return torch.zeros((480, 480, 3)) + 255.
+
+
+@pytest.fixture
+def anchors(batch_size, image, latent_size=5):
     layer = AnchorBoxes()
     latent = torch.zeros(batch_size, 1, latent_size, latent_size)
-    anchors, _ = layer(image_shape, [latent])
+    anchors, _ = layer(image.shape[:-1], [latent])
     return anchors
 
 
 @pytest.mark.parametrize("n_targets", [2])
 @pytest.mark.parametrize("batch_size", [16])
 def test_matches(
-    target_boxes, target_classes, anchors, batch_size, n_targets,
+    image, target_boxes, target_classes, anchors, batch_size, n_targets,
 ):
     mask = target_classes > 1000
 
@@ -45,6 +52,13 @@ def test_matches(
         to_coords(anchors)
     )
 
+    for anchor in anchors[0]:
+        print(anchor)
+        box(image, *anchor)
+
+    plt.imshow(image)
+    plt.show()
+    return
 
     exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
     assert (exp_positives == positives).all()
