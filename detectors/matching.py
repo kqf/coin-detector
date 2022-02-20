@@ -27,6 +27,8 @@ def match(
         to_coords(boxes[:, :, None]),
     )
 
+    import ipdb; ipdb.set_trace(); import IPython; IPython.embed() # noqa
+
     # Remove all scores that are masked
     overlap[mask] = fill_value
 

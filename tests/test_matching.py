@@ -4,6 +4,7 @@ import torch
 from detectors.anchors import AnchorBoxes
 from detectors.encode import to_coords
 from detectors.matching import match
+from detectors.shapes import box
 
 
 @pytest.fixture
@@ -23,10 +24,15 @@ def target_classes(batch_size, n_targets):
 
 
 @pytest.fixture
-def anchors(batch_size, image_shape=(480, 480), latent_size=5):
+def image():
+    return torch.zeros((480, 480))
+
+
+@pytest.fixture
+def anchors(batch_size, image, latent_size=5):
     layer = AnchorBoxes()
     latent = torch.zeros(batch_size, 1, latent_size, latent_size)
-    anchors, _ = layer(image_shape, [latent])
+    anchors, _ = layer(image.shape, [latent])
     return anchors
 
 
@@ -46,7 +52,17 @@ def test_matches(
     )
 
     exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
+    import ipdb
+    ipdb.set_trace()
+    import IPython
+    IPython.embed()  # noqa
     assert (exp_positives == positives).all()
+
+    for image, labels in data:
+        channels_last = image.cpu().numpy().transpose(1, 2, 0)
+        masks = []
+        for coords in labels["boxes"]:
+            box(channels_last, *coords)
 
     assert positives.shape == (batch_size, n_targets, n_anchors)
     assert negatives.shape == (batch_size, n_anchors)
