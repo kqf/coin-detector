@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pytest
 import torch
 
@@ -25,21 +26,21 @@ def target_classes(batch_size, n_targets):
 
 @pytest.fixture
 def image():
-    return torch.zeros((480, 480))
+    return torch.zeros((480, 480, 3)) + 255.
 
 
 @pytest.fixture
 def anchors(batch_size, image, latent_size=5):
     layer = AnchorBoxes()
     latent = torch.zeros(batch_size, 1, latent_size, latent_size)
-    anchors, _ = layer(image.shape, [latent])
+    anchors, _ = layer(image.shape[:-1], [latent])
     return anchors
 
 
 @pytest.mark.parametrize("n_targets", [2])
 @pytest.mark.parametrize("batch_size", [16])
 def test_matches(
-    target_boxes, target_classes, anchors, batch_size, n_targets,
+    image, target_boxes, target_classes, anchors, batch_size, n_targets,
 ):
     mask = target_classes > 1000
 
@@ -51,18 +52,16 @@ def test_matches(
         to_coords(anchors)
     )
 
-    exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
-    import ipdb
-    ipdb.set_trace()
-    import IPython
-    IPython.embed()  # noqa
-    assert (exp_positives == positives).all()
+    for anchor in anchors[0]:
+        print(anchor)
+        box(image, *anchor)
 
-    for image, labels in data:
-        channels_last = image.cpu().numpy().transpose(1, 2, 0)
-        masks = []
-        for coords in labels["boxes"]:
-            box(channels_last, *coords)
+    plt.imshow(image)
+    plt.show()
+    return
+
+    exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
+    assert (exp_positives == positives).all()
 
     assert positives.shape == (batch_size, n_targets, n_anchors)
     assert negatives.shape == (batch_size, n_anchors)
