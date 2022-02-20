@@ -45,7 +45,6 @@ def test_matches(
         to_coords(anchors)
     )
 
-
     exp_positives = (anchors[:, None] == target_boxes[:, :, None]).all(dim=-1)
     assert (exp_positives == positives).all()
 
