@@ -46,7 +46,7 @@ def test_matches(
 
     _, n_anchors, _ = anchors.shape
 
-    positives, negatives, _ = match(
+    positives, negatives, ious = match(
         to_coords(target_boxes),
         mask,
         to_coords(anchors)
@@ -59,10 +59,11 @@ def test_matches(
     for target in target_boxes[0]:
         box(image, *target, color="b", lw=5, alpha=1)
 
-    b_, _, anch_ = torch.where(positives)
+    b_, obj_, anch_ = torch.where(positives)
     pos_boxes = anchors[b_, anch_]
 
-    print(pos_boxes[b_ == 0])
+    print("The corresponding ious", ious[b_, obj_, anch_][b_ == 0])
+    print("The boxes", pos_boxes[b_ == 0])
     for bbox in pos_boxes[b_ == 0]:
         box(image, *bbox, color="r", alpha=1)
 
