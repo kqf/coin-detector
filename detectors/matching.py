@@ -42,4 +42,4 @@ def match(
     overlap_, _ = overlap.max(dim=1)
     negative = overlap_ < neg_th
 
-    return positive, negative
+    return positive, negative, overlap
