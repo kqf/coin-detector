@@ -59,6 +59,12 @@ def test_matches(
     for target in target_boxes[0]:
         box(image, *target, color="b")
 
+    b_, _, anch_ = torch.where(positives)
+    pos_boxes = positives[b_, anch_]
+
+    for bbox in pos_boxes[b_ == 0]:
+        box(image, *bbox, color="r")
+
     plt.imshow(image)
     plt.show()
     return
