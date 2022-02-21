@@ -6,6 +6,7 @@ from detectors.anchors import AnchorBoxes
 from detectors.encode import to_coords
 from detectors.matching import match
 from detectors.shapes import box
+from detectors.iou import iou
 
 
 @pytest.fixture
@@ -64,8 +65,13 @@ def test_matches(
 
     print("The corresponding ious", ious[b_, obj_, anch_][b_ == 0])
     print("The boxes", pos_boxes[b_ == 0])
+
     for bbox in pos_boxes[b_ == 0]:
         box(image, *bbox, color="r", alpha=1)
+
+    x_targets = to_coords(target_boxes[b_, obj_])[b_ == 0]
+    x_anchors = to_coords(anchors[b_, anch_])[b_ == 0]
+    print("The overlap between anchors and targets", iou(x_targets, x_anchors))
 
     plt.imshow(image)
     plt.show()
