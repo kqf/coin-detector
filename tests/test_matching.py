@@ -60,7 +60,7 @@ def test_matches(
         box(image, *target, color="b")
 
     b_, _, anch_ = torch.where(positives)
-    pos_boxes = positives[b_, anch_]
+    pos_boxes = anchors[b_, anch_]
 
     for bbox in pos_boxes[b_ == 0]:
         box(image, *bbox, color="r")
