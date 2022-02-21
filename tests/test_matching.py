@@ -57,13 +57,14 @@ def test_matches(
         box(image, *anchor)
 
     for target in target_boxes[0]:
-        box(image, *target, color="b")
+        box(image, *target, color="b", lw=5, alpha=1)
 
     b_, _, anch_ = torch.where(positives)
     pos_boxes = anchors[b_, anch_]
 
+    print(pos_boxes[b_ == 0])
     for bbox in pos_boxes[b_ == 0]:
-        box(image, *bbox, color="r")
+        box(image, *bbox, color="r", alpha=1)
 
     plt.imshow(image)
     plt.show()
