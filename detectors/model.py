@@ -22,15 +22,15 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     base_lr = 0.00002
     batch_size = 4
 
-    # scheduler = skorch.callbacks.LRScheduler(
-    #     policy=torch.optim.lr_scheduler.CyclicLR,
-    #     base_lr=base_lr,
-    #     max_lr=0.001,
-    #     step_size_up=4,
-    #     step_size_down=5,
-    #     step_every='epoch',
-    #     mode="triangular2",
-    # )
+    scheduler = skorch.callbacks.LRScheduler(
+        policy=torch.optim.lr_scheduler.CyclicLR,
+        base_lr=base_lr,
+        max_lr=0.001,
+        step_size_up=4,
+        step_size_down=5,
+        step_every='epoch',
+        mode="triangular2",
+    )
 
     scheduler = skorch.callbacks.LRScheduler(
         policy=torch.optim.lr_scheduler.ReduceLROnPlateau,
@@ -47,7 +47,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         criterion=DetectionLoss,
         criterion__sublosses=sublosses,
         optimizer=torch.optim.Adam,
-        # optimizer__momentum=0.9,
+        optimizer__momentum=0.9,
         iterator_train__shuffle=True,
         iterator_train__num_workers=6,
         iterator_valid__shuffle=False,
