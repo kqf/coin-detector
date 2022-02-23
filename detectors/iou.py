@@ -9,9 +9,6 @@ def box2area(bbox, eps=1e-16):
 
 
 def iou(y_pred, y_true, eps=1e-16):
-    # Don't propagate gradients for this
-    y_pred = y_pred.clone().detach()
-
     # The bbox areas
     area_pred = box2area(y_pred)
     area_true = box2area(y_true)
