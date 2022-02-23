@@ -27,4 +27,4 @@ def iou(y_pred, y_true, eps=1e-16):
     union = area_pred + area_true - intersection
     iou_ = intersection / (union + eps)
 
-    return iou_.clamp(0)
+    return iou_.clamp(0, 1e3)
