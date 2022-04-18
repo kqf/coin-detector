@@ -3,6 +3,19 @@ import pytest
 import torch
 
 from detectors.inference import infer
+import matplotlib.pyplot as plt
+from detectors.shapes import arrows, box
+
+
+def pplot(data):
+    image = np.zeros((640, 640, 3), dtype=np.uint8) + 255
+    for i, (boxes, ilabels) in enumerate(zip(data["boxes"], data["classes"])):
+        for coords, confidence in zip(boxes, ilabels):
+            box(image, *coords, alpha=confidence.max().item())
+        plt.imshow(image)
+        arrows()
+        plt.show()
+        plt.savefig(f"image-{i}.png")
 
 
 @pytest.fixture
@@ -22,6 +35,7 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
+    pplot(data=predictions)
     return predictions, anchors
 
 

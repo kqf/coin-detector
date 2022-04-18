@@ -12,6 +12,18 @@ def max_epochs(request):
     return request.config.getoption("--max-epochs")
 
 
+def pplot(data, preds):
+    for i, ((image, labels), (preds, classes)) in enumerate(zip(data, preds)):
+        channels_last = image.cpu().numpy().transpose(1, 2, 0)
+        for coords in preds:
+            box(channels_last, *coords)
+        plt.imshow(channels_last)
+        arrows()
+        plt.show()
+        counts += 1
+        plt.savefig(f"result-{i}.png")
+
+
 def test_model(fake_dataset, max_epochs):
     df = read_dataset(fake_dataset / "train.csv")
     train = DetectionDataset(df, transforms=transform())
@@ -25,15 +37,6 @@ def test_model(fake_dataset, max_epochs):
         model.save_params(f_params="debug-weights.pt")
 
     predictions = model.predict_proba(train)
+    pplot(data=train, preds=predictions)
 
     # Now visually check the results
-    counts = 0
-    for (image, labels), (preds, classes) in zip(train, predictions):
-        channels_last = image.cpu().numpy().transpose(1, 2, 0)
-        for coords in preds:
-            box(channels_last, *coords)
-        plt.imshow(channels_last)
-        arrows()
-        plt.show()
-        counts += 1
-        plt.savefig(f"result-{counts}.png")
