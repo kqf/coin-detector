@@ -18,6 +18,8 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     predictions["boxes"] = torch.tensor(x)
 
     classes = np.zeros((batch_size, n_anchors, n_classes))
+    # Left it be always the first class
+    classes[:, :, 1] = 0.9
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
@@ -26,5 +28,6 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 
 # @pytest.mark.skip
 def test_inference(candidates):
-    sup = infer(candidates, decode=decode)
+    sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
+    import ipdb; ipdb.set_trace(); import IPython; IPython.embed()  # noqa
