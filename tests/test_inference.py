@@ -2,7 +2,6 @@ import numpy as np
 import pytest
 import torch
 
-from detectors.encode import decode
 from detectors.inference import infer
 
 
@@ -18,6 +17,8 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     predictions["boxes"] = torch.tensor(x)
 
     classes = np.zeros((batch_size, n_anchors, n_classes))
+    # Left it be always the first class
+    classes[:, :, 1] = np.linspace(0.2, 0.8, n_anchors)
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
@@ -26,5 +27,7 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 
 # @pytest.mark.skip
 def test_inference(candidates):
-    sup = infer(candidates, decode=decode)
+    sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
+    for boxes, scores in sup:
+        print(boxes.shape, scores.shape)
