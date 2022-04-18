@@ -30,4 +30,3 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
 def test_inference(candidates):
     sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
-    import ipdb; ipdb.set_trace(); import IPython; IPython.embed()  # noqa
