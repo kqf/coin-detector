@@ -8,7 +8,7 @@ from detectors.shapes import arrows, box
 
 
 def pplot(image, data):
-    for i, (boxes, ilabels) in enumerate(zip(data["boxes"], data["classes"])):
+    for i, (boxes, ilabels) in enumerate(data):
         for coords, confidence in zip(boxes, ilabels):
             box(image, *coords, alpha=confidence.max().item())
         plt.imshow(image)
@@ -39,7 +39,7 @@ def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
-    pplot(image, data=predictions)
+    pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
     return predictions, anchors
 
 
