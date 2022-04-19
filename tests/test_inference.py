@@ -1,20 +1,20 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import torch
-
 from detectors.inference import infer
-import matplotlib.pyplot as plt
 from detectors.shapes import arrows, box
 
 
-def pplot(image, data):
+def pplot(image, data, stem="image"):
     for i, (boxes, ilabels) in enumerate(data):
         for coords, confidence in zip(boxes, ilabels):
-            box(image, *coords, alpha=confidence.max().item())
+            box(image, *coords)
+        print(">>>")
         plt.imshow(image)
         arrows()
         plt.show()
-        plt.savefig(f"image-{i}.png")
+        plt.savefig(f"{stem}-{i}.png")
 
 
 @pytest.fixture
@@ -26,9 +26,9 @@ def image():
 def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     x = np.zeros((batch_size, n_anchors, 4))
     x[..., 0] = np.linspace(280, 300, n_anchors)
-    x[..., 1] = np.linspace(280, 300, n_anchors)
+    x[..., 1] = 280
     x[..., 2] = np.linspace(280, 300, n_anchors) + 20
-    x[..., 3] = np.linspace(280, 300, n_anchors) + 20
+    x[..., 3] = 280 + 20
 
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
@@ -44,8 +44,10 @@ def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
 
 
 # @pytest.mark.skip
-def test_inference(candidates):
+def test_inference(image, candidates):
     sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
+    pplot(image, data=sup, stem="filtered")
     for boxes, scores in sup:
         print(boxes.shape, scores.shape)
+        print(boxes)
