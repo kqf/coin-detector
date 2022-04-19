@@ -20,7 +20,6 @@ def pplot(data, preds):
         plt.imshow(channels_last)
         arrows()
         plt.show()
-        counts += 1
         plt.savefig(f"result-{i}.png")
 
 
