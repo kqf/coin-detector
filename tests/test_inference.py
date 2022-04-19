@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 from detectors.shapes import arrows, box
 
 
-def pplot(data):
-    image = np.zeros((640, 640, 3), dtype=np.uint8) + 255
+def pplot(image, data):
     for i, (boxes, ilabels) in enumerate(zip(data["boxes"], data["classes"])):
         for coords, confidence in zip(boxes, ilabels):
             box(image, *coords, alpha=confidence.max().item())
@@ -19,12 +18,17 @@ def pplot(data):
 
 
 @pytest.fixture
-def candidates(batch_size=4, n_anchors=400, n_classes=4):
+def image():
+    return np.zeros((640, 640, 3), dtype=np.uint8) + 255
+
+
+@pytest.fixture
+def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     x = np.zeros((batch_size, n_anchors, 4))
-    x[..., 0] = np.linspace(0.4, 0.6, n_anchors)
-    x[..., 1] = np.linspace(0.4, 0.5, n_anchors)
-    x[..., 2] = np.linspace(0.4, 0.5, n_anchors)
-    x[..., 3] = 0.2
+    x[..., 0] = np.linspace(280, 300, n_anchors)
+    x[..., 1] = np.linspace(280, 300, n_anchors)
+    x[..., 2] = np.linspace(280, 300, n_anchors) + 20
+    x[..., 3] = np.linspace(280, 300, n_anchors) + 20
 
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
@@ -35,7 +39,7 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
-    pplot(data=predictions)
+    pplot(image, data=predictions)
     return predictions, anchors
 
 
