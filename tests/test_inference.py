@@ -1,30 +1,34 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import torch
-
 from detectors.inference import infer
-import matplotlib.pyplot as plt
 from detectors.shapes import arrows, box
 
 
-def pplot(data):
-    image = np.zeros((640, 640, 3), dtype=np.uint8) + 255
-    for i, (boxes, ilabels) in enumerate(zip(data["boxes"], data["classes"])):
+def pplot(image, data, stem="image"):
+    for i, (boxes, ilabels) in enumerate(data):
         for coords, confidence in zip(boxes, ilabels):
-            box(image, *coords, alpha=confidence.max().item())
+            box(image, *coords)
+        print(">>>")
         plt.imshow(image)
         arrows()
         plt.show()
-        plt.savefig(f"image-{i}.png")
+        plt.savefig(f"{stem}-{i}.png")
 
 
 @pytest.fixture
-def candidates(batch_size=4, n_anchors=400, n_classes=4):
+def image():
+    return np.zeros((640, 640, 3), dtype=np.uint8) + 255
+
+
+@pytest.fixture
+def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     x = np.zeros((batch_size, n_anchors, 4))
-    x[..., 0] = np.linspace(0.4, 0.6, n_anchors)
-    x[..., 1] = np.linspace(0.4, 0.5, n_anchors)
-    x[..., 2] = np.linspace(0.4, 0.5, n_anchors)
-    x[..., 3] = 0.2
+    x[..., 0] = np.linspace(280, 300, n_anchors)
+    x[..., 1] = 280
+    x[..., 2] = np.linspace(280, 300, n_anchors) + 20
+    x[..., 3] = 280 + 20
 
     predictions = {}
     predictions["boxes"] = torch.tensor(x)
@@ -35,13 +39,15 @@ def candidates(batch_size=4, n_anchors=400, n_classes=4):
     predictions["classes"] = torch.tensor(classes)
 
     anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
-    pplot(data=predictions)
+    pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
     return predictions, anchors
 
 
 # @pytest.mark.skip
-def test_inference(candidates):
+def test_inference(image, candidates):
     sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
+    pplot(image, data=sup, stem="filtered")
     for boxes, scores in sup:
         print(boxes.shape, scores.shape)
+        print(boxes)
