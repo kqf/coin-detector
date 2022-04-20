@@ -42,10 +42,19 @@ def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     return predictions, anchors
 
 
+@pytest.fixture
+def expected(candidates):
+    predictions, _ = candidates
+    x = predictions["boxes"]
+    return x[-1]
+
 # @pytest.mark.skip
-def test_inference(image, candidates):
+
+
+def test_inference(image, candidates, expected):
     sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
     pplot(image, data=sup, stem="filtered")
-    for boxes, scores in sup:
-        print(boxes.shape, scores.shape)
+    for boxes, _ in sup:
+        print(boxes, expected)
+        # np.testing.assert_allclose(boxes, expected)
