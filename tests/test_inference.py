@@ -10,7 +10,6 @@ def pplot(image, data, stem="image"):
     for i, (boxes, ilabels) in enumerate(data):
         for coords, confidence in zip(boxes, ilabels):
             box(image, *coords)
-        print(">>>")
         plt.imshow(image)
         arrows()
         plt.show()
@@ -50,4 +49,3 @@ def test_inference(image, candidates):
     pplot(image, data=sup, stem="filtered")
     for boxes, scores in sup:
         print(boxes.shape, scores.shape)
-        print(boxes)
