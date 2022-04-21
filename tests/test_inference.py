@@ -7,12 +7,13 @@ from detectors.shapes import arrows, box
 
 
 def pplot(image, data, stem="image"):
-    for i, (boxes, ilabels) in enumerate(data):
-        for coords, confidence in zip(boxes, ilabels):
-            box(image, *coords)
+    for i, per_image in enumerate(data):
+        for i, coords in enumerate(per_image):
+            n_images = len(per_image)
+            box(per_image, *coords, alpha=(n_images - i) / n_images)
         plt.imshow(image)
         arrows()
-        # plt.show()
+        plt.show()
         plt.savefig(f"{stem}-{i}.png")
 
 
@@ -41,7 +42,7 @@ def predictions(image, batch_size, n_anchors, n_classes):
     # Left it be always the first class
     classes[:, :, 1] = np.linspace(0.2, 0.8, n_anchors)
     predictions["classes"] = torch.tensor(classes)
-    pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
+    pplot(image, data=predictions["boxes"])
     return predictions
 
 
@@ -55,7 +56,8 @@ def expected(predictions):
 @pytest.mark.parametrize("n_anchors", [200])
 @pytest.mark.parametrize("n_classes", [4])
 def test_inference(image, predictions, anchors, expected):
-    sup = infer((predictions, anchors), decode=lambda x, _: x)
-    pplot(image, data=sup, stem="filtered")
-    for (boxes, _), exptd in zip(sup, expected):
+    suppressed = infer((predictions, anchors), decode=lambda x, _: x)
+    coords, _ = zip(*suppressed)
+    pplot(image, data=coords, stem="filtered")
+    for boxes, exptd in zip(coords, expected):
         np.testing.assert_allclose(boxes, exptd, rtol=1e-5)
