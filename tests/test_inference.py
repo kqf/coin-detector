@@ -7,9 +7,9 @@ from detectors.shapes import arrows, box
 
 
 def pplot(image, data, stem="image"):
-    for i, (boxes, ilabels) in enumerate(data):
-        for coords, confidence in zip(boxes, ilabels):
-            box(image, *coords)
+    for i, per_image in enumerate(data):
+        for coords in per_image:
+            box(per_image, *coords)
         plt.imshow(image)
         arrows()
         # plt.show()
@@ -41,7 +41,7 @@ def predictions(image, batch_size, n_anchors, n_classes):
     # Left it be always the first class
     classes[:, :, 1] = np.linspace(0.2, 0.8, n_anchors)
     predictions["classes"] = torch.tensor(classes)
-    pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
+    pplot(image, data=predictions["boxes"])
     return predictions
 
 
