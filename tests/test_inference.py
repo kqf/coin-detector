@@ -22,6 +22,11 @@ def image():
 
 
 @pytest.fixture
+def anchors(batch_size, n_anchors):
+    return torch.tensor(np.ones((batch_size, n_anchors, 4)))
+
+
+@pytest.fixture
 def predictions(image, batch_size, n_anchors, n_classes):
     x = np.zeros((batch_size, n_anchors, 4))
     x[..., 0] = np.linspace(280, 300, n_anchors)
@@ -38,11 +43,6 @@ def predictions(image, batch_size, n_anchors, n_classes):
     predictions["classes"] = torch.tensor(classes)
     pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
     return predictions
-
-
-@pytest.fixture
-def anchors(batch_size, n_anchors):
-    return torch.tensor(np.ones((batch_size, n_anchors, 4)))
 
 
 @pytest.fixture
