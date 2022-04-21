@@ -8,11 +8,12 @@ from detectors.shapes import arrows, box
 
 def pplot(image, data, stem="image"):
     for i, per_image in enumerate(data):
-        for coords in per_image:
-            box(per_image, *coords)
+        for i, coords in enumerate(per_image):
+            n_images = len(per_image)
+            box(per_image, *coords, alpha=(n_images - i) / n_images)
         plt.imshow(image)
         arrows()
-        # plt.show()
+        plt.show()
         plt.savefig(f"{stem}-{i}.png")
 
 
@@ -55,7 +56,8 @@ def expected(predictions):
 @pytest.mark.parametrize("n_anchors", [200])
 @pytest.mark.parametrize("n_classes", [4])
 def test_inference(image, predictions, anchors, expected):
-    sup = infer((predictions, anchors), decode=lambda x, _: x)
-    pplot(image, data=sup, stem="filtered")
-    for (boxes, _), exptd in zip(sup, expected):
+    suppressed = infer((predictions, anchors), decode=lambda x, _: x)
+    coords, _ = zip(*suppressed)
+    pplot(image, data=coords, stem="filtered")
+    for boxes, exptd in zip(coords, expected):
         np.testing.assert_allclose(boxes, exptd, rtol=1e-5)
