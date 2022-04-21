@@ -12,7 +12,7 @@ def pplot(image, data, stem="image"):
             box(image, *coords)
         plt.imshow(image)
         arrows()
-        plt.show()
+        # plt.show()
         plt.savefig(f"{stem}-{i}.png")
 
 
@@ -46,15 +46,12 @@ def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
 def expected(candidates):
     predictions, _ = candidates
     x = predictions["boxes"]
-    return x[-1]
-
-# @pytest.mark.skip
+    return x[:, [-1]]
 
 
 def test_inference(image, candidates, expected):
     sup = infer(candidates, decode=lambda x, _: x)
     assert len(sup) == candidates[-1].shape[0]
     pplot(image, data=sup, stem="filtered")
-    for boxes, _ in sup:
-        print(boxes, expected)
-        # np.testing.assert_allclose(boxes, expected)
+    for (boxes, _), exptd in zip(sup, expected):
+        np.testing.assert_allclose(boxes, exptd, rtol=1e-5)
