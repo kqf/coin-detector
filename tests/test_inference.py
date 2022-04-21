@@ -22,7 +22,7 @@ def image():
 
 
 @pytest.fixture
-def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
+def predictions(image, batch_size, n_anchors, n_classes):
     x = np.zeros((batch_size, n_anchors, 4))
     x[..., 0] = np.linspace(280, 300, n_anchors)
     x[..., 1] = 280
@@ -36,22 +36,26 @@ def candidates(image, batch_size=4, n_anchors=400, n_classes=4):
     # Left it be always the first class
     classes[:, :, 1] = np.linspace(0.2, 0.8, n_anchors)
     predictions["classes"] = torch.tensor(classes)
-
-    anchors = torch.tensor(np.ones((batch_size, n_anchors, 4)))
     pplot(image, data=zip(predictions["boxes"], predictions["classes"]))
-    return predictions, anchors
+    return predictions
 
 
 @pytest.fixture
-def expected(candidates):
-    predictions, _ = candidates
+def anchors(batch_size, n_anchors):
+    return torch.tensor(np.ones((batch_size, n_anchors, 4)))
+
+
+@pytest.fixture
+def expected(predictions):
     x = predictions["boxes"]
     return x[:, [-1]]
 
 
-def test_inference(image, candidates, expected):
-    sup = infer(candidates, decode=lambda x, _: x)
-    assert len(sup) == candidates[-1].shape[0]
+@pytest.mark.parametrize("batch_size", [4])
+@pytest.mark.parametrize("n_anchors", [200])
+@pytest.mark.parametrize("n_classes", [4])
+def test_inference(image, predictions, anchors, expected):
+    sup = infer((predictions, anchors), decode=lambda x, _: x)
     pplot(image, data=sup, stem="filtered")
     for (boxes, _), exptd in zip(sup, expected):
         np.testing.assert_allclose(boxes, exptd, rtol=1e-5)
