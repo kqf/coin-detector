@@ -22,10 +22,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install pytest-memray
         pip install -e .
     - name: Test
       run: |
-        pytest --cov=detectors --cov-report term-missing tests/
+        pytest --memray --cov=detectors --cov-report term-missing tests/
     - name: Type Check
       run: |
         mypy --ignore-missing-imports .
