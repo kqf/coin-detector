@@ -56,12 +56,14 @@ def default_losses():
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
             enc_true=encode,
-            weight=0.005,
+            weight=0.01,
         ),
         "classes": WeightedLoss(
             partial(
                 torchvision.ops.sigmoid_focal_loss,
                 reduction="mean",
+                alpha=0.8,
+                gamma=0.5,
             ),
             enc_true=lambda y, _: torch.nn.functional.one_hot(
                 y.reshape(-1).long()).float(),

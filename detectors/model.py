@@ -19,7 +19,7 @@ def init(w):
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
-    base_lr = 0.00002
+    base_lr = 0.00001
     batch_size = 4
 
     # LR scheduler
@@ -34,13 +34,13 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         mode="triangular2",
     )
     """
-    """
+    # """
     # LR scheduler
     scheduler = skorch.callbacks.LRScheduler(
         policy=torch.optim.lr_scheduler.ReduceLROnPlateau,
         # base_lr=base_lr,
     )
-    """
+    # """
     sublosses = default_losses()
     sublosses["boxes"].weight = 1.
 
@@ -62,10 +62,11 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
             infer,
             decode=decode,
             threshold=0.5,
+            min_confidence=0.8,
             background_class=0,
         ),
         callbacks=[
-            # scheduler,
+            scheduler,
             skorch.callbacks.ProgressBar(),
             skorch.callbacks.TrainEndCheckpoint(dirname=logdir),
             skorch.callbacks.Initializer("*", init),
