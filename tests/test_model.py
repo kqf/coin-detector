@@ -13,10 +13,15 @@ def max_epochs(request):
 
 
 def pplot(data, preds):
-    for i, ((image, labels), (preds, classes)) in enumerate(zip(data, preds)):
+    for i, ((image, labels), pp) in enumerate(zip(data, preds)):
         channels_last = image.cpu().numpy().transpose(1, 2, 0)
-        for coords in preds:
-            box(channels_last, *coords)
+        for coords, classes in zip(*pp):
+            print(f"Class: {classes}")
+            box(channels_last, *coords, alpha=0.5)
+
+        for coords in labels["boxes"]:
+            box(channels_last, *coords, color="b", alpha=0.5)
+
         plt.imshow(channels_last)
         arrows()
         plt.show()
