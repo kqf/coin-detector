@@ -6,7 +6,7 @@ import torch
 from detectors.detnet import DetectionNet
 from detectors.dummy import DummyDetector
 # from detectors.retinanet import RetinaNet
-from detectors.encode import decode, to_cchw
+from detectors.encode import decode
 from detectors.inference import infer
 from detectors.loss import DetectionLoss, default_losses
 
@@ -61,7 +61,6 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         predict_nonlinearity=partial(
             infer,
             decode=decode,
-            encode=to_cchw,
             threshold=0.5,
             background_class=0,
         ),
