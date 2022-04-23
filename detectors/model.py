@@ -61,8 +61,8 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
         predict_nonlinearity=partial(
             infer,
             decode=decode,
-            threshold=0.4,
-            min_confidence=0.1,
+            threshold=0.5,
+            min_confidence=0.8,
             background_class=0,
         ),
         callbacks=[
