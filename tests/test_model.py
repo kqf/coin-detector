@@ -28,17 +28,22 @@ def pplot(data, preds):
         plt.savefig(f"result-{i}.png")
 
 
+def fit(model):
+    try:
+        model.load_params(f_params="debug-weights.pt")
+    except FileNotFoundError:
+        model.fit(train)
+        model.save_params(f_params="debug-weights.pt")
+    return model
+
+
 def test_model(fake_dataset, max_epochs):
     df = read_dataset(fake_dataset / "train.csv")
     train = DetectionDataset(df, transforms=transform())
 
     model = build_model(max_epochs=max_epochs)
     model.initialize()
-    try:
-        model.load_params(f_params="debug-weights.pt")
-    except FileNotFoundError:
-        model.fit(train)
-        model.save_params(f_params="debug-weights.pt")
+    fit(model)
 
     predictions = model.predict_proba(train)
     pplot(data=train, preds=predictions)
