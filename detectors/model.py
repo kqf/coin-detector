@@ -19,7 +19,7 @@ def init(w):
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     # A slight improvement
-    base_lr = 0.00001
+    base_lr = 0.0001
     batch_size = 4
 
     # LR scheduler
@@ -42,7 +42,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     )
     # """
     sublosses = default_losses()
-    sublosses["boxes"].weight = 1.
+    sublosses["boxes"].weight = 0.05
 
     model = DetectionNet(
         DummyDetector,

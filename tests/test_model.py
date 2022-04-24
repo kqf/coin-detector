@@ -43,7 +43,8 @@ def test_model(fake_dataset, max_epochs):
 
     model = build_model(max_epochs=max_epochs)
     model.initialize()
-    fit(model, train)
+    # fit(model, train)
+    model.fit(train)
 
     predictions = model.predict_proba(train)
     for pp in predictions:
