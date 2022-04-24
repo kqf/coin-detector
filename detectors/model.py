@@ -42,7 +42,7 @@ def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
     )
     # """
     sublosses = default_losses()
-    sublosses["boxes"].weight = 1.
+    sublosses["boxes"].weight = 0.025
 
     model = DetectionNet(
         DummyDetector,
