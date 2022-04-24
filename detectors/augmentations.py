@@ -49,10 +49,10 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # ),
             # This one is definitely broken
             # alb.RandomCrop(width=350, height=350),
-            # alb.OneOf([
-            #     alb.HueSaturationValue(10, 15, 10),
-            #     alb.RandomBrightnessContrast(),
-            # ], p=0.3)
+            alb.OneOf([
+                alb.HueSaturationValue(10, 15, 10),
+                alb.RandomBrightnessContrast(),
+            ], p=0.3)
         ]
 
     return alb.Compose(
