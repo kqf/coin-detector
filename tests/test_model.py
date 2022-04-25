@@ -46,8 +46,8 @@ def test_model(fake_dataset, max_epochs):
     model.initialize()
     fit(model, train)
 
-    # valid = DetectionDataset(df, transforms=transform(train=False))
-    predictions = model.predict_proba(train)
+    valid = DetectionDataset(df, transforms=transform(train=False))
+    predictions = model.predict_proba(valid)
 
     # Now visually check the results
     pplot(data=train, preds=predictions)
