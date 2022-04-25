@@ -33,7 +33,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # This one is definitely broken
             alb.VerticalFlip(),
             # This one is definitely broken
-            alb.RandomRotate90(),
+            # alb.RandomRotate90(),
             # bad
             # This one is definitely broken
             # alb.Flip(1),
