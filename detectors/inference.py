@@ -1,4 +1,6 @@
+import torch
 from torchvision.ops import batched_nms
+from detectors.encode import RCNN
 
 
 def infer(
@@ -10,7 +12,10 @@ def infer(
 ):
     predictions = []
     preds, anchors = batch
-    boxes, classes = preds["boxes"], preds["classes"]
+
+    boxes: RCNN = preds["boxes"]
+    classes: torch.Tensor = preds["classes"]
+
     for boxes_, classes_, anchors_ in zip(boxes, classes, anchors):
         scores_, class_ids_ = classes_.max(dim=-1)
 
