@@ -1,6 +1,6 @@
 import pytest
 import torch
-from detectors.encode import decode, encode, to_cchw, to_coords
+from detectors.encode import CCHW, XYXY, decode, encode, to_cchw, to_coords
 
 
 @pytest.fixture
@@ -15,7 +15,7 @@ def anchors(batch_size, x0, y0, x1, y1, shift):
     x[:, 1] = y0 + shift
     x[:, 2] = x1 + shift
     x[:, 3] = y1 + shift
-    return x
+    return CCHW(x)
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def original(batch_size, x0, y0, x1, y1):
     x[:, 1] = y0
     x[:, 2] = x1
     x[:, 3] = y1
-    return x
+    return XYXY(x)
 
 
 @pytest.fixture
