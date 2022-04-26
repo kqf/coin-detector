@@ -1,5 +1,6 @@
-import torch
 from typing import NewType
+
+import torch
 
 CCHW = NewType("CCHW", torch.Tensor)
 XYXY = NewType("XYXY", torch.Tensor)
