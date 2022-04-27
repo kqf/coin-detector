@@ -1,8 +1,8 @@
 # import cv2
-import numpy as np
-import albumentations as alb
 import functools
 
+import albumentations as alb
+import numpy as np
 from albumentations.pytorch import ToTensorV2
 
 _mean = [0, 0, 0]
@@ -27,11 +27,11 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     if train:
         train_transforms = [
             # This one is definitely broken
-            alb.HorizontalFlip(),
+            # alb.HorizontalFlip(),
             # Vertical flips don't change the position of an image
             # they seem to change only annotations
             # This one is definitely broken
-            alb.VerticalFlip(),
+            # alb.VerticalFlip(),
             # This one is definitely broken
             # alb.RandomRotate90(),
             # bad
