@@ -54,7 +54,7 @@ def decoded(decoder, encoded, anchors):
 ])
 @pytest.mark.parametrize("encoder, decoder", [
     (encode, decode),
-    # (lambda x, _: to_coords(x), lambda x, _: to_cchw(x)),
+    (lambda x, _: to_coords(x), lambda x, _: to_cchw(x)),
 ])
 def test_encoded_decode_correct(decoded, original):
     torch.testing.assert_close(decoded, original)
