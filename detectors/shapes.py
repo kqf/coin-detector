@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage.draw import disk, ellipse, polygon, rectangle
 
-from detectors.encode import CCHW
-
 
 def _patch(xy, *args, **kwargs):
     return patches.Rectangle(xy, *args, **kwargs)
@@ -43,10 +41,6 @@ def arrows():
             transform=ax.get_xaxis_transform(), clip_on=False)
 
     # plt.axes().yaxis.set_minor_locator(MultipleLocator(8))
-
-
-def tbox(img, coords: CCHW, color="g", lw=2, alpha=0.1):
-    return box(img, *coords, color=color, lw=lw, alpha=alpha)
 
 
 def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.1):
