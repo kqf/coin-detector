@@ -4,10 +4,10 @@ from typing import Callable
 
 import torch
 import torchvision
-
-from detectors.encode import encode, to_coords
-from detectors.matching import match
 from sklearn.metrics import f1_score
+
+from detectors.encode import encode, to_cchw, to_coords
+from detectors.matching import match
 
 
 def select(y_pred, y_true, anchor, positives, negatives, use_negatives=True):
@@ -55,7 +55,8 @@ def default_losses():
     losses = {
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
-            enc_true=encode,
+            enc_true=lambda x, a: encode(to_cchw(x), a),
+            # enc_true=encode,
             weight=0.01,
         ),
         "classes": WeightedLoss(
@@ -104,7 +105,8 @@ class DetectionLoss(torch.nn.Module):
         # Bind targets with anchors
 
         positives, negatives, _ = match(
-            to_coords(y["boxes"]),
+            y["boxes"],
+            # to_coords(y["boxes"]),
             y["classes"] < 0,
             to_coords(anchors)
         )
