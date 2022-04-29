@@ -19,6 +19,7 @@ def read_image(file):
 def read_dataset(path):
     df = pd.read_csv(path)
     df['coco'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
+    df["xyxy"] = list(df[['x_min', 'y_min', 'x_max', 'y_max']].values)
     return df
 
 
@@ -38,7 +39,7 @@ class DetectionDataset(torch.utils.data.Dataset):
         file = records.loc[0, "image"]
         image = read_image(file)
 
-        boxes = np.stack(records["coco"].values)
+        boxes = np.stack(records["xyxy"].values)
         labels = records["class_id"].values
 
         if self.transforms:

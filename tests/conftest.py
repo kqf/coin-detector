@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import pytest
 import torch
-
 from detectors.mc import make_colors, make_image
 
 
@@ -88,6 +87,7 @@ def annotations(fixed_seed, tmp_path, width=480, num_classes=2, n_samples=8):
     df['height'] = (y2 - y1)
 
     df['coco'] = list(df[['x_center', 'y_center', 'width', 'height']].values)
+    df["xyxy"] = list(df[['x_min', 'y_min', 'x_max', 'y_max']].values)
     return df
 
 

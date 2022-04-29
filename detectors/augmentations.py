@@ -27,7 +27,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     if train:
         train_transforms = [
             # This one is definitely broken
-            # alb.HorizontalFlip(),
+            alb.HorizontalFlip(),
             # Vertical flips don't change the position of an image
             # they seem to change only annotations
             # This one is definitely broken
@@ -58,7 +58,7 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
     return alb.Compose(
         train_transforms + transforms,
         bbox_params=alb.BboxParams(
-            format="coco",
+            format="pascal_voc",
             label_fields=['labels']
         )
     )
