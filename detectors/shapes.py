@@ -45,10 +45,6 @@ def arrows():
     # plt.axes().yaxis.set_minor_locator(MultipleLocator(8))
 
 
-def tbox(img, coords: CCHW, color="g", lw=2, alpha=0.1):
-    return box(img, *coords, color=color, lw=lw, alpha=alpha)
-
-
 def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.1):
     imw, imh, *_ = img.shape
     ax = plt.gca()
