@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage.draw import disk, ellipse, polygon, rectangle
 
-from detectors.encode import CCHW
-
 
 def _patch(xy, *args, **kwargs):
     return patches.Rectangle(xy, *args, **kwargs)
