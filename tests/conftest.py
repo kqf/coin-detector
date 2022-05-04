@@ -61,22 +61,22 @@ def annotations(fixed_seed, tmp_path, width=480, num_classes=2, n_samples=8):
     df['colors'] = list(make_colors(len(df)))
     df["colors"] = [np.array([77, 180, 198]), ] * len(df)
 
-    shift = width / 5.
+    # shift = width / 5.
+    shift = width / 4
     df.loc[:n_images // 2 - 1, 'x_min'] = shift
     df.loc[:n_images // 2 - 1, 'x_max'] = shift + shift
     df.loc[:n_images // 2 - 1, 'y_min'] = shift
     df.loc[:n_images // 2 - 1, 'y_max'] = shift + shift
     df.loc[:n_images // 2 - 1, 'class_id'] = 0
-    # df = df.loc[:n_images // 2 - 1, :]
 
-    df.loc[n_images // 2:, 'x_min'] = 2 * shift
+    rshift = np.ranom.randint(0, 10)
+    df.loc[n_images // 2:, 'x_min'] = 2 * shift + rshift
     df.loc[n_images // 2:, 'x_max'] = 2 * shift + shift
-    df.loc[n_images // 2:, 'y_min'] = 2 * shift
+    df.loc[n_images // 2:, 'y_min'] = 2 * shift + rshift
     df.loc[n_images // 2:, 'y_max'] = 2 * shift + shift
     df.loc[n_images // 2:, 'class_id'] = 1
 
     # Hardcode the colors
-
     df["h"] = width
     df["w"] = width
 
