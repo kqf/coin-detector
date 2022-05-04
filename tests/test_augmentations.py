@@ -4,6 +4,7 @@ import pytest
 from detectors.augmentations import transform
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("image, boxes, labels", [
     (
         np.zeros([3, 400, 400]),
