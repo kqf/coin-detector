@@ -24,8 +24,9 @@ def test_dataset(fake_dataset):
             box(channels_last, *coords, alpha=0.8)
             masks.append(box_mask(channels_last, *coords))
 
-        has_object = np.stack(masks).any(axis=0)
-        nontrivial_pixel = channels_last.mean(axis=-1) < 1
+        # Unused for image-based coords
+        # has_object = np.stack(masks).any(axis=0)
+        # nontrivial_pixel = channels_last.mean(axis=-1) < 1
 
         arrows()
         plt.imshow(channels_last)
