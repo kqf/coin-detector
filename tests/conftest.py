@@ -61,8 +61,7 @@ def annotations(fixed_seed, tmp_path, width=480, num_classes=2, n_samples=8):
     df['colors'] = list(make_colors(len(df)))
     df["colors"] = [np.array([77, 180, 198]), ] * len(df)
 
-    # shift = width / 5.
-    shift = width / 4
+    shift = width / 5.
     df.loc[:n_images // 2 - 1, 'x_min'] = shift
     df.loc[:n_images // 2 - 1, 'x_max'] = shift + shift
     df.loc[:n_images // 2 - 1, 'y_min'] = shift
