@@ -55,20 +55,6 @@ def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.6):
     )
     ax.add_patch(patch)
 
-    # plt.arrow(
-    #     cx + w, cy + h / 2 * 0.8, 0, -h * 0.8,
-    #     length_includes_head=True,
-    #     width=2, color="r", edgecolor="r"
-    # )
-
-    # plt.arrow(
-    #     cx + w, cy - h, 0, -h,
-    #     length_includes_head=True,
-    #     width=2,
-    #     color="b",
-    #     edgecolor="b",
-    # )
-
 
 def to_circle(img, cx, cy, w, h):
     shape = img.shape
