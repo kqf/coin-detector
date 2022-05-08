@@ -43,7 +43,7 @@ def arrows():
     # plt.axes().yaxis.set_minor_locator(MultipleLocator(8))
 
 
-def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.1):
+def box(img, cx, cy, w, h, color="g", lw=2, alpha=0.6):
     imw, imh, *_ = img.shape
     ax = plt.gca()
     patch = _patch(
