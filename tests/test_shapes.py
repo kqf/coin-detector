@@ -1,9 +1,8 @@
-import pytest
-import numpy as np
 import matplotlib.pyplot as plt
-
-from detectors.shapes import to_ellipse, to_recatangle, to_disc, to_polygon
-from detectors.shapes import box, box_mask
+import numpy as np
+import pytest
+from detectors.shapes import (box, box_mask, to_disc, to_ellipse, to_polygon,
+                              to_recatangle)
 
 
 @pytest.fixture
@@ -33,7 +32,7 @@ def bbox(cx, cy, w, h):
 ])
 def test_shapes(method, image, bbox):
     image = method(image, *bbox)
-    box(image, *bbox)
+    box(image, *bbox, alpha=1)
     plt.imshow(image)
     plt.pause(0.000001)
     plt.cla()
