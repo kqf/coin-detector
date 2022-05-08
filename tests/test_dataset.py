@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import torch
 from detectors.augmentations import transform
 from detectors.dataset import DetectionDataset, read_dataset
