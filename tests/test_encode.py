@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from detectors.encode import CCHW, XYXY, decode, encode, to_cchw, to_coords
 
 

@@ -1,5 +1,5 @@
-import skorch
 import matplotlib.pyplot as plt
+import skorch
 import torch
 
 from detectors.shapes import box

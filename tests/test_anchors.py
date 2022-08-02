@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from detectors.anchors import DEFAULT_ANCHORS, AnchorBoxes
 
 

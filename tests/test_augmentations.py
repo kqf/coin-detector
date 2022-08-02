@@ -1,6 +1,7 @@
-import torch
 import numpy as np
 import pytest
+import torch
+
 from detectors.augmentations import transform
 
 

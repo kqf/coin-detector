@@ -1,7 +1,8 @@
 import pytest
 import torch
-from detectors.dummy import DummyDetector
+
 from detectors.anchors import DEFAULT_ANCHORS
+from detectors.dummy import DummyDetector
 
 
 @pytest.fixture

@@ -4,9 +4,9 @@ import torch
 
 from detectors.anchors import AnchorBoxes
 from detectors.encode import to_coords
+from detectors.iou import iou
 from detectors.matching import match
 from detectors.shapes import box
-from detectors.iou import iou
 
 
 @pytest.fixture

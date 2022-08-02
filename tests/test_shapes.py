@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
+
 from detectors.shapes import (box, box_mask, to_disc, to_ellipse, to_polygon,
                               to_recatangle)
 

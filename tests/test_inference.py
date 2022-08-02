@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 import torch
+
 from detectors.inference import infer
 from detectors.shapes import arrows, box
 

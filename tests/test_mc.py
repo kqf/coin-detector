@@ -1,5 +1,6 @@
-import pytest
 import matplotlib.pyplot as plt
+import pytest
+
 from detectors.mc import make_image
 
 

@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 import torch
+
 from detectors.mc import make_colors, make_image
 
 
