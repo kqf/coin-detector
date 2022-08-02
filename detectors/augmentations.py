@@ -1,7 +1,7 @@
-# import cv2
 import functools
 
 import albumentations as alb
+import cv2
 import numpy as np
 from albumentations.pytorch import ToTensorV2
 
@@ -31,24 +31,24 @@ def pipeline(train=True, mean=None, std=None, size=32 * 13):
             # Vertical flips don't change the position of an image
             # they seem to change only annotations
             # This one is definitely broken
-            # alb.VerticalFlip(),
+            alb.VerticalFlip(),
             # This one is definitely broken
-            # alb.RandomRotate90(),
+            alb.RandomRotate90(),
             # bad
             # This one is definitely broken
-            # alb.Flip(1),
+            alb.Flip(1),
             # This one is definitely broken
-            # alb.ShiftScaleRotate(p=0.5),
+            alb.ShiftScaleRotate(p=0.5),
             # Slightly worse
-            # alb.ShiftScaleRotate(
-            #     shift_limit=0.0625,
-            #     scale_limit=0.2,
-            #     rotate_limit=15,
-            #     p=0.9,
-            #     border_mode=cv2.BORDER_REFLECT
-            # ),
+            alb.ShiftScaleRotate(
+                shift_limit=0.0625,
+                scale_limit=0.2,
+                rotate_limit=15,
+                p=0.9,
+                border_mode=cv2.BORDER_REFLECT
+            ),
             # This one is definitely broken
-            # alb.RandomCrop(width=350, height=350),
+            alb.RandomCrop(width=350, height=350),
             alb.OneOf([
                 alb.HueSaturationValue(10, 15, 10),
                 alb.RandomBrightnessContrast(),

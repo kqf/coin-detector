@@ -6,8 +6,7 @@ import torch
 
 def from_mask(file):
     bitmap = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
-    image = np.stack([bitmap, bitmap, bitmap]).astype('float32')
-    return image
+    return np.stack([bitmap, bitmap, bitmap]).astype('float32')
 
 
 def read_image(file):
