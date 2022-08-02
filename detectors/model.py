@@ -12,9 +12,7 @@ from detectors.loss import DetectionLoss, default_losses
 
 
 def init(w):
-    if w.dim() < 2:
-        return w
-    return torch.nn.init.xavier_normal_(w)
+    return w if w.dim() < 2 else torch.nn.init.xavier_normal_(w)
 
 
 def build_model(max_epochs=2, logdir=".tmp/", train_split=None):
