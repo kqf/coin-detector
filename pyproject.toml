@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coin-detectors"
+version = "0.0.1"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.isort]
+line_length = 79
+skip_glob = [".git", ".idea", ".vscode", "logs/"]
+
+[tool.mypy]
+ignore_missing_imports = true
