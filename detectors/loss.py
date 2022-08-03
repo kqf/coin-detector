@@ -52,7 +52,7 @@ class WeightedLoss:
 
 
 def default_losses():
-    losses = {
+    return {
         "boxes": WeightedLoss(
             torch.nn.MSELoss(),
             enc_true=lambda x, a: encode(to_cchw(x), a),
@@ -67,11 +67,10 @@ def default_losses():
                 gamma=0.5,
             ),
             enc_true=lambda y, _: torch.nn.functional.one_hot(
-                y.reshape(-1).long()).float(),
+                y.reshape(-1).long(), num_classes=3).float(),
             needs_negatives=True,
         ),
     }
-    return losses
 
 
 def default_metrics():
