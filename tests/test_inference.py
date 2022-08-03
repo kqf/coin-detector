@@ -36,9 +36,7 @@ def predictions(image, batch_size, n_anchors, n_classes):
     x[..., 2] = np.linspace(280, 300, n_anchors) + 20
     x[..., 3] = 280 + 20
 
-    predictions = {}
-    predictions["boxes"] = torch.tensor(x)
-
+    predictions = {"boxes": torch.tensor(x)}
     classes = np.zeros((batch_size, n_anchors, n_classes))
     # Left it be always the first class
     classes[:, :, 1] = np.linspace(0.2, 0.8, n_anchors)
