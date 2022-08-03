@@ -1,3 +1,4 @@
+
 import pytest
 from matplotlib import pyplot as plt
 
@@ -31,6 +32,7 @@ def pplot(data, preds):
 
 def fit(model, train):
     try:
+        raise FileNotFoundError()
         model.load_params(f_params="debug-weights.pt")
     except FileNotFoundError:
         model.fit(train)
