@@ -9,8 +9,7 @@ from detectors.shapes import (box, box_mask, to_disc, to_ellipse, to_polygon,
 @pytest.fixture
 def image():
     shape = (400, 400)
-    img = np.zeros(shape)
-    return img
+    return np.zeros(shape)
 
 
 @pytest.fixture
